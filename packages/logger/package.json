@@ -1,0 +1,71 @@
+{
+  "name": "@alanszp/logger",
+  "version": "1.0.3",
+  "description": "Alan's logger util.",
+  "main": "dist/index.js",
+  "types": "src/index.ts",
+  "license": "MIT",
+  "files": [
+    "**/*"
+  ],
+  "scripts": {
+    "test": "NODE_ENV=test node_modules/.bin/nyc mocha",
+    "compile": "rm -rf ./dist && ./node_modules/.bin/tsc",
+    "compile-watch": "./node_modules/.bin/tsc -w",
+    "build": "yarn run lint && yarn run compile",
+    "lint": "./node_modules/.bin/tslint 'src/**/*.ts' --project 'tsconfig.json'",
+    "prepack": "yarn run build",
+    "postpack": "rm -rf ./dist"
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx",
+      ".js"
+    ],
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "text-summary",
+      "lcov"
+    ],
+    "all": true,
+    "sourceMap": true,
+    "instrument": true
+  },
+  "peerDependencies": {
+    "@alanszp/datadog-client": "^1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@alanszp/datadog-client": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@alanszp/datadog-bunyan": "^1.0.0",
+    "bunyan": "^1.8.12",
+    "json5": "^2.1.1",
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "@alanszp/datadog-client": "^1.0.0",
+    "@types/bunyan": "^1.8.5",
+    "@types/json5": "0.0.30",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.15",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.8.2"
+  }
+}

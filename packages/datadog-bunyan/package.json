@@ -1,0 +1,28 @@
+{
+  "name": "@alanszp/datadog-bunyan",
+  "version": "1.0.0",
+  "description": "Alan's bunyan logger for datadog.",
+  "main": "dist/index.js",
+  "types": "src/index.ts",
+  "license": "MIT",
+  "files": [
+    "**/*"
+  ],
+  "scripts": {
+    "compile": "rm -rf ./dist && ./node_modules/.bin/tsc",
+    "compile-watch": "./node_modules/.bin/tsc -w",
+    "build": "yarn run lint && yarn run compile",
+    "lint": "./node_modules/.bin/tslint 'src/**/*.ts' --project 'tsconfig.json'",
+    "prepack": "yarn run build",
+    "postpack": "rm -rf ./dist"
+  },
+  "peerDependencies": {
+    "@alanszp/datadog-client": "^1.0.0"
+  },
+  "devDependencies": {
+    "@alanszp/datadog-client": "^1.0.0",
+    "@types/node": "^10.12.15",
+    "tslint": "^5.11.0",
+    "typescript": "^3.8.2"
+  }
+}
