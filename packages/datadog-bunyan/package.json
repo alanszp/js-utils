@@ -8,6 +8,9 @@
   "files": [
     "**/*"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "compile": "rm -rf ./dist && ./node_modules/.bin/tsc",
     "compile-watch": "./node_modules/.bin/tsc -w",

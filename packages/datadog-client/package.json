@@ -8,6 +8,9 @@
   "files": [
     "**/*"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "NODE_ENV=test node_modules/.bin/nyc mocha",
     "compile": "rm -rf ./dist && ./node_modules/.bin/tsc",
