@@ -54,3 +54,8 @@ This will make two changes:
 
 - First, will update the `package.json` from the package you just bumped and also will change all the other local packages' `package.json` which depends from that package.
 - Then, will auto-commit and push those changes to github, and also tag the commit with the package and version number (e.g. `@alanszp/logger@1.0.0`) and push the tag too.
+
+### Publishing to npm
+
+- Login to npm `npm login`
+- Will have to run: `lerna publish from-package`
