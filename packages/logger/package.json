@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/logger",
-  "version": "1.0.3",
+  "version": "1.0.0",
   "description": "Alan's logger util.",
   "main": "dist/index.js",
   "types": "src/index.ts",
