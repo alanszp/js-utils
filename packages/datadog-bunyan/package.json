@@ -14,8 +14,7 @@
   "scripts": {
     "compile": "rm -rf ./dist && ./node_modules/.bin/tsc",
     "compile-watch": "./node_modules/.bin/tsc -w",
-    "build": "yarn run lint && yarn run compile",
-    "lint": "./node_modules/.bin/tslint 'src/**/*.ts' --project 'tsconfig.json'",
+    "build": "yarn run compile",
     "prepack": "yarn run build",
     "postpack": "rm -rf ./dist"
   },
