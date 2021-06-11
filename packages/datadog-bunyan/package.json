@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/datadog-bunyan",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Alan's bunyan logger for datadog.",
   "main": "dist/index.js",
   "types": "src/index.ts",
@@ -23,7 +23,7 @@
     "@alanszp/datadog-client": "^1.0.0"
   },
   "devDependencies": {
-    "@alanszp/datadog-client": "^1.0.0",
+    "@alanszp/datadog-client": "^1.0.1",
     "@types/node": "^10.12.15",
     "tslint": "^5.11.0",
     "typescript": "^3.8.2"

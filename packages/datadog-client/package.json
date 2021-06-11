@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/datadog-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "alanszp's client for datadog. It's just a wrapper :D",
   "main": "dist/index.js",
   "types": "src/index.ts",
