@@ -30,9 +30,8 @@ After merging the changes in prod, you should bump the versions of all modiified
 
 To do this, run:
 
-```sh
-yarn run bump-version
-```
+- `npm login`
+- `lerna publish`
 
 > If no change was made in the repo, lerna will output `Current HEAD is already released, skipping change detection.`
 
@@ -56,6 +55,3 @@ This will make two changes:
 - Then, will auto-commit and push those changes to github, and also tag the commit with the package and version number (e.g. `@alanszp/logger@1.0.0`) and push the tag too.
 
 ### Publishing to npm
-
-- Login to npm `npm login`
-- Will have to run: `lerna publish from-package`

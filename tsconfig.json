@@ -1,12 +1,12 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es6",
-        "types" : [ "node" ],
-        "esModuleInterop": true,
-        "sourceMap": false,
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "types": ["node"],
+    "esModuleInterop": true,
+    "sourceMap": true,
 
-        "alwaysStrict": true,
-        "strictNullChecks": true
-    }
+    "alwaysStrict": true,
+    "strictNullChecks": true
+  }
 }

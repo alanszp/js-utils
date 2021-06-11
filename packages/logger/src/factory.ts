@@ -63,54 +63,11 @@ export function createStreams(config: LoggerConfig): Stream[] {
   return streams;
 }
 
-/* Based on Bunyan error serializer */
-function getFullErrorStack(ex) {
-  let ret = ex.stack || ex.toString();
-  if (ex.cause && typeof ex.cause === "function") {
-    const cex = ex.cause();
-    if (cex) {
-      ret += `\nCaused by: ${getFullErrorStack(cex)}`;
-    }
-  }
-  return ret;
-}
-
-/* Based on Bunyan error serializer */
-function errorSerializer(err) {
-  if (!err || !err.stack) {
-    return err;
-  }
-  return {
-    message: err.message,
-    name: err.name,
-    code: err.code,
-    context: err.context,
-    status: err.status,
-    signal: err.signal,
-    devMessage: err.devMessage,
-    stack: getFullErrorStack(err),
-  };
-}
-
-function createSerializers(customs?: SerializersConfig): Serializers {
-  let additionalSerializers: Serializers = {};
-  if (customs) {
-    additionalSerializers = customs;
-  }
-
-  return {
-    err: errorSerializer,
-    error: errorSerializer,
-    ...additionalSerializers,
-  };
-}
-
 export function createLogger(config: LoggerConfig): ILogger {
   const bunyanLogger = createBunyanLogger({
     name: config.appName,
     streams: createStreams(config),
-    serializers: createSerializers(config.serializers),
   });
 
-  return new Logger(bunyanLogger);
+  return new Logger(bunyanLogger, config.serializers);
 }
