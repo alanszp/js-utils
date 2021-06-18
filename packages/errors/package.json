@@ -1,0 +1,26 @@
+{
+  "name": "@alanszp/errors",
+  "version": "1.0.1",
+  "description": "Alan's basic errors classes.",
+  "main": "dist/index.js",
+  "types": "src/index.ts",
+  "license": "MIT",
+  "files": [
+    "**/*"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "compile": "rm -rf ./dist && ./node_modules/.bin/tsc",
+    "compile-watch": "./node_modules/.bin/tsc -w",
+    "build": "yarn run compile",
+    "prepack": "yarn run build",
+    "postpack": "rm -rf ./dist"
+  },
+  "devDependencies": {
+    "@types/node": "^15.12.3",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.4"
+  }
+}
