@@ -10,41 +10,42 @@ export interface RequestSharedContext {
   lifecycleChain: string;
 }
 
-export const requestSharedContext =
-  new AsyncLocalStorage<RequestSharedContext>();
+export function createExtraContext(baseLogger: ILogger) {
+  const requestSharedContext = new AsyncLocalStorage<RequestSharedContext>();
+  return {
+    requestSharedContext,
+    extraContext: function extraContext(
+      req: Request,
+      _res: Response,
+      next: NextFunction
+    ): void {
+      req.context = req.context || {};
 
-export function extraContext(baseLogger: ILogger) {
-  return function extraContext(
-    req: Request,
-    _res: Response,
-    next: NextFunction
-  ): void {
-    req.context = req.context || {};
-
-    const logger = baseLogger.child({
-      lifecycleId: req.context.lifecycleId,
-      lifecycleChain: req.context.lifecycleChain,
-    });
-
-    const recivedChain = req.header("x-lifecycle-chain");
-    const separator = recivedChain ? "," : "";
-    const lifecycleChain = `${
-      recivedChain || ""
-    }${separator}${appIdentifier()}`;
-
-    req.context.authenticated = [];
-    req.context.lifecycleId =
-      req.headers["x-lifecycle-id"]?.toString() || cuid();
-    req.context.lifecycleChain = lifecycleChain;
-    req.context.log = logger;
-
-    requestSharedContext.run(
-      {
-        logger,
+      const logger = baseLogger.child({
         lifecycleId: req.context.lifecycleId,
         lifecycleChain: req.context.lifecycleChain,
-      },
-      () => next()
-    );
+      });
+
+      const recivedChain = req.header("x-lifecycle-chain");
+      const separator = recivedChain ? "," : "";
+      const lifecycleChain = `${
+        recivedChain || ""
+      }${separator}${appIdentifier()}`;
+
+      req.context.authenticated = [];
+      req.context.lifecycleId =
+        req.headers["x-lifecycle-id"]?.toString() || cuid();
+      req.context.lifecycleChain = lifecycleChain;
+      req.context.log = logger;
+
+      requestSharedContext.run(
+        {
+          logger,
+          lifecycleId: req.context.lifecycleId,
+          lifecycleChain: req.context.lifecycleChain,
+        },
+        () => next()
+      );
+    },
   };
 }
