@@ -3,7 +3,7 @@
   "version": "1.1.1",
   "description": "Alan's express utils and middlewares.",
   "main": "dist/index.js",
-  "types": "src/index.ts",
+  "typings": "dist/index.d.ts",
   "license": "MIT",
   "files": [
     "**/*"
@@ -12,7 +12,7 @@
     "access": "public"
   },
   "scripts": {
-    "compile": "rm -rf ./dist && ./node_modules/.bin/tsc",
+    "compile": "rm -rf ./dist && ./node_modules/.bin/tsc --declaration",
     "compile-watch": "./node_modules/.bin/tsc -w",
     "build": "yarn run compile",
     "prepack": "yarn run build",
