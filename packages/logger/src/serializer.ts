@@ -8,7 +8,7 @@ function stringify(obj: unknown): string {
   }
 
   if (obj instanceof Error) {
-    return errorSerializer(obj);
+    obj = errorSerializer(obj);
   }
 
   try {
@@ -47,13 +47,18 @@ function errorSerializer(err) {
     return err;
   }
   return {
-    message: err.message,
     name: err.name,
-    code: err.code,
-    context: err.context,
+    message: err.message,
+    code: functionOrPropValue(err, "code"),
+    context: functionOrPropValue(err, "context"),
+    renderMessage: functionOrPropValue(err, "renderMessage"),
+    subError: errorSerializer(err.error),
+    stack: getFullErrorStack(err),
     status: err.status,
     signal: err.signal,
-    devMessage: err.devMessage,
-    stack: getFullErrorStack(err),
   };
+}
+
+function functionOrPropValue(elem, key) {
+  return typeof elem[key] === "function" ? elem[key]() : elem[key];
 }

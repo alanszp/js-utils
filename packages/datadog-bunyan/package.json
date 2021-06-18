@@ -23,8 +23,9 @@
   },
   "devDependencies": {
     "@alanszp/datadog-client": "^1.0.1",
-    "@types/node": "^10.12.15",
+    "@types/node": "^15.12.3",
+    "ts-node": "^10.0.0",
     "tslint": "^5.11.0",
-    "typescript": "^3.8.2"
+    "typescript": "^4.3.4"
   }
 }

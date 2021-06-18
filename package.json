@@ -5,6 +5,7 @@
   "main": "index.js",
   "author": "Alan Szpigiel <alanszp@gmail.com>",
   "license": "MIT",
+  "private": true,
   "workspaces": [
     "packages/*"
   ],
