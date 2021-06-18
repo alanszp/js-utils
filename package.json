@@ -14,6 +14,6 @@
     "pack-all": "rm -rf tgzs/ && mkdir tgzs/ && ls -1 packages | xargs -tI % sh -c 'cd ./packages/%; yarn pack; mv ./*.tgz ../../tgzs'"
   },
   "dependencies": {
-    "lerna": "^3.20.2"
+    "lerna": "^4.0.0"
   }
 }
