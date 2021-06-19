@@ -15,8 +15,7 @@
     "compile": "rm -rf ./dist && ./node_modules/.bin/tsc --declaration",
     "compile-watch": "./node_modules/.bin/tsc -w",
     "build": "yarn run compile",
-    "prepack": "yarn run build",
-    "postpack": "rm -rf ./dist"
+    "prepack": "yarn run build"
   },
   "peerDependencies": {
     "@alanszp/datadog-client": "^1.2.0"
