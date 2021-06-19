@@ -6,7 +6,8 @@ Monorepo for all JS internal dependencies
 
 - @alanszp/datadog-client - A simple datadog clinet
 - @alanszp/logger - Logger made simple
-- @alanszp/datadog-bunyan - Simple bunyan serializer to send datapoints to Datadog
+- @alanszp/express - Express utils and middlewares
+- @alanszp/errors - BaseError for typescript and many more
 
 ## Local dev
 

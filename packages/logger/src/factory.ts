@@ -1,16 +1,11 @@
-import { DatadogStream } from "@alanszp/datadog-bunyan";
-import {
-  createLogger as createBunyanLogger,
-  Serializers,
-  Stream,
-} from "bunyan";
+import { DatadogStream } from "./datadogBunyan";
+import { createLogger as createBunyanLogger, Stream } from "bunyan";
 import { resolve } from "path";
 import {
   ConsoleLoggerConfig,
   DatadogConfig,
   FileLoggerConfig,
   LoggerConfig,
-  SerializersConfig,
 } from "./config";
 import { ILogger, LogLevel } from "./interfaces";
 import { Logger } from "./logger";
