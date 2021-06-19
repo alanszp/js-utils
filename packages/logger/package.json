@@ -19,7 +19,7 @@
     "postpack": "rm -rf ./dist"
   },
   "peerDependencies": {
-    "@alanszp/datadog-client": "^1.0.0"
+    "@alanszp/datadog-client": "^1.2.0"
   },
   "peerDependenciesMeta": {
     "@alanszp/datadog-client": {
