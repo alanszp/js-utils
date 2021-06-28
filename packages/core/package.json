@@ -1,7 +1,7 @@
 {
-  "name": "@alanszp/utils",
+  "name": "@alanszp/core",
   "version": "1.3.0",
-  "description": "Alan's logger util.",
+  "description": "Alan's core TS/JS lib.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
@@ -16,28 +16,5 @@
     "compile-watch": "./node_modules/.bin/tsc -w",
     "build": "yarn run compile",
     "prepack": "yarn run build"
-  },
-  "peerDependencies": {
-    "@alanszp/datadog-client": "^1.2.0"
-  },
-  "peerDependenciesMeta": {
-    "@alanszp/datadog-client": {
-      "optional": true
-    }
-  },
-  "dependencies": {
-    "bunyan": "^1.8.12",
-    "json5": "^2.1.1",
-    "lodash": "^4.17.15"
-  },
-  "devDependencies": {
-    "@alanszp/datadog-client": "^1.3.0",
-    "@types/bunyan": "^1.8.5",
-    "@types/json5": "0.0.30",
-    "@types/lodash": "^4.14.170",
-    "@types/node": "^15.12.3",
-    "ts-node": "^10.0.0",
-    "tslint": "^5.11.0",
-    "typescript": "^4.3.4"
   }
 }
