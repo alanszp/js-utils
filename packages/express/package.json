@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@alanszp/errors": "^1.5.3",
+    "@alanszp/jwt": "^1.5.4",
     "@alanszp/logger": "^1.5.3",
     "cuid": "^2.1.8",
     "lodash": "^4.17.21"

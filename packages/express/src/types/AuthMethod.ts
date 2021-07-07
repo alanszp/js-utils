@@ -13,13 +13,12 @@ type GenerateStringUnion<T> = Extract<
 >;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type OverridableStringUnion<T extends string | number, U = {}> =
-  GenerateStringUnion<Overwrite<Record<T, true>, U>>;
+type OverridableStringUnion<
+  T extends string | number,
+  U = {}
+> = GenerateStringUnion<Overwrite<Record<T, true>, U>>;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AuthMethodsOverride {}
 
-export type AuthMethod = OverridableStringUnion<
-  "api-key" | "bearer-token" | "basic",
-  AuthMethodsOverride
->;
+export type AuthMethod = OverridableStringUnion<"jwt", AuthMethodsOverride>;

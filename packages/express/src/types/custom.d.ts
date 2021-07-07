@@ -1,4 +1,5 @@
 import { ILogger } from "@alanszp/logger";
+import { JWTUser } from "@alanszp/jwt";
 import { AuthMethod } from "./AuthMethod";
 
 declare global {
@@ -9,6 +10,7 @@ declare global {
         lifecycleChain: string;
         authenticated: AuthMethod[];
         log: ILogger;
+        jwtUser?: JWTUser;
       };
     }
   }
