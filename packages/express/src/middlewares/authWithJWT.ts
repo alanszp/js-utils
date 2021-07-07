@@ -1,6 +1,6 @@
 import { verifyJWT, VerifyOptions } from "@alanszp/jwt";
 import { UnauthorizedError } from "@alanszp/errors";
-import { errorView } from "@alanszp/express";
+import { errorView } from "../views/errorView";
 import { NextFunction, Request, Response } from "express";
 import { getRequestLogger } from "../helpers/getRequestLogger";
 
