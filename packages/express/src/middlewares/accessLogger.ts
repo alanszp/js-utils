@@ -17,6 +17,7 @@ export function accessLogger(
       durationMs: ((endTime - startTime) / BigInt(1_000_000)).toString(),
       remoteAddress:
         req.headers["cf-connecting-ip"] || req.ip || req.socket?.remoteAddress,
+      forwardedFor: req.headers["x-forwarded-for"],
       authentication: req.context.authenticated,
       statusCode: res.statusCode,
       url: req.originalUrl || req.url,
