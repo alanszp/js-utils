@@ -15,7 +15,8 @@ export function accessLogger(
       env: process.env.NODE_ENV,
       duration: (endTime - startTime).toString(),
       durationMs: ((endTime - startTime) / BigInt(1_000_000)).toString(),
-      remoteAddress: req.ip || req.socket?.remoteAddress,
+      remoteAddress:
+        req.headers["cf-connecting-ip"] || req.ip || req.socket?.remoteAddress,
       authentication: req.context.authenticated,
       statusCode: res.statusCode,
       url: req.originalUrl || req.url,
