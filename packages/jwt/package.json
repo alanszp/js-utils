@@ -1,0 +1,28 @@
+{
+  "name": "@alanszp/jwt",
+  "version": "1.3.0",
+  "description": "Alan's jwt validator & signer.",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "license": "MIT",
+  "files": [
+    "**/*"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "compile": "rm -rf ./dist && ./node_modules/.bin/tsc --declaration",
+    "compile-watch": "./node_modules/.bin/tsc -w",
+    "build": "yarn run compile",
+    "prepack": "yarn run build"
+  },
+  "devDependencies": {
+    "@types/node": "^15.12.3",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.4"
+  },
+  "dependencies": {
+    "jose": "^3.14.0"
+  }
+}
