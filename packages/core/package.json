@@ -12,8 +12,8 @@
     "access": "public"
   },
   "scripts": {
-    "compile": "rm -rf ./dist && ./node_modules/.bin/tsc --declaration",
-    "compile-watch": "./node_modules/.bin/tsc -w",
+    "compile": "rm -rf ./dist && tsc --declaration",
+    "compile-watch": "tsc -w",
     "build": "yarn run compile",
     "prepack": "yarn run build"
   }

@@ -10,7 +10,7 @@
     "packages/*"
   ],
   "scripts": {
-    "bump-version": "./node_modules/.bin/lerna version",
+    "bump-version": "lerna version",
     "pack-all": "rm -rf tgzs/ && mkdir tgzs/ && ls -1 packages | xargs -tI % sh -c 'cd ./packages/%; yarn pack; mv ./*.tgz ../../tgzs'"
   },
   "dependencies": {
