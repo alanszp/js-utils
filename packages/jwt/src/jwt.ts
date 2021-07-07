@@ -75,7 +75,7 @@ export function createTokenPayload(user: JWTUser): JWTPayload {
 export async function verifyJWT(
   publicKey: KeyObject | string,
   token: string,
-  options: Partial<VerifyOptions>
+  options?: Partial<VerifyOptions>
 ): Promise<JWTUser> {
   const key =
     typeof publicKey === "string" ? publicKeyFromPem(publicKey) : publicKey;
