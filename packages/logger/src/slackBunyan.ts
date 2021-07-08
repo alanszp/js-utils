@@ -55,6 +55,7 @@ export class SlackStream extends Writable {
         console.log(
           JSON.stringify(
             serialize({
+              level: 50,
               msg: "_slack_serializer.error",
               error,
               record,
@@ -124,9 +125,12 @@ export class SlackStream extends Writable {
         ],
       };
 
-      axios
-        .post(this.webhookUrl, body)
-        .catch((err) => this.onError(err, record));
+      axios.post<void>(this.webhookUrl, body).catch((error) =>
+        this.onError(error, {
+          slackResponse: error.response ? error.response.data : null,
+          record,
+        })
+      );
     } catch (err) {
       return this.onError(err, record);
     }

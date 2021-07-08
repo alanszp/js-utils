@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { LogType } from "../../../logger/dist";
 
 export function accessLogger(
   req: Request,
@@ -10,7 +11,7 @@ export function accessLogger(
   res.on("finish", () => {
     const endTime = process.hrtime.bigint();
     req.context.log.info("", {
-      log_type: "access",
+      log_type: LogType.ACCESS,
       method: req.method,
       env: process.env.NODE_ENV,
       duration: (endTime - startTime).toString(),
