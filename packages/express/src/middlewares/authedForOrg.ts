@@ -4,7 +4,7 @@ import { NextFunction, Request, Response } from "express";
 import { getRequestLogger } from "../helpers/getRequestLogger";
 
 function response401(res: Response): void {
-  res.status(401).json(new UnauthorizedError(["jwt"]));
+  res.status(401).json(errorView(new UnauthorizedError(["jwt"])));
 }
 
 export function authForOrg(
