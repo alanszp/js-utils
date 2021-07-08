@@ -26,7 +26,7 @@ export interface SlackStreamOptions {
   channel?: string;
   username?: string;
   emojiIcon?: string;
-  onError?: (error: Error) => void;
+  onError?: (error: Error, record: unknown) => void;
 }
 
 export class SlackStream extends Writable {
