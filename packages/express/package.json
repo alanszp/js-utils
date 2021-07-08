@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/express",
-  "version": "1.7.3",
+  "version": "1.7.4",
   "description": "Alan's express utils and middlewares.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -31,7 +31,7 @@
   "dependencies": {
     "@alanszp/errors": "^1.5.3",
     "@alanszp/jwt": "^1.5.4",
-    "@alanszp/logger": "^1.7.3",
+    "@alanszp/logger": "^1.7.4",
     "cuid": "^2.1.8",
     "lodash": "^4.17.21"
   }
