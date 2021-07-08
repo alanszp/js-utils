@@ -1,6 +1,5 @@
 import axios from "axios";
 import { isDate, reduce } from "lodash";
-import { Writable } from "stream";
 import { serialize, stringify } from "./serializer";
 
 const COLOR_FROM_LEVEL = {
@@ -29,7 +28,7 @@ export interface SlackStreamOptions {
   onError?: (error: Error, record: unknown) => void;
 }
 
-export class SlackStream extends Writable {
+export class SlackStream {
   private webhookUrl: string;
   private onError: (error: Error, record: unknown) => void;
   private channel?: string;
@@ -37,10 +36,6 @@ export class SlackStream extends Writable {
   private emojiIcon?: string;
 
   constructor(options: SlackStreamOptions) {
-    super({
-      objectMode: true,
-    });
-
     if (!options?.webhookUrl) {
       throw new Error("webhookUrl and channel must be given");
     }
@@ -65,7 +60,7 @@ export class SlackStream extends Writable {
       };
   }
 
-  public _write(record: any): void {
+  public write(record: any): void {
     record = record || {};
     try {
       const color = COLOR_FROM_LEVEL[record.level];
