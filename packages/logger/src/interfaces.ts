@@ -5,6 +5,12 @@ export enum LogLevel {
   WARN = "warn",
   ERROR = "error",
 }
+
+export enum LogType {
+  APP = "app",
+  ACCESS = "access",
+}
+
 export interface Context {
   [key: string]: any;
 }

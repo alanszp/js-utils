@@ -2,7 +2,7 @@ import JSON5 from "json5";
 import { isString, keys, mapValues } from "lodash";
 import { Context } from "./interfaces";
 
-function stringify(obj: unknown): string {
+export function stringify(obj: unknown): string {
   if (isString(obj)) {
     return obj;
   }

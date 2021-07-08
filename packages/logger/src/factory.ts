@@ -6,9 +6,11 @@ import {
   DatadogConfig,
   FileLoggerConfig,
   LoggerConfig,
+  SlackConfig,
 } from "./config";
 import { ILogger, LogLevel } from "./interfaces";
 import { Logger } from "./logger";
+import { SlackStream } from "./slackBunyan";
 
 function consoleStreamFactory(config: ConsoleLoggerConfig): Stream {
   return {
@@ -40,6 +42,14 @@ function datadogStreamFactory(config: DatadogConfig): Stream {
   };
 }
 
+function slackStreamFactory(config: SlackConfig): Stream {
+  return {
+    type: "raw",
+    level: config.level,
+    stream: new SlackStream(config.options),
+  };
+}
+
 export function createStreams(config: LoggerConfig): Stream[] {
   const streams: Stream[] = [];
 
@@ -53,6 +63,10 @@ export function createStreams(config: LoggerConfig): Stream[] {
 
   if (config.datadog) {
     streams.push(datadogStreamFactory(config.datadog));
+  }
+
+  if (config.slack) {
+    streams.push(slackStreamFactory(config.slack));
   }
 
   return streams;

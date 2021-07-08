@@ -12,6 +12,6 @@ export class DatadogStream extends Writable {
   }
 
   public _write(payload: any) {
-    this.client.increment("logs.error", 1, [`code:${payload.code}`]);
+    this.client.increment("logs.error", 1, [`code:${payload.msg}`]);
   }
 }
