@@ -65,7 +65,7 @@ export class SlackStream extends Writable {
       };
   }
 
-  public _write(record: any) {
+  public _write(record: any): void {
     record = record || {};
     try {
       const color = COLOR_FROM_LEVEL[record.level];
@@ -81,7 +81,7 @@ export class SlackStream extends Writable {
       );
 
       const body = {
-        channel: "asd",
+        channel: this.channel,
         username: this.username,
         icon_emoji: this.emojiIcon,
         attachments: [
@@ -132,7 +132,7 @@ export class SlackStream extends Writable {
         })
       );
     } catch (err) {
-      return this.onError(err, record);
+      this.onError(err, record);
     }
   }
 }
