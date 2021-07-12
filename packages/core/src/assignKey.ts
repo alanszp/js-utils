@@ -1,11 +1,21 @@
-export function assignKey<CommonInterface, Key extends keyof CommonInterface>(
-  target: CommonInterface,
-  source: CommonInterface,
+export type Assignable<Target, Source> = {
+  [K in keyof Target & keyof Source as Source[K] extends Target[K]
+    ? K
+    : never]: Target[K];
+};
+
+export function assignKey<
+  Target extends Record<string | number | symbol, unknown>,
+  Source extends Record<string | number | symbol, unknown>,
+  Key extends keyof Assignable<Target, Source>
+>(
+  target: Target,
+  source: Source,
   key: Key,
-  defaultValue?: CommonInterface[Key]
+  defaultValue?: Assignable<Target, Source>[Key]
 ): void {
   if (source[key]) {
-    target[key] = source[key];
+    target[key] = source[key] as Assignable<Target, Source>[Key];
     return;
   }
 
@@ -14,10 +24,13 @@ export function assignKey<CommonInterface, Key extends keyof CommonInterface>(
   }
 }
 
-export function assignKeys<CommonInterface>(
-  target: CommonInterface,
-  source: CommonInterface,
-  keys: (keyof CommonInterface)[]
+export function assignKeys<
+  Target extends Record<string | number | symbol, unknown>,
+  Source extends Record<string | number | symbol, unknown>
+>(
+  target: Target,
+  source: Source,
+  keys: (keyof Assignable<Target, Source>)[]
 ): void {
   keys.forEach((key) => {
     assignKey(target, source, key);
