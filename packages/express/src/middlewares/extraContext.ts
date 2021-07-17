@@ -21,28 +21,28 @@ export function createExtraContext(baseLogger: ILogger) {
     ): void {
       req.context = req.context || {};
 
-      const logger = baseLogger.child({
-        lifecycleId: req.context.lifecycleId,
-        lifecycleChain: req.context.lifecycleChain,
-      });
-
       const recivedChain = req.header("x-lifecycle-chain");
       const separator = recivedChain ? "," : "";
       const lifecycleChain = `${
         recivedChain || ""
       }${separator}${appIdentifier()}`;
+      const lifecycleId = req.headers["x-lifecycle-id"]?.toString() || cuid();
+
+      const logger = baseLogger.child({
+        lifecycleId,
+        lifecycleChain,
+      });
 
       req.context.authenticated = [];
-      req.context.lifecycleId =
-        req.headers["x-lifecycle-id"]?.toString() || cuid();
+      req.context.lifecycleId = lifecycleId;
       req.context.lifecycleChain = lifecycleChain;
       req.context.log = logger;
 
       requestSharedContext.run(
         {
           logger,
-          lifecycleId: req.context.lifecycleId,
-          lifecycleChain: req.context.lifecycleChain,
+          lifecycleId,
+          lifecycleChain,
         },
         () => next()
       );
