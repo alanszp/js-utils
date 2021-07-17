@@ -29,8 +29,8 @@ export function createExtraContext(baseLogger: ILogger) {
       const lifecycleId = req.headers["x-lifecycle-id"]?.toString() || cuid();
 
       const logger = baseLogger.child({
-        lifecycleId,
-        lifecycleChain,
+        lid: lifecycleId,
+        lch: lifecycleChain,
       });
 
       req.context.authenticated = [];
