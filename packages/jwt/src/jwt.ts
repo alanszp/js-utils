@@ -61,10 +61,7 @@ export async function generateJWT(
 
 export function createTokenPayload(user: JWTUser): JWTPayload {
   return {
-    id: user.id,
-    fnm: user.firstName,
-    lnm: user.lastName,
-    em: user.email,
+    sub: user.id,
     ref: user.employeeReference,
     org: user.organizationReference,
     rls: user.roles,
@@ -91,10 +88,7 @@ export async function verifyJWT(
   const payload = verify.payload as JWTPayload;
 
   return {
-    id: payload.id,
-    firstName: payload.fnm,
-    lastName: payload.lnm,
-    email: payload.em,
+    id: payload.sub,
     employeeReference: payload.ref,
     organizationReference: payload.org,
     roles: payload.rls,

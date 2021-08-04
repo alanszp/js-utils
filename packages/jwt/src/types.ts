@@ -1,10 +1,7 @@
 import type { JWTPayload as LibPayload } from "jose/jwt/sign";
 
 export interface JWTPayload extends LibPayload {
-  id: string;
-  fnm: string;
-  lnm: string;
-  em: string;
+  sub: string;
   ref: string | null;
   org: string;
   rls: string[];
@@ -13,9 +10,6 @@ export interface JWTPayload extends LibPayload {
 
 export interface JWTUser {
   id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
   employeeReference: string | null;
   organizationReference: string;
   roles: string[];
