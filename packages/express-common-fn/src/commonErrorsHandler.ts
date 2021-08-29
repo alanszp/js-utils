@@ -19,10 +19,10 @@ const defaultsOption: CommonErrorOptions = {
   extraContext: {},
 };
 
-export function handleCommonErrors(loggerFn: () => ILogger) {
+export function g(loggerFn: () => ILogger) {
   const logger = loggerFn();
 
-  return function handleCommonErrorFn(
+  return function handleCommonErrors(
     error: unknown,
     res: Response,
     baseLog: string,

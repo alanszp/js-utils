@@ -1,1 +1,1 @@
-export * from "./handleCommonErrors";
+export * from "./commonErrorsHandler";
