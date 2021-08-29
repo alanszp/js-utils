@@ -11,10 +11,14 @@ Monorepo for all JS internal dependencies
 
 ## Local dev
 
-Clone the repo and run:
+Clone the repo and run on root folder:
 
 ```sh
+# Installs all dependencies including per-package ones.
 yarn install
+
+# Builds all dependencies for the first time so when you import from another, will have the type definition.
+yarn lerna run build
 ```
 
 > Install general deps (mainly lerna) & all deps from every package and also will link local packages thogether - only if one depends (prod or dev, not peer) on the other. No need to run `lerna bootstrap`. Yarn workspaces ftw :D.
@@ -36,7 +40,7 @@ To do this, run:
 
 > If no change was made in the repo, lerna will output `Current HEAD is already released, skipping change detection.`
 
-Lerna will do it's magic and will ask you to choose which positional version will be bumped (we use [SemVer versioning standard]([www.google.com](https://semver.org/))) and then review and confirm the changes to make
+Lerna will do it's magic and will ask you to choose which positional version will be bumped (we use [SemVer versioning standard](<[www.google.com](https://semver.org/)>)) and then review and confirm the changes to make
 
 If everything is correct, you will see something like this:
 
