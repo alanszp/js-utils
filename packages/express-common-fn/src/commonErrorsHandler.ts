@@ -7,7 +7,7 @@ import {
 import { Context, ILogger } from "@alanszp/logger";
 import { ModelValidationError } from "@alanszp/typeorm";
 import { Response } from "express";
-import { EntityNotFoundError, QueryFailedError, TypeORMError } from "typeorm";
+import { EntityNotFoundError, QueryFailedError } from "typeorm";
 
 export interface CommonErrorOptions {
   entityNotFound: 400 | 404;
@@ -63,12 +63,6 @@ export function commonErrorsHandler(loggerFn: () => ILogger) {
         logger.error(`${baseLog}.error.typeorm.query_error.unknown`, { error });
         res.status(500).json(errorView(new InternalServerError(error)));
       }
-      return;
-    }
-
-    if (error instanceof TypeORMError) {
-      logger.error(`${baseLog}.error.typeorm.unknown`, { error });
-      res.status(500).json(errorView(new InternalServerError(error)));
       return;
     }
 
