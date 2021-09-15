@@ -95,3 +95,11 @@ export async function verifyJWT(
     permissions: payload.prms,
   };
 }
+
+export function jwtUserHasRoles(
+  jwtUser: JWTUser,
+  roles: string | string[]
+): boolean {
+  const validateRoles = typeof roles === "string" ? [roles] : roles;
+  return validateRoles.some((role) => jwtUser.roles.includes(role));
+}
