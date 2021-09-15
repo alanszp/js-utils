@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/axios-node",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "description": "Alan's axios wrapper with base interceptor.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -19,6 +19,6 @@
   },
   "dependencies": {
     "@alanszp/errors": "^2.0.0",
-    "@alanszp/express": "^2.1.7"
+    "@alanszp/express": "^2.1.8"
   }
 }
