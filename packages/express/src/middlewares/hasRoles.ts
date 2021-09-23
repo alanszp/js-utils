@@ -1,7 +1,7 @@
 import { UnauthorizedError } from "@alanszp/errors";
 import { errorView } from "../views/errorView";
 import { NextFunction, Request, Response } from "express";
-import { jwtUserHasRoles } from "../../../jwt/dist";
+import { jwtUserHasRoles } from "@alanszp/jwt";
 
 function response401(res: Response): void {
   res.status(401).json(errorView(new UnauthorizedError(["permissions"])));

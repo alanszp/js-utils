@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { LogType } from "../../../logger/dist";
+import { LogType } from "@alanszp/logger";
 
 export function accessLogger(
   req: Request,
