@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/express",
-  "version": "2.1.11",
+  "version": "2.1.12",
   "description": "Alan's express utils and middlewares.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -30,7 +30,7 @@
     "typescript": "^4.3.4"
   },
   "dependencies": {
-    "@alanszp/errors": "^2.0.0",
+    "@alanszp/errors": "^2.1.12",
     "@alanszp/jwt": "^2.1.7",
     "@alanszp/logger": "^2.0.0",
     "body-parser": "^1.19.0",
