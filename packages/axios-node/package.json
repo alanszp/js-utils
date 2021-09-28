@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/axios-node",
-  "version": "2.1.12",
+  "version": "2.1.13",
   "description": "Alan's axios wrapper with base interceptor.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -18,7 +18,7 @@
     "prepack": "yarn run build"
   },
   "dependencies": {
-    "@alanszp/errors": "^2.1.12",
-    "@alanszp/express": "^2.1.12"
+    "@alanszp/errors": "^2.1.13",
+    "@alanszp/express": "^2.1.13"
   }
 }
