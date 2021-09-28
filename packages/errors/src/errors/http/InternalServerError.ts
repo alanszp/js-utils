@@ -18,12 +18,17 @@ export class InternalServerError extends HttpError {
       return {};
     }
 
-    try {
-      return {
-        errors: this.error,
-      };
-    } catch (error: unknown) {
-      return {};
-    }
+    return {
+      error: {
+        name: this.error.name,
+        message: this.error.message,
+        code: this.error.code,
+        context: this.error.context,
+        renderMessage: this.error.renderMessage,
+        stack: this.error.stack,
+        status: this.error.status,
+        signal: this.error.signal,
+      },
+    };
   }
 }
