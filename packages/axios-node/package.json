@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/axios-node",
-  "version": "2.1.13",
+  "version": "2.1.14",
   "description": "Alan's axios wrapper with base interceptor.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
