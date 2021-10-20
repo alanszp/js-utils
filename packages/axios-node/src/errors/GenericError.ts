@@ -1,8 +1,8 @@
-import { AxiosError } from "axios";
 import { RequestError } from "./RequestError";
+import { AxiosError } from "axios";
 
-export class GenericError extends RequestError {
-  constructor(error: Error) {
+export class GenericError<T> extends RequestError<T> {
+  constructor(error: AxiosError<T>) {
     super("Generic Error", error);
   }
 }
