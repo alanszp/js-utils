@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/errors",
-  "version": "2.1.13",
+  "version": "3.0.0",
   "description": "Alan's basic errors classes.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
