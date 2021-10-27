@@ -4,12 +4,12 @@ export function assignKey<CommonInterface, Key extends keyof CommonInterface>(
   key: Key,
   defaultValue?: CommonInterface[Key]
 ): void {
-  if (source[key]) {
+  if (source[key] !== undefined) {
     target[key] = source[key];
     return;
   }
 
-  if (defaultValue) {
+  if (defaultValue !== undefined) {
     target[key] = defaultValue;
   }
 }
