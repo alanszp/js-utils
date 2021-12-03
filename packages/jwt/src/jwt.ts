@@ -34,7 +34,7 @@ export function withDefaultVerifyOptions(
   options?: Partial<VerifyOptions>
 ): VerifyOptions {
   return {
-    issuer: "hodor",
+    issuer: ["hodor", "long:1"],
     audience: "web",
     ...options,
   };

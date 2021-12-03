@@ -23,6 +23,6 @@ export interface SignOptions {
 }
 
 export interface VerifyOptions {
-  issuer: string;
+  issuer: string | string[];
   audience: string | string[];
 }
