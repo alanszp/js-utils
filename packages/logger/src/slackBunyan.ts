@@ -120,7 +120,7 @@ export class SlackStream {
         ],
       };
 
-      axios.post<void>(this.webhookUrl, body).catch((error) =>
+      axios.post(this.webhookUrl, body).catch((error) =>
         this.onError(error, {
           slackResponse: error.response ? error.response.data : null,
           record,

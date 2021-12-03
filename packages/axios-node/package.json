@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@alanszp/errors": "^3.0.0",
-    "@alanszp/express": "^3.0.1"
+    "@alanszp/express": "^3.0.1",
+    "axios": "^0.22.0"
   }
 }
