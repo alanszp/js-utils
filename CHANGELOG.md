@@ -1,5 +1,16 @@
 # Changelog
 
+
+## v4.0.1
+
+Changes
+
+- @alanszp/logger uses now @alanszp/axios-node instead of axios itself
+- Make all peer deps match the dev deps.
+- Remove unused imports from @alanszp/axios-node
+
+-------------
+
 ## v4.0.0
 
 Changes
