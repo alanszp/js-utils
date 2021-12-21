@@ -19,7 +19,7 @@
   },
   "peerDependencies": {
     "@alanszp/axios-node": "^4.0.0",
-    "@alanszp/datadog-client": "^1.2.0"
+    "@alanszp/datadog-client": "^4.0.0"
   },
   "peerDependenciesMeta": {
     "@alanszp/datadog-client": {
