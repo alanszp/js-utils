@@ -20,6 +20,6 @@
   "dependencies": {
     "@alanszp/errors": "^3.0.0",
     "@alanszp/express": "^3.0.2",
-    "axios": "^0.22.0"
+    "axios": "^0.24.0"
   }
 }
