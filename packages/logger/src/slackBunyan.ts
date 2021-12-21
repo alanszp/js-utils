@@ -1,6 +1,8 @@
-import axios from "axios";
+import { createAxios } from "@alanszp/axios-node";
 import { isDate, reduce } from "lodash";
 import { serialize, stringify } from "./serializer";
+
+const axios = createAxios();
 
 const COLOR_FROM_LEVEL = {
   10: "#c4c4c4",
@@ -13,10 +15,8 @@ const COLOR_FROM_LEVEL = {
 const REMOVABLE_FIELDS = {
   v: true,
   name: true,
-  pid: true,
   level: true,
   msg: true,
-  hostname: true,
   time: true,
 };
 
@@ -96,7 +96,7 @@ export class SlackStream {
                   },
                   {
                     type: "mrkdwn",
-                    text: `*Host*\n${record.hostname}:${record.pid}`,
+                    text: `*Lifecycle ID*\n${record.lid || "-"}`,
                   },
                   {
                     type: "mrkdwn",

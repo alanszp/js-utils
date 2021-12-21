@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse, AxiosRequestConfig } from "axios";
+import { AxiosError } from "axios";
 import { RequestError } from "./RequestError";
 
 export class Non200ResponseError<T> extends RequestError<T> {
