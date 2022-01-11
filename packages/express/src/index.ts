@@ -1,5 +1,6 @@
 export * from "./views/errorView";
 export * from "./types/AuthMethod";
+export * from "./middlewares/auditLog";
 export * from "./middlewares/accessLogger";
 export * from "./middlewares/authedForOrg";
 export * from "./middlewares/extraContext";

@@ -1,5 +1,13 @@
 # Changelog
 
+## v4.0.3
+
+Changes
+
+- Exported new middleware on @alanszp/express to write audit logs. 🤦‍♂️
+
+-------------
+
 ## v4.0.2
 
 Changes
