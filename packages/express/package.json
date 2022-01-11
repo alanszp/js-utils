@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/express",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "Alan's express utils and middlewares.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
