@@ -9,6 +9,7 @@ export enum LogLevel {
 export enum LogType {
   APP = "app",
   ACCESS = "access",
+  AUDIT = "audit",
 }
 
 export interface Context {
