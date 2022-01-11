@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.0.2
+
+Changes
+
+- Added @alanszp/audit which normalizes the way to write audit logs and defines the interface & checks.
+- Create new middleware on @alanszp/express to write audit logs.
+- Adds new LogType `audit` to @alanszp/logger
+
+-------------
 
 ## v4.0.1
 
