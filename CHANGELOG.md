@@ -1,5 +1,13 @@
 # Changelog
 
+## v4.0.4
+
+Changes
+
+- Make the auditLog middleware in @alanszp/express to execute after request is finished but must be configured before the controller.
+
+-------------
+
 ## v4.0.3
 
 Changes
