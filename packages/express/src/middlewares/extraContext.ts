@@ -1,6 +1,7 @@
 import cuid from "cuid";
 import { NextFunction, Request, Response } from "express";
 import { ILogger } from "@alanszp/logger";
+import { Audit } from "@alanszp/audit";
 import { AsyncLocalStorage } from "async_hooks";
 import { appIdentifier } from "../helpers/appIdentifier";
 
@@ -10,7 +11,7 @@ export interface RequestSharedContext {
   lifecycleChain: string;
 }
 
-export function createExtraContext(baseLogger: ILogger) {
+export function createExtraContext(baseLogger: ILogger, audit: Audit) {
   const requestSharedContext = new AsyncLocalStorage<RequestSharedContext>();
   return {
     requestSharedContext,
@@ -21,10 +22,10 @@ export function createExtraContext(baseLogger: ILogger) {
     ): void {
       req.context = req.context || {};
 
-      const recivedChain = req.header("x-lifecycle-chain");
-      const separator = recivedChain ? "," : "";
+      const receivedChain = req.header("x-lifecycle-chain");
+      const separator = receivedChain ? "," : "";
       const lifecycleChain = `${
-        recivedChain || ""
+        receivedChain || ""
       }${separator}${appIdentifier()}`;
       const lifecycleId = req.headers["x-lifecycle-id"]?.toString() || cuid();
 
@@ -37,6 +38,7 @@ export function createExtraContext(baseLogger: ILogger) {
       req.context.lifecycleId = lifecycleId;
       req.context.lifecycleChain = lifecycleChain;
       req.context.log = logger;
+      req.context.audit = audit;
 
       requestSharedContext.run(
         {

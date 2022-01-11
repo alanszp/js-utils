@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { LogType } from "@alanszp/logger";
+import { getIp } from "../helpers/getIp";
 
 export function accessLogger(
   req: Request,
@@ -16,8 +17,7 @@ export function accessLogger(
       env: process.env.NODE_ENV,
       duration: (endTime - startTime).toString(),
       durationMs: ((endTime - startTime) / BigInt(1_000_000)).toString(),
-      remoteAddress:
-        req.headers["cf-connecting-ip"] || req.ip || req.socket?.remoteAddress,
+      remoteAddress: getIp(req),
       forwardedFor: req.headers["x-forwarded-for"],
       authentication: req.context.authenticated,
       statusCode: res.statusCode,
