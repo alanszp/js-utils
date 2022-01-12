@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/logger",
-  "version": "4.0.2",
+  "version": "4.0.5",
   "description": "Alan's logger util.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -33,8 +33,8 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "@alanszp/axios-node": "^4.0.1",
-    "@alanszp/datadog-client": "^4.0.0",
+    "@alanszp/axios-node": "^4.0.5",
+    "@alanszp/datadog-client": "^4.0.5",
     "@types/bunyan": "^1.8.5",
     "@types/json5": "0.0.30",
     "@types/lodash": "^4.14.170",

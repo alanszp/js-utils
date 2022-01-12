@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/core",
-  "version": "4.0.0",
+  "version": "4.0.5",
   "description": "Alan's core TS/JS lib.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
