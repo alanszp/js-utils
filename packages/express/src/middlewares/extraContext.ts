@@ -4,8 +4,10 @@ import { ILogger } from "@alanszp/logger";
 import { Audit } from "@alanszp/audit";
 import { AsyncLocalStorage } from "async_hooks";
 import { appIdentifier } from "../helpers/appIdentifier";
+import { AuditWithState } from "@alanszp/audit/dist/auditWithState";
 
 export interface RequestSharedContext {
+  audit: AuditWithState;
   logger: ILogger;
   lifecycleId: string;
   lifecycleChain: string;
@@ -34,14 +36,17 @@ export function createExtraContext(baseLogger: ILogger, audit: Audit) {
         lch: lifecycleChain,
       });
 
+      const auditWithState = audit.withState();
+
       req.context.authenticated = [];
       req.context.lifecycleId = lifecycleId;
       req.context.lifecycleChain = lifecycleChain;
       req.context.log = logger;
-      req.context.audit = audit;
+      req.context.audit = auditWithState;
 
       requestSharedContext.run(
         {
+          audit: auditWithState,
           logger,
           lifecycleId,
           lifecycleChain,
