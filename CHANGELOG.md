@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.0.5
+
+Changes
+
+- Separate state from Audit base class. Now we have a AuditWithState which is the correct one to use for each request, to not share state between requests.
+- Use AuditWithState instead of Audit in @alanszp/express
+
+-------------
+
 ## v4.0.4
 
 Changes
