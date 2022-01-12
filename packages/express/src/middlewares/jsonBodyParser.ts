@@ -6,7 +6,7 @@ import { errorView } from "../views/errorView";
 export function jsonBodyParser(options?: OptionsJson) {
   const bodyParser = json(options);
   return function jsonBodyParserMiddleware(
-    req: Request,
+    req: Request<any>,
     res: Response,
     next: NextFunction
   ): void {

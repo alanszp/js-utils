@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.0.6
+
+Changes
+
+- All middlewares exposed will be setting the request param as `Request<any>` to avoid type collision with other middlewares.
+- New `CommonMetadataKeys`: `query` to save all query related params.
+
+-------------
+
 ## v4.0.5
 
 Changes

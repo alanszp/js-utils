@@ -18,7 +18,7 @@ export function createExtraContext(baseLogger: ILogger, audit: Audit) {
   return {
     requestSharedContext,
     extraContext: function extraContext(
-      req: Request,
+      req: Request<any>,
       _res: Response,
       next: NextFunction
     ): void {
