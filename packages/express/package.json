@@ -15,7 +15,8 @@
     "compile": "rm -rf ./dist && tsc --declaration",
     "compile-watch": "tsc -w",
     "build": "yarn run compile",
-    "prepack": "yarn run build"
+    "prepack": "yarn run build",
+    "yalc-publish": "yarn run yalc publish"
   },
   "peerDependencies": {
     "express": "^4.17.1"
