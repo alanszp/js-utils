@@ -3,7 +3,7 @@ import { LogType } from "@alanszp/logger";
 import { getIp } from "../helpers/getIp";
 
 export function accessLogger(
-  req: Request,
+  req: Request<any>,
   res: Response,
   next: NextFunction
 ): void {

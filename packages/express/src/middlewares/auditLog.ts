@@ -12,7 +12,7 @@ export type AuditBodyModifier = (
  */
 export function auditLog(action: string, bodyModifier?: AuditBodyModifier) {
   return function writeAuditLogMiddleware(
-    req: Request,
+    req: Request<any>,
     res: Response,
     next: NextFunction
   ): void {

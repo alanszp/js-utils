@@ -17,7 +17,7 @@ function parseAuthorizationHeader(
 
 export function createAuthWithJWT(publicKey: string, options?: VerifyOptions) {
   return async function authWithJwt(
-    req: Request,
+    req: Request<any>,
     res: Response,
     next: NextFunction
   ): Promise<void> {

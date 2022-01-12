@@ -9,8 +9,8 @@ function response401(res: Response): void {
 
 export function hasRoles(
   roles: string | string[]
-): (req: Request<unknown>, res: Response, next: NextFunction) => void {
-  return (req: Request<unknown>, res: Response, next: NextFunction) => {
+): (req: Request<any>, res: Response, next: NextFunction) => void {
+  return (req: Request<any>, res: Response, next: NextFunction) => {
     const { jwtUser } = req.context;
     if (!jwtUser) {
       return response401(res);

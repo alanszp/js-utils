@@ -2,6 +2,7 @@ export enum CommonMetadataKeys {
   EMPLOYEE_ID = "employee_id",
   EMPLOYEE_IDS = "employee_ids",
   CHANGES = "changes",
+  QUERY = "query",
 }
 
 export interface Metadata {

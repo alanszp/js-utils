@@ -8,7 +8,7 @@ function response401(res: Response): void {
 }
 
 export function authForOrg(
-  req: Request,
+  req: Request<any>,
   res: Response,
   next: NextFunction
 ): void {

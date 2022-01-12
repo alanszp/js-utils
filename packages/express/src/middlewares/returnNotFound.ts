@@ -3,7 +3,7 @@ import { NotFoundError } from "@alanszp/errors";
 import { errorView } from "../views/errorView";
 
 export function returnNotFound(
-  _req: Request,
+  _req: Request<any>,
   res: Response,
   _next: NextFunction
 ): void {
