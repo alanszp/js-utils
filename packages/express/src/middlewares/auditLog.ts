@@ -32,7 +32,9 @@ export function auditLog(action: string, bodyModifier?: AuditBodyModifier) {
         partialBody.ip = getIp(req) || "no-ip";
 
         audit.log({
-          succeed: res.statusCode >= 200 && res.statusCode < 300,
+          succeed:
+            res.statusCode === 304 ||
+            (res.statusCode >= 200 && res.statusCode < 300),
           ...partialBody,
           action,
         });
