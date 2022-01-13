@@ -1,5 +1,14 @@
 # Changelog
 
+
+## v4.0.7
+
+Changes
+
+- Make `auditLog` of @alanszp/express mark the request as successful when a 304 is returned. [More info](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/304)
+
+-------------
+
 ## v4.0.6
 
 Changes
