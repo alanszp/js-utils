@@ -1,10 +1,10 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, Response, Request } from "express";
 import { AuditBody } from "@alanszp/audit";
 import { getIp } from "../helpers/getIp";
 import { GenericRequest } from "../types/GenericRequest";
 
 export type AuditBodyModifier = (
-  req: GenericRequest,
+  req: Request<Record<string, string>, unknown, unknown>,
   res: Response
 ) => Promise<Partial<AuditBody>> | Partial<AuditBody>;
 

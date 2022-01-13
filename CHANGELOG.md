@@ -1,5 +1,12 @@
 # Changelog
 
+## v4.0.9
+
+Changes
+
+- `auditLog` express middleware has now a generic type to avoid casting when used certain params.
+
+-------------
 
 ## v4.0.8
 
