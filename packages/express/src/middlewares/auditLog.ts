@@ -1,9 +1,10 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { AuditBody } from "@alanszp/audit";
 import { getIp } from "../helpers/getIp";
+import { GenericRequest } from "../types/GenericRequest";
 
 export type AuditBodyModifier = (
-  req: Request,
+  req: GenericRequest,
   res: Response
 ) => Promise<Partial<AuditBody>> | Partial<AuditBody>;
 
@@ -12,7 +13,7 @@ export type AuditBodyModifier = (
  */
 export function auditLog(action: string, bodyModifier?: AuditBodyModifier) {
   return function writeAuditLogMiddleware(
-    req: Request<any>,
+    req: GenericRequest,
     res: Response,
     next: NextFunction
   ): void {

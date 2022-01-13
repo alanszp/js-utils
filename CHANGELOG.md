@@ -1,6 +1,16 @@
 # Changelog
 
 
+## v4.0.8
+
+Changes
+
+- [FIX] `jsonBodyParser`: Was not catching properly the error.
+- [FIX] `returnInternalServerError`: In some occasions, when context did not existed, it throwing an exception without responding to the client.
+- Add all express middlewares any on every generic to avoid collisions with other middlewares.
+
+-------------
+
 ## v4.0.7
 
 Changes
