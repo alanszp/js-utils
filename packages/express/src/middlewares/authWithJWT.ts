@@ -1,8 +1,9 @@
 import { verifyJWT, VerifyOptions } from "@alanszp/jwt";
 import { UnauthorizedError } from "@alanszp/errors";
 import { errorView } from "../views/errorView";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { getRequestLogger } from "../helpers/getRequestLogger";
+import { GenericRequest } from "../types/GenericRequest";
 
 function parseAuthorizationHeader(
   authorization: string | undefined
@@ -17,7 +18,7 @@ function parseAuthorizationHeader(
 
 export function createAuthWithJWT(publicKey: string, options?: VerifyOptions) {
   return async function authWithJwt(
-    req: Request<any>,
+    req: GenericRequest,
     res: Response,
     next: NextFunction
   ): Promise<void> {

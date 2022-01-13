@@ -1,14 +1,15 @@
 import { NotFoundError, UnauthorizedError } from "@alanszp/errors";
 import { errorView } from "../views/errorView";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { getRequestLogger } from "../helpers/getRequestLogger";
+import { GenericRequest } from "../types/GenericRequest";
 
 function response401(res: Response): void {
   res.status(401).json(errorView(new UnauthorizedError(["jwt"])));
 }
 
 export function authForOrg(
-  req: Request<any>,
+  req: GenericRequest,
   res: Response,
   next: NextFunction
 ): void {

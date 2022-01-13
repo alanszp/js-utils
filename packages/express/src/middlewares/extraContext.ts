@@ -1,10 +1,11 @@
 import cuid from "cuid";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { ILogger } from "@alanszp/logger";
 import { Audit } from "@alanszp/audit";
 import { AsyncLocalStorage } from "async_hooks";
 import { appIdentifier } from "../helpers/appIdentifier";
 import { AuditWithState } from "@alanszp/audit/dist/auditWithState";
+import { GenericRequest } from "../types/GenericRequest";
 
 export interface RequestSharedContext {
   audit: AuditWithState;
@@ -18,7 +19,7 @@ export function createExtraContext(baseLogger: ILogger, audit: Audit) {
   return {
     requestSharedContext,
     extraContext: function extraContext(
-      req: Request<any>,
+      req: GenericRequest,
       _res: Response,
       next: NextFunction
     ): void {

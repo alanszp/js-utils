@@ -1,7 +1,8 @@
 import { UnauthorizedError } from "@alanszp/errors";
 import { errorView } from "../views/errorView";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { jwtUserHasRoles } from "@alanszp/jwt";
+import { GenericRequest } from "../types/GenericRequest";
 
 function response401(res: Response): void {
   res.status(401).json(errorView(new UnauthorizedError(["permissions"])));
@@ -9,8 +10,8 @@ function response401(res: Response): void {
 
 export function hasRoles(
   roles: string | string[]
-): (req: Request<any>, res: Response, next: NextFunction) => void {
-  return (req: Request<any>, res: Response, next: NextFunction) => {
+): (req: GenericRequest, res: Response, next: NextFunction) => void {
+  return (req: GenericRequest, res: Response, next: NextFunction) => {
     const { jwtUser } = req.context;
     if (!jwtUser) {
       return response401(res);

@@ -1,9 +1,10 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { LogType } from "@alanszp/logger";
 import { getIp } from "../helpers/getIp";
+import { GenericRequest } from "../types/GenericRequest";
 
 export function accessLogger(
-  req: Request<any>,
+  req: GenericRequest,
   res: Response,
   next: NextFunction
 ): void {

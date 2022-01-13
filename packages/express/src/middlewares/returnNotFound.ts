@@ -1,9 +1,10 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { NotFoundError } from "@alanszp/errors";
 import { errorView } from "../views/errorView";
+import { GenericRequest } from "../types/GenericRequest";
 
 export function returnNotFound(
-  _req: Request<any>,
+  _req: GenericRequest,
   res: Response,
   _next: NextFunction
 ): void {
