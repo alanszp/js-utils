@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "module": "commonjs",
+    "target": "es6",
+    "types": ["jest", "node"],
+    "esModuleInterop": true,
+    "sourceMap": true,
+
+    "alwaysStrict": true,
+    "strictNullChecks": true
+  },
+  "exclude": ["node_modules"]
+}

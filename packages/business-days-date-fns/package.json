@@ -1,0 +1,37 @@
+{
+  "name": "@alanszp/business-days-date-fns",
+  "version": "4.0.5",
+  "description": "Wrapper for date-fns core TS/JS lib.",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "license": "MIT",
+  "files": [
+    "**/*"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "compile": "rm -rf ./dist && tsc --declaration",
+    "compile-watch": "tsc -w",
+    "build": "yarn run compile",
+    "prepack": "yarn run build",
+    "yalc-publish": "yarn run yalc publish",
+    "dev-tdd": "yarn run test--watch",
+    "test": "TZ=Etc/UTC jest",
+    "coverage": "yarn run test --coverage",
+    "test--watch": "yarn run test --watch"
+  },
+  "dependencies": {
+    "@alanszp/errors": "^4.0.5",
+    "date-fns": "^2.28.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.16.7",
+    "@types/jest": "^27.4.0",
+    "assert": "^2.0.0",
+    "jest": "^27.4.7"
+  }
+}
