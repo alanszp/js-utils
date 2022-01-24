@@ -42,7 +42,7 @@ const {
   differenceInBusinessDays,
   isNonBusinessDay,
   isBusinessDay
-} = withNonBusinessDays(() => [
+} = withNonBusinessDays([
   new Date('2022-01-01'),
   new Date('2022-01-10')
 ])
