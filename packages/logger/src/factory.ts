@@ -38,7 +38,7 @@ function datadogStreamFactory(config: DatadogConfig): Stream {
   return {
     type: "raw",
     level: LogLevel.ERROR,
-    stream: new DatadogStream(config.client) as Stream,
+    stream: new DatadogStream(config.client),
   };
 }
 
@@ -46,7 +46,7 @@ function slackStreamFactory(config: SlackConfig): Stream {
   return {
     type: "raw",
     level: config.level,
-    stream: new SlackStream(config.options) as Stream,
+    stream: new SlackStream(config.options),
   };
 }
 
