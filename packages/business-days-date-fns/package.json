@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@alanszp/errors": "^4.0.5",
+    "@babel/core": "^7.16.12",
     "date-fns": "^2.28.0",
     "lodash": "^4.17.21"
   },
