@@ -1,5 +1,4 @@
 import isFunction, { isArray } from "lodash/";
-import { BadRequestError } from "@alanszp/errors";
 import { Options as CacheOptions } from "lru-cache";
 import { addBusinessDays } from "./addBusinessDays";
 import { subBusinessDays } from "./subBusinessDays";
@@ -45,7 +44,7 @@ export function withNonBusinessDays<Options>(
   }
 ): WithNonBusinessDaysOutput<Options> {
   if (!isFunction(fetchStrategy) && !isArray(fetchStrategy)) {
-    throw new BadRequestError(
+    throw new Error(
       "You must send a function for fetchStrategy or a list of dates"
     );
   }

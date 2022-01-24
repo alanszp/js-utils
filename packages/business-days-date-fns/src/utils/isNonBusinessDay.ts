@@ -1,11 +1,14 @@
-import { isDate, isWeekend } from "date-fns";
+import { isWeekend, toDate } from "date-fns";
 import isSameDay from "date-fns/isSameDay";
-import { BadInputError } from "../errors/BadInputError";
+import { requiredArgs } from "./requiredArgs";
 
-export function isNonBusinessDay(nonBusinessDays: Date[], date: Date): boolean {
-  if (!isDate(date)) {
-    throw new BadInputError(`${date} is not a date`);
-  }
+export function isNonBusinessDay(
+  nonBusinessDays: Date[],
+  dirtyDate: Date
+): boolean {
+  requiredArgs(1, [dirtyDate]);
+
+  const date = toDate(dirtyDate);
 
   return (
     nonBusinessDays.some((nonBusinessDay) => isSameDay(nonBusinessDay, date)) ||

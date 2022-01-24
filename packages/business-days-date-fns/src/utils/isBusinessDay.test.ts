@@ -1,5 +1,5 @@
 import assert from "assert";
-import { BadInputError } from "../errors/BadInputError";
+import { parse } from "date-fns";
 import { isBusinessDay } from "./isBusinessDay";
 
 describe("isNonBusinessDay", () => {
@@ -21,17 +21,27 @@ describe("isNonBusinessDay", () => {
     expect(result).toBeTruthy();
   });
 
+  it("should work properly using hh:mm:ss", () => {
+    const mondayLate = isBusinessDay(
+      [],
+      parse("2022-01-24T23:59:59", "yyyy-MM-dd HH:mm:ss", new Date())
+    );
+    const fridayLate = isBusinessDay(
+      [parse("2022-01-28T23:59:59", "yyyy-MM-dd HH:mm:ss", new Date())],
+      parse("2022-01-28T23:59:59", "yyyy-MM-dd HH:mm:ss", new Date())
+    );
+
+    expect(mondayLate).toBeTruthy();
+    expect(fridayLate).toBeTruthy();
+  });
+
   it("throws TypeError exception if passed less than 2 arguments", () => {
     try {
-      const result = isBusinessDay(
-        [new Date("2022-01-01"), new Date("2022-01-02")],
-        // @ts-ignore
-        "is a test"
-      );
+      // @ts-ignore
+      isBusinessDay([new Date("2022-01-01"), new Date("2022-01-02")]);
 
-      assert.throws(isBusinessDay.bind(null), BadInputError);
-
-      assert.throws(isBusinessDay.bind(null, 1), BadInputError);
+      assert.throws(isBusinessDay.bind(null), TypeError);
+      assert.throws(isBusinessDay.bind(null, 1), TypeError);
     } catch {}
   });
 });
