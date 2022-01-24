@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "@alanszp/errors": "^4.0.5",
-    "@types/jest": "^27.4.0",
     "date-fns": "^2.28.0",
     "lodash": "^4.17.21"
   },
