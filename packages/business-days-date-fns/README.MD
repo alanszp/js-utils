@@ -20,17 +20,15 @@ This library is like isWeekend that excludes Saturday and Sunday but excluding t
 ### Async implementation
 
 ```
-const myDayOffsCalendar = withNonBusinessDays(({ year }) => {
-  return fetch(`${MY_API_CALENDAR}?month=${month}`)
-}, { serializeOptions: data => `year-${data.data}`})
-
 const {
   addBusinessDays,
   subBusinessDays
   differenceInBusinessDays,
   isNonBusinessDay,
   isBusinessDay
-} = withNonBusinessDays
+} = withNonBusinessDays(({ year }) => {
+  return fetch(`${MY_API_CALENDAR}?year=${year}`)
+})
 
 const result = await addBusinessDays(new Date("2022-01-01"), 10, { year: 2022 })
 ```
@@ -44,7 +42,7 @@ const {
   differenceInBusinessDays,
   isNonBusinessDay,
   isBusinessDay
-} = withNonBusinessDays([
+} = withNonBusinessDays(() => [
   new Date('2022-01-01'),
   new Date('2022-01-10')
 ])
