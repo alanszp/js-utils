@@ -3,7 +3,6 @@ import addDays from "date-fns/addDays";
 import isSameDay from "date-fns/isSameDay";
 import isValid from "date-fns/isValid";
 import toInteger from "lodash/toInteger";
-import isWeekend from "date-fns/isWeekend";
 import toDate from "date-fns/toDate";
 import { requiredArgs } from "./requiredArgs";
 import { isNonBusinessDay } from "./isNonBusinessDay";
@@ -30,7 +29,7 @@ export function differenceInBusinessDays(
   dateRight = addDays(dateRight, weeks * 7);
 
   while (!isSameDay(dateLeft, dateRight)) {
-    result += isWeekend(dateRight) || isNonBusinessDay(nonBusinessDays, dateRight) ? 0 : sign;
+    result += isNonBusinessDay(nonBusinessDays, dateRight) ? 0 : sign;
     dateRight = addDays(dateRight, sign);
   }
 

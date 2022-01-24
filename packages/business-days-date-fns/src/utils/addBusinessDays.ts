@@ -1,4 +1,3 @@
-import isWeekend from "date-fns/isWeekend";
 import toDate from "date-fns/toDate";
 import isSunday from "date-fns/isSunday";
 import isSaturday from "date-fns/isSaturday";
@@ -6,7 +5,11 @@ import { toInteger } from "lodash";
 import { isNonBusinessDay } from "./isNonBusinessDay";
 import { requiredArgs } from "./requiredArgs";
 
-export function addBusinessDays(nonBusinessDays: Date[], dirtyDate: Date | number, dirtyAmount: number): Date {
+export function addBusinessDays(
+  nonBusinessDays: Date[],
+  dirtyDate: Date | number,
+  dirtyAmount: number
+): Date {
   requiredArgs(2, [dirtyDate, dirtyAmount]);
 
   const date = toDate(dirtyDate);
@@ -25,10 +28,14 @@ export function addBusinessDays(nonBusinessDays: Date[], dirtyDate: Date | numbe
 
   while (restDays > 0) {
     date.setDate(date.getDate() + sign);
-    if (!isWeekend(date) && !isNonBusinessDay(nonBusinessDays, date)) restDays -= 1;
+    if (!isNonBusinessDay(nonBusinessDays, date)) restDays -= 1;
   }
 
-  if (startedOnWeekend && isNonBusinessDay(nonBusinessDays, date) && amount !== 0) {
+  if (
+    startedOnWeekend &&
+    isNonBusinessDay(nonBusinessDays, date) &&
+    amount !== 0
+  ) {
     if (isSaturday(date)) date.setDate(date.getDate() + (sign < 0 ? 2 : -1));
     if (isSunday(date)) date.setDate(date.getDate() + (sign < 0 ? 1 : -2));
   }
