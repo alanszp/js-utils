@@ -25,15 +25,15 @@ export type WithNonBusinessDaysOutput<IdentifyObject> = {
   differenceInBusinessDays: (
     dirtyDate: Date | number,
     dirtyAmount: number,
-    identify: IdentifyObject
+    identify?: IdentifyObject
   ) => Promise<number> | number;
   isNonBusinessDay: (
     date: Date,
-    identify: IdentifyObject
+    identify?: IdentifyObject
   ) => Promise<boolean> | boolean;
   isBusinessDay: (
     date: Date,
-    identify: IdentifyObject
+    identify?: IdentifyObject
   ) => Promise<boolean> | boolean;
 };
 

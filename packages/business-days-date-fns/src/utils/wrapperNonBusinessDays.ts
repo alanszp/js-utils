@@ -31,13 +31,14 @@ export function wrapperDateAndNumberNonBusinessDays<IdentifyObject, R>(
 
     if (!cache) {
       try {
-        nonBusinessDays = await fetchStrategy(identify);
-        cacheNBD.set(cacheIdentify, nonBusinessDays);
+        const promise = await fetchStrategy(identify);
+        cacheNBD.set(cacheIdentify, promise);
+        nonBusinessDays = await promise;
       } catch (error: unknown) {
         throw new InternalServerError(error);
       }
     } else {
-      nonBusinessDays = cache;
+      nonBusinessDays = await cache;
     }
 
     return fn(nonBusinessDays, dirtyDate, dirtyAmount);

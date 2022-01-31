@@ -58,6 +58,18 @@ describe("withNonBusinessDays", () => {
     expect(result).toEqual(new Date("2022-01-21"));
   });
 
+  it("bootstraping async should call fetchStrategy but just one time, second go to cache", async () => {
+    const mockFetchStrategy = jest.fn();
+    mockFetchStrategy.mockImplementation(() => Promise.resolve(mockNBD));
+    const { isBusinessDay } = withNonBusinessDays(mockFetchStrategy, {
+      serializeOptions: (obj) => JSON.stringify(obj),
+    });
+
+    await isBusinessDay(new Date("2022-01-18"));
+    await isBusinessDay(new Date("2022-01-18"));
+    expect(mockFetchStrategy).toBeCalledTimes(1);
+  });
+
   it("bootstraping async throw error", async () => {
     const mockFetchStrategy = jest.fn();
     mockFetchStrategy.mockImplementation(() => Promise.reject());
