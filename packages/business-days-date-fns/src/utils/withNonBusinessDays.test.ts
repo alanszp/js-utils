@@ -5,7 +5,7 @@ const mockNBD = [new Date("2022-01-19"), new Date("2022-01-20")];
 const mockSerializer = jest.fn();
 
 describe("withNonBusinessDays", () => {
-  it("bootstraping sync should return fns", () => {
+  it("bootstrapping sync should return fns", () => {
     const {
       addBusinessDays,
       subBusinessDays,
@@ -21,7 +21,7 @@ describe("withNonBusinessDays", () => {
     expect(typeof differenceInBusinessDays).toBe("function");
   });
 
-  it("bootstraping async should return fns and call serializer", async () => {
+  it("bootstrapping async should return fns and call serializer", async () => {
     const mockFetchStrategy = jest.fn();
     mockFetchStrategy.mockImplementation(() => Promise.resolve(mockNBD));
 
@@ -47,7 +47,7 @@ describe("withNonBusinessDays", () => {
     expect(mockFetchStrategy).toHaveBeenCalled();
   });
 
-  it("bootstraping async addBusinessDays", async () => {
+  it("bootstrapping async addBusinessDays", async () => {
     const mockFetchStrategy = jest.fn();
     mockFetchStrategy.mockImplementation(() => Promise.resolve(mockNBD));
     const { addBusinessDays } = withNonBusinessDays(mockFetchStrategy, {
@@ -58,7 +58,7 @@ describe("withNonBusinessDays", () => {
     expect(result).toEqual(new Date("2022-01-21"));
   });
 
-  it("bootstraping async should call fetchStrategy but just one time, second go to cache", async () => {
+  it("bootstrapping async should call fetchStrategy but just one time, second go to cache", async () => {
     const mockFetchStrategy = jest.fn();
     mockFetchStrategy.mockImplementation(() => Promise.resolve(mockNBD));
     const { isBusinessDay } = withNonBusinessDays(mockFetchStrategy, {
@@ -70,7 +70,49 @@ describe("withNonBusinessDays", () => {
     expect(mockFetchStrategy).toBeCalledTimes(1);
   });
 
-  it("bootstraping async throw error", async () => {
+  it("bootstrapping async should call fetchStrategy but just one time, second go to cache if the promise is resolved before the second call", async () => {
+    const mockFetchStrategy = jest.fn();
+    mockFetchStrategy.mockImplementation(() => Promise.resolve(mockNBD));
+
+    const { isBusinessDay } = withNonBusinessDays(mockFetchStrategy, {
+      serializeOptions: (obj) => JSON.stringify(obj),
+    });
+
+    const promise1 = isBusinessDay(new Date("2022-01-18"));
+    const promise2 = isBusinessDay(new Date("2022-01-18"));
+
+    await Promise.all([promise1, promise2]);
+
+    expect(mockFetchStrategy).toBeCalledTimes(1);
+  });
+
+  it("bootstrapping async should call fetchStrategy but just one time, second go to cache, even if the promise is resolved after the second call", async () => {
+    const mockFetchStrategy = jest.fn();
+    let resolve = false;
+    mockFetchStrategy.mockImplementation(
+      () =>
+        new Promise((resolve) =>
+          setTimeout(() => {
+            if (resolve) resolve(mockNBD);
+          }, 0)
+        )
+    );
+
+    const { isBusinessDay } = withNonBusinessDays(mockFetchStrategy, {
+      serializeOptions: (obj) => JSON.stringify(obj),
+    });
+
+    const promise1 = isBusinessDay(new Date("2022-01-18"));
+    const promise2 = isBusinessDay(new Date("2022-01-18"));
+
+    resolve = true;
+
+    await Promise.all([promise1, promise2]);
+
+    expect(mockFetchStrategy).toBeCalledTimes(1);
+  });
+
+  it("bootstrapping async throw error", async () => {
     const mockFetchStrategy = jest.fn();
     mockFetchStrategy.mockImplementation(() => Promise.reject());
     try {
@@ -78,14 +120,14 @@ describe("withNonBusinessDays", () => {
     } catch {}
   });
 
-  it("bootstraping sync addBusinessDays", () => {
+  it("bootstrapping sync addBusinessDays", () => {
     const { addBusinessDays } = withNonBusinessDays(mockNBD);
 
     const result = addBusinessDays(new Date("2022-01-18"), 1);
     expect(result).toEqual(new Date("2022-01-21"));
   });
 
-  it("bootstraping should throw error for bad input", () => {
+  it("bootstrapping should throw error for bad input", () => {
     try {
       assert.throws(withNonBusinessDays.bind(null), TypeError);
       assert.throws(withNonBusinessDays.bind(null), TypeError);
