@@ -89,11 +89,11 @@ describe("withNonBusinessDays", () => {
 
   it("bootstrapping async should call fetchStrategy but just one time, second go to cache, even if the promise is resolved after the second call", async () => {
     const mockFetchStrategy = jest.fn();
-    let resolve = false;
+    let shouldResolve = false;
 
     function verifyResolve(resolve: (val: unknown) => void) {
       setTimeout(() => {
-        if (resolve) {
+        if (shouldResolve) {
           resolve(mockNBD);
         } else {
           verifyResolve(resolve);
@@ -110,7 +110,7 @@ describe("withNonBusinessDays", () => {
     const promise1 = isBusinessDay(new Date("2022-01-18"));
     const promise2 = isBusinessDay(new Date("2022-01-18"));
 
-    resolve = true;
+    shouldResolve = true;
 
     await Promise.all([promise1, promise2]);
 
