@@ -1,4 +1,5 @@
 import assert from "assert";
+import { values } from "lodash";
 import { withNonBusinessDays } from "./withNonBusinessDays";
 
 const mockNBD = [new Date("2022-01-19"), new Date("2022-01-20")];
@@ -89,14 +90,18 @@ describe("withNonBusinessDays", () => {
   it("bootstrapping async should call fetchStrategy but just one time, second go to cache, even if the promise is resolved after the second call", async () => {
     const mockFetchStrategy = jest.fn();
     let resolve = false;
-    mockFetchStrategy.mockImplementation(
-      () =>
-        new Promise((resolve) =>
-          setTimeout(() => {
-            if (resolve) resolve(mockNBD);
-          }, 0)
-        )
-    );
+
+    function verifyResolve(resolve: (val: unknown) => void) {
+      setTimeout(() => {
+        if (resolve) {
+          resolve(mockNBD);
+        } else {
+          verifyResolve(resolve);
+        }
+      }, 0);
+    }
+
+    mockFetchStrategy.mockImplementation(() => new Promise(verifyResolve));
 
     const { isBusinessDay } = withNonBusinessDays(mockFetchStrategy, {
       serializeOptions: (obj) => JSON.stringify(obj),
