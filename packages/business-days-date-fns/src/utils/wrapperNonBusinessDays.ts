@@ -31,7 +31,7 @@ export function wrapperDateAndNumberNonBusinessDays<IdentifyObject, R>(
 
     if (!cache) {
       try {
-        const promise = await fetchStrategy(identify);
+        const promise = fetchStrategy(identify);
         cacheNBD.set(cacheIdentify, promise);
         nonBusinessDays = await promise;
       } catch (error: unknown) {
