@@ -38,9 +38,9 @@ export type WithNonBusinessDaysOutput<IdentifyObject> = {
 };
 
 export function withNonBusinessDays<Options>(
-  fetchStrategy: ((opts?: Options) => Promise<Date[]>) | Date[],
+  fetchStrategy: ((opts: Options) => Promise<Date[]>) | Date[],
   cacheOpts?: CacheOptions<string, Date[]> & {
-    serializeOptions?: (opts?: Options) => string;
+    serializeOptions?: (opts: Options) => string;
   }
 ): WithNonBusinessDaysOutput<Options> {
   if (!isFunction(fetchStrategy) && !isArray(fetchStrategy)) {
