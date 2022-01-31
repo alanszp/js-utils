@@ -3,7 +3,7 @@ import isArray from "lodash/isArray";
 import LRUCache from "lru-cache";
 
 export function wrapperDateAndNumberNonBusinessDays<IdentifyObject, R>(
-  cacheNBD: LRUCache<string, Date[]>,
+  cacheNBD: LRUCache<string, Promise<Date[]>>,
   fetchStrategy: ((opts?: IdentifyObject) => Promise<Date[]>) | Date[],
   fn: (
     nonBusinessDays: Date[],
@@ -46,7 +46,7 @@ export function wrapperDateAndNumberNonBusinessDays<IdentifyObject, R>(
 }
 
 export function wrapperDateNonBusinessDays<IdentifyObject, R>(
-  cacheNBD: LRUCache<string, Date[]>,
+  cacheNBD: LRUCache<string, Promise<Date[]>>,
   fetchStrategy: ((opts?: IdentifyObject) => Promise<Date[]>) | Date[],
   fn: (nonBusinessDays: Date[], date: Date) => R,
   serializeOptions?: (opts?: IdentifyObject) => string
@@ -65,13 +65,14 @@ export function wrapperDateNonBusinessDays<IdentifyObject, R>(
 
     if (!cache) {
       try {
-        nonBusinessDays = await fetchStrategy(identify);
-        cacheNBD.set(cacheIdentify, nonBusinessDays);
+        const promise = fetchStrategy(identify);
+        cacheNBD.set(cacheIdentify, promise);
+        nonBusinessDays = await promise;
       } catch (error: unknown) {
         throw new InternalServerError(error);
       }
     } else {
-      nonBusinessDays = cache;
+      nonBusinessDays = await cache;
     }
 
     return fn(nonBusinessDays, date);

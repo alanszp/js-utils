@@ -62,25 +62,84 @@ describe("withNonBusinessDays", () => {
   it("bootstrapping async should call fetchStrategy but just one time, second go to cache", async () => {
     const mockFetchStrategy = jest.fn();
     mockFetchStrategy.mockImplementation(() => Promise.resolve(mockNBD));
-    const { isBusinessDay } = withNonBusinessDays(mockFetchStrategy, {
-      serializeOptions: (obj) => JSON.stringify(obj),
-    });
+    const { isBusinessDay } = withNonBusinessDays<undefined>(
+      mockFetchStrategy,
+      {
+        serializeOptions: (obj) => JSON.stringify(obj),
+      }
+    );
 
     await isBusinessDay(new Date("2022-01-18"));
-    await isBusinessDay(new Date("2022-01-18"));
+    await isBusinessDay(new Date("2022-01-20"));
+    expect(mockFetchStrategy).toBeCalledTimes(1);
+  });
+
+  it("bootstrapping async without identify should call fetchStrategy but just one time, second go to cache if the promise is resolved before the second call", async () => {
+    const mockFetchStrategy = jest.fn();
+    mockFetchStrategy.mockImplementation(() => Promise.resolve(mockNBD));
+
+    const { isBusinessDay } = withNonBusinessDays<undefined>(
+      mockFetchStrategy,
+      {
+        serializeOptions: (obj) => JSON.stringify(obj),
+      }
+    );
+
+    const promise1 = isBusinessDay(new Date("2022-01-18"));
+    const promise2 = isBusinessDay(new Date("2022-01-18"));
+
+    await Promise.all([promise1, promise2]);
+
+    expect(mockFetchStrategy).toBeCalledTimes(1);
+  });
+
+  it("bootstrapping async without identify should call fetchStrategy but just one time, second go to cache, even if the promise is resolved after the second call", async () => {
+    const mockFetchStrategy = jest.fn();
+    let shouldResolve = false;
+
+    function verifyResolve(resolve: (val: unknown) => void) {
+      setTimeout(() => {
+        if (shouldResolve) {
+          resolve(mockNBD);
+        } else {
+          verifyResolve(resolve);
+        }
+      }, 0);
+    }
+
+    mockFetchStrategy.mockImplementation(() => new Promise(verifyResolve));
+
+    const { isBusinessDay } = withNonBusinessDays<undefined>(
+      mockFetchStrategy,
+      {
+        serializeOptions: (obj) => JSON.stringify(obj),
+      }
+    );
+
+    const promise1 = isBusinessDay(new Date("2022-01-18"));
+    const promise2 = isBusinessDay(new Date("2022-01-19"));
+
+    shouldResolve = true;
+
+    expect(await Promise.all([promise1, promise2])).toEqual([true, false]);
     expect(mockFetchStrategy).toBeCalledTimes(1);
   });
 
   it("bootstrapping async should call fetchStrategy but just one time, second go to cache if the promise is resolved before the second call", async () => {
     const mockFetchStrategy = jest.fn();
-    mockFetchStrategy.mockImplementation(() => Promise.resolve(mockNBD));
+    mockFetchStrategy.mockImplementation((obj: { number: number }) =>
+      Promise.resolve(mockNBD)
+    );
 
-    const { isBusinessDay } = withNonBusinessDays(mockFetchStrategy, {
-      serializeOptions: (obj) => JSON.stringify(obj),
-    });
+    const { isBusinessDay } = withNonBusinessDays<{ number: number }>(
+      mockFetchStrategy,
+      {
+        serializeOptions: (obj) => JSON.stringify(obj),
+      }
+    );
 
-    const promise1 = isBusinessDay(new Date("2022-01-18"));
-    const promise2 = isBusinessDay(new Date("2022-01-18"));
+    const promise1 = isBusinessDay(new Date("2022-01-18"), { number: 1 });
+    const promise2 = isBusinessDay(new Date("2022-01-18"), { number: 1 });
 
     await Promise.all([promise1, promise2]);
 
@@ -101,20 +160,93 @@ describe("withNonBusinessDays", () => {
       }, 0);
     }
 
-    mockFetchStrategy.mockImplementation(() => new Promise(verifyResolve));
+    mockFetchStrategy.mockImplementation(
+      (obj: { number: number }) => new Promise(verifyResolve)
+    );
 
-    const { isBusinessDay } = withNonBusinessDays(mockFetchStrategy, {
-      serializeOptions: (obj) => JSON.stringify(obj),
-    });
+    const { isBusinessDay } = withNonBusinessDays<{ number: number }>(
+      mockFetchStrategy,
+      {
+        serializeOptions: (obj) => JSON.stringify(obj),
+      }
+    );
 
-    const promise1 = isBusinessDay(new Date("2022-01-18"));
-    const promise2 = isBusinessDay(new Date("2022-01-18"));
+    const promise1 = isBusinessDay(new Date("2022-01-18"), { number: 1 });
+    const promise2 = isBusinessDay(new Date("2022-01-19"), { number: 1 });
 
     shouldResolve = true;
 
+    expect(await Promise.all([promise1, promise2])).toEqual([true, false]);
+    expect(mockFetchStrategy).toBeCalledTimes(1);
+  });
+
+  it("bootstrapping async should call fetchStrategy two times if the promise is resolved before the second call", async () => {
+    const mockFetchStrategy = jest.fn();
+    mockFetchStrategy.mockImplementation((obj: { number: number }) =>
+      Promise.resolve(mockNBD)
+    );
+
+    const { isBusinessDay } = withNonBusinessDays<{ number: number }>(
+      mockFetchStrategy,
+      {
+        serializeOptions: (obj) => JSON.stringify(obj),
+      }
+    );
+
+    const promise1 = isBusinessDay(new Date("2022-01-18"), { number: 1 });
+    const promise2 = isBusinessDay(new Date("2022-01-18"), { number: 2 });
+
     await Promise.all([promise1, promise2]);
 
-    expect(mockFetchStrategy).toBeCalledTimes(1);
+    expect(mockFetchStrategy).toBeCalledTimes(2);
+  });
+
+  it("bootstrapping async should call fetchStrategy two times even if the promise is resolved after the second call", async () => {
+    let shouldResolve1 = false;
+
+    function verifyResolve1(resolve: (val: unknown) => void) {
+      setTimeout(() => {
+        if (shouldResolve1) {
+          resolve(mockNBD);
+        } else {
+          verifyResolve1(resolve);
+        }
+      }, 0);
+    }
+
+    let shouldResolve2 = false;
+
+    function verifyResolve2(resolve: (val: unknown) => void) {
+      setTimeout(() => {
+        if (shouldResolve2) {
+          resolve(mockNBD);
+        } else {
+          verifyResolve2(resolve);
+        }
+      }, 0);
+    }
+
+    const mockFetchStrategy = jest.fn();
+    mockFetchStrategy.mockImplementation(
+      (obj: { number: number }) =>
+        new Promise(obj.number == 1 ? verifyResolve1 : verifyResolve2)
+    );
+
+    const { isBusinessDay } = withNonBusinessDays<{ number: number }>(
+      mockFetchStrategy,
+      {
+        serializeOptions: (obj) => JSON.stringify(obj),
+      }
+    );
+
+    const promise1 = isBusinessDay(new Date("2022-01-18"), { number: 1 });
+    const promise2 = isBusinessDay(new Date("2022-01-19"), { number: 2 });
+
+    shouldResolve1 = true;
+    shouldResolve2 = true;
+
+    expect(await Promise.all([promise1, promise2])).toEqual([true, false]);
+    expect(mockFetchStrategy).toBeCalledTimes(2);
   });
 
   it("bootstrapping async throw error", async () => {
