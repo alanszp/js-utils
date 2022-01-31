@@ -10,4 +10,4 @@ const DEFAULT_OPTIONS: Options<string, Date[]> = {
 };
 
 export const buildNonBusinessDaysCache = (options?: Options<string, Date[]>) =>
-  new LRUCache<string, Date[]>(options || DEFAULT_OPTIONS);
+  new LRUCache<string, Promise<Date[]>>(options || DEFAULT_OPTIONS);
