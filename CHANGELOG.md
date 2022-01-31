@@ -1,5 +1,22 @@
 # Changelog
 
+
+## v4.0.11
+
+Changes
+
+- Fix `@alanszp/business-days-date-fns` cache to assure that it always will execute once the fetchStrategy when the identify is the same and the lib is executed two times in a row without await. 
+
+-------------
+
+## v4.0.10
+
+Changes
+
+- Added new lib: `@alanszp/business-days-date-fns` to extend `date-fns` lib with custom non bussiness days functions.
+
+-------------
+
 ## v4.0.9
 
 Changes
