@@ -1,4 +1,5 @@
-import isFunction, { isArray } from "lodash/";
+import isFunction, { isArray } from "lodash";
+import LRUCache from "lru-cache";
 import { Options as CacheOptions } from "lru-cache";
 import { addBusinessDays } from "./addBusinessDays";
 import { subBusinessDays } from "./subBusinessDays";
@@ -35,6 +36,7 @@ export type WithNonBusinessDaysOutput<IdentifyObject> = {
     date: Date,
     identify?: IdentifyObject
   ) => Promise<boolean> | boolean;
+  cache: LRUCache<IdentifyObject, Promise<Date[]>>;
 };
 
 export function withNonBusinessDays<Options>(
@@ -83,5 +85,6 @@ export function withNonBusinessDays<Options>(
       isBusinessDay,
       cacheOpts?.serializeOptions
     ),
+    cache,
   };
 }
