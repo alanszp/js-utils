@@ -270,4 +270,12 @@ describe("withNonBusinessDays", () => {
       assert.throws(withNonBusinessDays.bind(null), TypeError);
     } catch {}
   });
+
+  it("should export cache correctly", () => {
+    const { cache } = withNonBusinessDays(mockNBD);
+
+    cache.set("key-name", "key-value");
+
+    expect(cache.get("key-name")).toEqual("key-value");
+  });
 });
