@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/business-days-date-fns",
-  "version": "4.0.11",
+  "version": "4.0.12",
   "description": "Wrapper for date-fns core TS/JS lib.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
