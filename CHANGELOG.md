@@ -1,10 +1,10 @@
 # Changelog
 
-## v4.0.12
+## v4.0.13
 
 Changes
 
-- Export `cache` object on `@alanszp/business-days-date-fns` in order to change it.
+- Add to `@alanszp/core` editable types & functions to make it easier create modify inputs and use those values.
 
 ---
 
@@ -12,9 +12,9 @@ Changes
 
 Changes
 
-- Add to `@alanszp/core` editable types & functions to make it easier create modify inputs and use those values.
+- Export `cache` object on `@alanszp/business-days-date-fns` in order to change it.
 
--------------
+---
 
 ## v4.0.11
 
