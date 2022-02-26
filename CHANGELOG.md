@@ -1,6 +1,14 @@
 # Changelog
 
 
+## v4.0.12
+
+Changes
+
+- Add to `@alanszp/core` editable types & functions to make it easier create modify inputs and use those values.
+
+-------------
+
 ## v4.0.11
 
 Changes
