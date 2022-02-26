@@ -1,11 +1,11 @@
 # Changelog
 
-## v4.0.13
+## v4.1.0
 
 Changes
 
 - Add to `@alanszp/core` editable types & functions to make it easier create modify inputs and use those values.
-- Create `@alanszp/validate` to isolate validation logic and create custom and shareable validators.
+- Create `@alanszp/validates` to isolate validation logic and create custom and shareable validators.
 
 ---
 
