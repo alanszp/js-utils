@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/validations",
-  "version": "4.0.10",
+  "version": "4.0.13",
   "description": "Alan's validation utils.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
