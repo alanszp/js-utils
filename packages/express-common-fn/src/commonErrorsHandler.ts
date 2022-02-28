@@ -5,7 +5,7 @@ import {
   NotFoundError,
 } from "@alanszp/errors";
 import { Context, ILogger } from "@alanszp/logger";
-import { ModelValidationError } from "@alanszp/typeorm";
+import { ModelValidationError } from "@alanszp/validations";
 import { Response } from "express";
 import { EntityNotFoundError, QueryFailedError } from "typeorm";
 

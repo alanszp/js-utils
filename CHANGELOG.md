@@ -1,5 +1,14 @@
 # Changelog
 
+## v5.0.0
+
+Changes
+
+- Move validation objects from `@alanszp/typeorm` to `@alanszp/validations`
+- Use `@alanszp/validations` instead of `@alanszp/typeorm` in `@alanszp/express-common-fng`
+
+---
+
 ## v4.0.13
 
 Changes

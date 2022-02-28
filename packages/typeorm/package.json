@@ -33,6 +33,7 @@
     "typeorm": "^0.2.34"
   },
   "dependencies": {
-    "@alanszp/errors": "^4.0.5"
+    "@alanszp/errors": "^4.0.5",
+    "@alanszp/validations": "^4.0.13"
   }
 }

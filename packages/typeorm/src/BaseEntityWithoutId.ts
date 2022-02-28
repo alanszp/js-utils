@@ -4,7 +4,7 @@ import {
   BeforeInsert,
   BeforeUpdate,
 } from "typeorm";
-import { ModelValidationError } from "./ModelValidationError";
+import { ModelValidationError } from "@alanszp/validations";
 
 export abstract class BaseEntityWithoutId extends TypeOrmBaseEntity {
   // TODO: This model is shared between baseEntity and baseModel. Do a mixin.
