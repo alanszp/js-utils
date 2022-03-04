@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/validations",
-  "version": "4.0.13",
+  "version": "5.0.0",
   "description": "Alan's validation utils.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -29,6 +29,6 @@
     "class-validator": "^0.13.1"
   },
   "dependencies": {
-    "@alanszp/errors": "^4.0.5"
+    "@alanszp/errors": "^5.0.0"
   }
 }
