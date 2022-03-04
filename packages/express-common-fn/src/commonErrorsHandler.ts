@@ -5,7 +5,7 @@ import {
   NotFoundError,
 } from "@alanszp/errors";
 import { Context, ILogger } from "@alanszp/logger";
-import { ModelValidationError } from "@alanszp/typeorm";
+import { ModelValidationError } from "@alanszp/validations";
 import { Response } from "express";
 import { EntityNotFoundError, QueryFailedError } from "typeorm";
 
@@ -15,7 +15,7 @@ export interface CommonErrorOptions {
 }
 
 const defaultsOption: CommonErrorOptions = {
-  entityNotFound: 400,
+  entityNotFound: 404,
   extraContext: {},
 };
 

@@ -22,7 +22,7 @@
     "@alanszp/errors": "^4.0.5",
     "@alanszp/express": "^4.0.10",
     "@alanszp/logger": "^4.0.10",
-    "@alanszp/typeorm": "^4.0.10"
+    "@alanszp/validations": "^4.0.13"
   },
   "peerDependencies": {
     "express": "^4.17.1",
