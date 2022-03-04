@@ -15,7 +15,7 @@ export interface CommonErrorOptions {
 }
 
 const defaultsOption: CommonErrorOptions = {
-  entityNotFound: 400,
+  entityNotFound: 404,
   extraContext: {},
 };
 
