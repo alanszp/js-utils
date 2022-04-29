@@ -4,8 +4,16 @@
 
 Changes
 
+- Fix commonErrorsHandler to add `extraContext` in every log
+
+---
+
+## v5.0.0
+
+Changes
+
 - Move validation objects from `@alanszp/typeorm` to `@alanszp/validations`
-- Use `@alanszp/validations` instead of `@alanszp/typeorm` in `@alanszp/express-common-fng`
+- Use `@alanszp/validations` instead of `@alanszp/typeorm` in `@alanszp/express-common-fn`
 - `commonErrorsHandler` now returns as default 404 when the error is `EntityNotFoundError`, instead of returning a 400
 
 ---
