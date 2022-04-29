@@ -32,15 +32,18 @@ export function commonErrorsHandler(loggerFn: () => ILogger) {
       ...defaultsOption,
       ...options,
     };
+    const instanceLogger = logger.child(opts.extraContext);
 
     if (error instanceof ModelValidationError) {
-      logger.info(`${baseLog}.error.validation`, { error });
+      instanceLogger.info(`${baseLog}.error.validation`, { error });
       res.status(400).json(errorView(error));
       return;
     }
 
     if (error instanceof EntityNotFoundError) {
-      logger.info(`${baseLog}.error.typeorm.entity_not_found`, { error });
+      instanceLogger.info(`${baseLog}.error.typeorm.entity_not_found`, {
+        error,
+      });
       if (opts.entityNotFound === 400) {
         res
           .status(400)
@@ -53,20 +56,22 @@ export function commonErrorsHandler(loggerFn: () => ILogger) {
 
     if (error instanceof QueryFailedError) {
       if ((error as unknown as { code: string }).code === "23505") {
-        logger.info(`${baseLog}.error.typeorm.query_error.duplicate`, {
+        instanceLogger.info(`${baseLog}.error.typeorm.query_error.duplicate`, {
           error,
         });
         res
           .status(400)
           .json(errorView(new BadRequestError("Entity already exists")));
       } else {
-        logger.error(`${baseLog}.error.typeorm.query_error.unknown`, { error });
+        instanceLogger.error(`${baseLog}.error.typeorm.query_error.unknown`, {
+          error,
+        });
         res.status(500).json(errorView(new InternalServerError(error)));
       }
       return;
     }
 
-    logger.error(`${baseLog}.error.unknown`, { error });
+    instanceLogger.error(`${baseLog}.error.unknown`, { error });
     res.status(500).json(errorView(new InternalServerError(error)));
   };
 }
