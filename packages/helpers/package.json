@@ -1,7 +1,7 @@
 {
-  "name": "@alanszp/axios-node",
+  "name": "@alanszp/helpers",
   "version": "5.0.0",
-  "description": "Alan's axios wrapper with base interceptor.",
+  "description": "Alan's helper util.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
@@ -18,9 +18,5 @@
     "prepack": "yarn run build",
     "yalc-publish": "yarn run yalc publish"
   },
-  "dependencies": {
-    "@alanszp/errors": "^5.0.0",
-    "@alanszp/shared-context": "^5.0.0",
-    "axios": "^0.24.0"
-  }
+  "dependencies": {}
 }

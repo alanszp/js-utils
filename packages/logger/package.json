@@ -35,6 +35,7 @@
   "devDependencies": {
     "@alanszp/axios-node": "^5.0.0",
     "@alanszp/datadog-client": "^5.0.0",
+    "@alanszp/common-models": "^5.0.0",
     "@types/bunyan": "^1.8.5",
     "@types/json5": "0.0.30",
     "@types/lodash": "^4.14.170",

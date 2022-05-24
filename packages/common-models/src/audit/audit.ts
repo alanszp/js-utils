@@ -1,6 +1,6 @@
-import { ILogger, LogType } from "@alanszp/logger";
+import { ILogger, LogType } from "../logger";
+import { AuditBody, REQUIRED_FIELDS } from "../audit";
 import { difference } from "lodash";
-import { AuditBody, REQUIRED_FIELDS } from ".";
 import { AuditWithState } from "./auditWithState";
 import { MissingAuditFieldsError } from "./errors/MissingAuditFieldsError";
 

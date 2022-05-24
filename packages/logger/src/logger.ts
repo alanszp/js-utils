@@ -1,5 +1,5 @@
 import * as BunyanLogger from "bunyan";
-import { Context, ILogger, LogLevel } from "./interfaces";
+import { Context, ILogger, LogLevel } from "@alanszp/common-models";
 import { serialize } from "./serializer";
 
 export class Logger implements ILogger {

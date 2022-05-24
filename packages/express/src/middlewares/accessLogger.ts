@@ -1,5 +1,5 @@
 import { NextFunction, Response } from "express";
-import { LogType } from "@alanszp/logger";
+import { LogType } from "@alanszp/common-models";
 import { getIp } from "../helpers/getIp";
 import { GenericRequest } from "../types/GenericRequest";
 

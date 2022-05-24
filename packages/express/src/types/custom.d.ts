@@ -1,5 +1,4 @@
-import { ILogger } from "@alanszp/logger";
-import { AuditWithState } from "@alanszp/audit";
+import { ILogger, AuditWithState } from "@alanszp/common-models";
 import { JWTUser } from "@alanszp/jwt";
 import { AuthMethod } from "./AuthMethod";
 

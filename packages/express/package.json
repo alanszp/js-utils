@@ -35,6 +35,7 @@
     "@alanszp/errors": "^5.0.0",
     "@alanszp/jwt": "^5.0.0",
     "@alanszp/logger": "^5.0.0",
+    "@alanszp/shared-context": "^5.0.0",
     "body-parser": "^1.19.0",
     "cuid": "^2.1.8",
     "lodash": "^4.17.21"

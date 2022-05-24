@@ -3,7 +3,7 @@ export * from "./types/AuthMethod";
 export * from "./middlewares/auditLog";
 export * from "./middlewares/accessLogger";
 export * from "./middlewares/authedForOrg";
-export * from "./middlewares/extraContext";
+export * from "./middlewares/createContext";
 export * from "./middlewares/authWithJWT";
 export * from "./middlewares/returnInternalServerError";
 export * from "./middlewares/returnNotFound";
