@@ -33,15 +33,12 @@ export function createAxiosWithTrace(sharedContext: SharedContext) {
   const axios = AxiosGlobal.create();
 
   axios.interceptors.request.use((config) => {
-    const lifecycleId = sharedContext.getLifecycleId();
-    const lifecycleChain = sharedContext.getLifecycleChain();
-
     return {
       ...config,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       headers: {
-        "x-lifecycle-id": lifecycleId,
-        "x-lifecycle-chain": lifecycleChain,
+        "x-lifecycle-id": sharedContext.getLifecycleId(),
+        "x-lifecycle-chain": sharedContext.getLifecycleChain(),
         ...config.headers,
       },
     };

@@ -1,4 +1,4 @@
-import { Context, ILogger, LogLevel } from "../../common-models/dist";
+import { Context, ILogger, LogLevel } from "./interfaces";
 
 export function createMockLogger(config: any): ILogger {
   return new MockLogger();

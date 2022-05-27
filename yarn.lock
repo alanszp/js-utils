@@ -1810,6 +1810,16 @@
     npmlog "^4.1.2"
     write-file-atomic "^3.0.3"
 
+"@middy/core@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@middy/core/-/core-3.0.3.tgz#603633872db77a608b2ba910100c919985b2e0c6"
+  integrity sha512-hykDL6iTjfiJpqFOtLzxn+TO9yI2SP4o9JnRU2ggYWYpH3XvNLXdB+5ClskBG56k2VlIbgCRx1jvycRwtRM2rg==
+
+"@middy/util@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@middy/util/-/util-3.0.3.tgz#50ec8d928ccffe82b6d991c2b7299b7d642f2254"
+  integrity sha512-0HbQspLv9+u6ubPds/fUCpOB3RyeyOlDWPsY3LKxJNz7AUYd+7GwZRA0v6xAveCS3OvA0JxuSs/pGZjcAhtAuw==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -2045,6 +2055,11 @@
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@tsconfig/node16/-/node16-1.0.2.tgz#423c77877d0569db20e1fc80885ac4118314010e"
   integrity sha512-eZxlbI8GZscaGS7kkc/trHTT5xgrjH3/1n2JDwusC9iahPKWMRvRjJSAN5mCXviuTGQ/lHnhvv8Q1YTpnfz9gA==
+
+"@types/aws-lambda@^8.10.97":
+  version "8.10.97"
+  resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.97.tgz#9b2f2adfa63a215173a9da37604e4f65dd56cb98"
+  integrity sha512-BZk3qO4R2KN8Ts3eR6CW1n8LI46UOgv1KoDZjo8J9vOQvDeX/rsrv1H0BpEAMcSqZ1mLwTEyAMtlua5tlSn0kw==
 
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.14":
   version "7.1.18"

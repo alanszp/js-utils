@@ -1,6 +1,6 @@
 import { IDatadogClient } from "@alanszp/datadog-client";
 import { Serializers } from "bunyan";
-import { LogLevel } from "../../common-models/dist";
+import { LogLevel } from "./interfaces";
 import { SlackStreamOptions } from "./slackBunyan";
 
 export interface ConsoleLoggerConfig {

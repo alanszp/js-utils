@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from "express";
-import { AuditBody } from "@alanszp/common-models";
+import { AuditBody } from "@alanszp/audit";
 import { getIp } from "../helpers/getIp";
 import { GenericRequest } from "../types/GenericRequest";
 

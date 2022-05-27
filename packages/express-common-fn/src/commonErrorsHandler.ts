@@ -4,7 +4,7 @@ import {
   InternalServerError,
   NotFoundError,
 } from "@alanszp/errors";
-import { Context, ILogger } from "@alanszp/common-models";
+import { Context, ILogger } from "@alanszp/logger";
 import { ModelValidationError } from "@alanszp/validations";
 import { Response } from "express";
 import { EntityNotFoundError, QueryFailedError } from "typeorm";

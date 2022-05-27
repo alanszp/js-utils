@@ -1,4 +1,5 @@
-import { ILogger, AuditWithState } from "@alanszp/common-models";
+import { ILogger } from "@alanszp/logger";
+import { AuditWithState } from "@alanszp/audit";
 import { JWTUser } from "@alanszp/jwt";
 import { AuthMethod } from "./AuthMethod";
 
@@ -8,6 +9,7 @@ declare global {
       context: {
         lifecycleId: string;
         lifecycleChain: string;
+        contextId: string;
         authenticated: AuthMethod[];
         log: ILogger;
         audit: AuditWithState;

@@ -1,38 +1,26 @@
-import { Audit, AuditWithState } from "@alanszp/common-models";
+import { ILogger } from "@alanszp/logger";
+import { Audit, AuditWithState } from "@alanszp/audit";
 import { AsyncLocalStorage } from "async_hooks";
-import { SharedContextNotInitializedException } from "./SharedContextNotInitializedException";
-import { ILogger } from "@alanszp/common-models";
 
 interface SharedInternalContext {
   audit: AuditWithState;
   logger: ILogger;
   lifecycleId: string;
   lifecycleChain: string;
+  contextId: string;
 }
-
 export class SharedContext {
-  private context: AsyncLocalStorage<SharedInternalContext>;
-  private lifecycleId: string;
+  private context = new AsyncLocalStorage<SharedInternalContext>();
 
-  private lifecycleChain: string;
-
-  constructor(defaultLifecycleId: string, defaultLifecycleChain: string) {
-    this.context = new AsyncLocalStorage<SharedInternalContext>();
-    this.lifecycleId = defaultLifecycleId;
-    this.lifecycleChain = defaultLifecycleChain;
-  }
-
-  public run(
-    executable: <R>() => R | void,
+  public run<R>(
+    executable: () => R,
     baseLogger: ILogger,
     audit: Audit,
-    customLifecycleId?: string,
-    customLifecycleChain?: string
-  ) {
-    const lifecycleId = customLifecycleId || this.lifecycleId;
-    const lifecycleChain = customLifecycleChain || this.lifecycleChain;
-
-    this.context.run(
+    lifecycleId: string,
+    lifecycleChain: string,
+    contextId: string
+  ): R {
+    return this.context.run(
       {
         audit: audit.withState(),
         logger: baseLogger.child({
@@ -41,34 +29,34 @@ export class SharedContext {
         }),
         lifecycleId,
         lifecycleChain,
+        contextId,
       },
       executable
     );
   }
 
-  public getLogger(): ILogger {
+  public getLogger(): ILogger | undefined {
+    return this.getFromContext("logger");
+  }
+
+  public getAudit(): AuditWithState | undefined {
+    return this.getFromContext("audit");
+  }
+
+  public getLifecycleId(): string | undefined {
+    return this.getFromContext("lifecycleId");
+  }
+
+  public getLifecycleChain(): string | undefined {
+    return this.getFromContext("lifecycleChain");
+  }
+
+  public getContextId(): string | undefined {
+    return this.getFromContext("getContextId");
+  }
+
+  private getFromContext<Type>(propertyName: string): Type | undefined {
     const context = this.context.getStore();
-    if (!context) {
-      throw new SharedContextNotInitializedException();
-    }
-
-    return context.logger;
-  }
-
-  public getAudit(): AuditWithState {
-    const context = this.context.getStore();
-    if (!context) {
-      throw new SharedContextNotInitializedException();
-    }
-
-    return context.audit;
-  }
-
-  public getLifecycleId(): string {
-    return this.lifecycleId;
-  }
-
-  public getLifecycleChain(): string {
-    return this.lifecycleChain;
+    return context ? context[propertyName] : undefined;
   }
 }

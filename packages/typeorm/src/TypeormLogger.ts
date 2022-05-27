@@ -1,5 +1,5 @@
 import type { Logger } from "typeorm";
-import type { ILogger } from "@alanszp/common-models";
+import type { ILogger } from "@alanszp/logger";
 
 export type GetRequestLogger = () => ILogger;
 

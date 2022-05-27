@@ -1,6 +1,6 @@
 import JSON5 from "json5";
 import { isString, keys, mapValues } from "lodash";
-import { Context } from "../../common-models/dist";
+import { Context } from "./interfaces";
 
 export function stringify(obj: unknown): string {
   if (isString(obj)) {

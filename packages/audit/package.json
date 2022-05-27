@@ -21,7 +21,6 @@
   "dependencies": {
     "@alanszp/errors": "^5.0.0",
     "@alanszp/logger": "^5.0.0",
-    "@alanszp/common-models": "^5.0.0",
     "lodash": "^4.17.21"
   }
 }

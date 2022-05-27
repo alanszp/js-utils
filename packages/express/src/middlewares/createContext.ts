@@ -1,45 +1,37 @@
 import cuid from "cuid";
 import { NextFunction, Response } from "express";
-import { ILogger, Audit } from "@alanszp/common-models";
+import { ILogger } from "@alanszp/logger";
+import { Audit } from "@alanszp/audit";
 import { appIdentifier } from "../helpers/appIdentifier";
-import { AuditWithState } from "@alanszp/common-models";
 import { GenericRequest } from "../types/GenericRequest";
 import { SharedContext } from "@alanszp/shared-context";
 
-export interface RequestSharedContext {
-  audit: AuditWithState;
-  logger: ILogger;
-  lifecycleId: string;
-  lifecycleChain: string;
-}
+export function createContext(
+  sharedContext: SharedContext,
+  baseLogger: ILogger,
+  audit: Audit
+) {
+  return (req: GenericRequest, _res: Response, next: NextFunction): void => {
+    req.context = req.context || {};
 
-export function createContext(baseLogger: ILogger, audit: Audit) {
-  const sharedContext = new SharedContext(cuid(), appIdentifier());
-  return {
-    sharedContext,
-    createContextMiddleware: function createContextMiddleware(
-      req: GenericRequest,
-      _res: Response,
-      next: NextFunction
-    ): void {
-      req.context = req.context || {};
+    const lifecycleChain = req.header("x-lifecycle-chain") || appIdentifier();
+    const lifecycleId = req.headers["x-lifecycle-id"]?.toString() || cuid();
+    const contextId = cuid();
 
-      const lifecycleChain = req.header("x-lifecycle-chain");
-      const lifecycleId = req.headers["x-lifecycle-id"]?.toString();
+    sharedContext.run(
+      () => next(),
+      baseLogger,
+      audit,
+      lifecycleId,
+      lifecycleChain,
+      contextId
+    );
 
-      sharedContext.run(
-        () => next(),
-        baseLogger,
-        audit,
-        lifecycleId,
-        lifecycleChain
-      );
-
-      req.context.authenticated = [];
-      req.context.lifecycleId = sharedContext.getLifecycleId();
-      req.context.lifecycleChain = sharedContext.getLifecycleChain();
-      req.context.log = sharedContext.getLogger();
-      req.context.audit = sharedContext.getAudit();
-    },
+    req.context.authenticated = [];
+    req.context.lifecycleId = lifecycleId;
+    req.context.lifecycleChain = lifecycleChain;
+    req.context.contextId = contextId;
+    req.context.log = sharedContext.getLogger() || baseLogger;
+    req.context.audit = sharedContext.getAudit() || audit.withState();
   };
 }

@@ -8,7 +8,7 @@ import {
   LoggerConfig,
   SlackConfig,
 } from "./config";
-import { ILogger, LogLevel } from "../../common-models/dist";
+import { ILogger, LogLevel } from "./interfaces";
 import { Logger } from "./logger";
 import { SlackStream } from "./slackBunyan";
 

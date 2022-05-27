@@ -1,6 +1,5 @@
-import { ILogger, LogLevel } from "@alanszp/common-models";
-import { createLogger } from "@alanszp/logger";
-import { Audit } from "@alanszp/common-models";
+import { createLogger, ILogger, LogLevel } from "@alanszp/logger";
+import { Audit } from "./audit";
 
 export function createAuditLogger(appName: string): Audit;
 export function createAuditLogger(logger: ILogger): Audit;
