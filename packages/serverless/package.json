@@ -34,6 +34,7 @@
     "@alanszp/shared-context": "^5.0.0",
     "@alanszp/logger": "^5.0.0",
     "@alanszp/audit": "^5.0.0",
+    "@alanszp/core": "^5.0.0",
     "@middy/core": "^3.0.3",
     "@middy/util": "^3.0.3",
     "cuid": "^2.1.8",
