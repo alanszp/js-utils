@@ -51,11 +51,12 @@ function errorSerializer(err) {
     message: err.message,
     code: functionOrPropValue(err, "code"),
     context: functionOrPropValue(err, "context"),
+    response: err.response,
     renderMessage: functionOrPropValue(err, "renderMessage"),
-    subError: errorSerializer(err.error),
-    stack: getFullErrorStack(err),
     status: err.status,
     signal: err.signal,
+    stack: getFullErrorStack(err),
+    subError: errorSerializer(err.error),
   };
 }
 
