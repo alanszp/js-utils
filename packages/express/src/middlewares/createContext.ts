@@ -5,6 +5,7 @@ import { Audit } from "@alanszp/audit";
 import { appIdentifier } from "../helpers/appIdentifier";
 import { GenericRequest } from "../types/GenericRequest";
 import { SharedContext } from "@alanszp/shared-context";
+import { compact } from "lodash";
 
 export function createContext(
   sharedContext: SharedContext,
@@ -14,18 +15,20 @@ export function createContext(
   return (req: GenericRequest, _res: Response, next: NextFunction): void => {
     req.context = req.context || {};
 
-    const lifecycleChain = req.header("x-lifecycle-chain") || appIdentifier();
+    const receivedChain = req.header("x-lifecycle-chain");
+    const lifecycleChain = compact([receivedChain, appIdentifier()]).join(",");
+
     const lifecycleId = req.headers["x-lifecycle-id"]?.toString() || cuid();
+
     const contextId = cuid();
 
-    sharedContext.run(
-      () => next(),
-      baseLogger,
-      audit,
+    sharedContext.run(() => next(), {
+      logger: baseLogger,
+      audit: audit.withState(),
       lifecycleId,
       lifecycleChain,
-      contextId
-    );
+      contextId,
+    });
 
     req.context.authenticated = [];
     req.context.lifecycleId = lifecycleId;

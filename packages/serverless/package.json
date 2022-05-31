@@ -19,9 +19,12 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "peerDependencies": {
-    "express": "^4.17.1"
+    "@alanszp/logger": "^5.0.0",
+    "@alanszp/audit": "^5.0.0"
   },
   "devDependencies": {
+    "@alanszp/logger": "^5.0.0",
+    "@alanszp/audit": "^5.0.0",
     "@types/aws-lambda": "^8.10.97",
     "@types/lodash": "^4.14.170",
     "@types/node": "^15.12.3",
@@ -32,8 +35,6 @@
   "dependencies": {
     "@alanszp/typeorm": "^5.0.0",
     "@alanszp/shared-context": "^5.0.0",
-    "@alanszp/logger": "^5.0.0",
-    "@alanszp/audit": "^5.0.0",
     "@alanszp/core": "^5.0.0",
     "@middy/core": "^3.0.3",
     "@middy/util": "^3.0.3",

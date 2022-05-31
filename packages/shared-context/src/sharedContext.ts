@@ -14,22 +14,17 @@ export class SharedContext {
 
   public run<R>(
     executable: () => R,
-    baseLogger: ILogger,
-    audit: Audit,
-    lifecycleId: string,
-    lifecycleChain: string,
-    contextId: string
+    internalContext: SharedInternalContext
   ): R {
+    const { audit, logger, contextId, lifecycleId, lifecycleChain } =
+      internalContext;
     return this.context.run(
       {
-        audit: audit.withState(),
-        logger: baseLogger.child({
+        ...internalContext,
+        logger: logger.child({
           lifecycleId,
           lifecycleChain,
         }),
-        lifecycleId,
-        lifecycleChain,
-        contextId,
       },
       executable
     );
