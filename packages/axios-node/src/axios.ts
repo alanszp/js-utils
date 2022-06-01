@@ -1,13 +1,8 @@
 import AxiosGlobal, { AxiosError } from "axios";
-import { AsyncLocalStorage } from "async_hooks";
 import { NetworkRequestError } from "./errors/NetworkRequestError";
 import { Non200ResponseError } from "./errors/Non200ResponseError";
 import { GenericError } from "./errors/GenericError";
-
-export interface SharedContext {
-  lifecycleId: string;
-  lifecycleChain: string;
-}
+import { SharedContext } from "@alanszp/shared-context";
 
 export const isAxiosError = AxiosGlobal.isAxiosError.bind(AxiosGlobal);
 
@@ -34,21 +29,16 @@ export function createAxios() {
   return axios;
 }
 
-export function createAxiosWithTrace(
-  requestSharedContext: AsyncLocalStorage<SharedContext>
-) {
+export function createAxiosWithTrace(sharedContext: SharedContext) {
   const axios = AxiosGlobal.create();
 
   axios.interceptors.request.use((config) => {
-    const context = requestSharedContext.getStore();
-    if (!context) return config;
-
     return {
       ...config,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       headers: {
-        "x-lifecycle-id": context.lifecycleId,
-        "x-lifecycle-chain": context.lifecycleChain,
+        "x-lifecycle-id": sharedContext.getLifecycleId(),
+        "x-lifecycle-chain": sharedContext.getLifecycleChain(),
         ...config.headers,
       },
     };

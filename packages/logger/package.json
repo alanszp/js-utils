@@ -19,8 +19,7 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "peerDependencies": {
-    "@alanszp/axios-node": "^4.0.0",
-    "@alanszp/datadog-client": "^4.0.0"
+    "@alanszp/datadog-client": "^5.0.0"
   },
   "peerDependenciesMeta": {
     "@alanszp/datadog-client": {
@@ -30,10 +29,10 @@
   "dependencies": {
     "bunyan": "^1.8.12",
     "json5": "^2.1.1",
+    "axios": "^0.24.0",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "@alanszp/axios-node": "^5.0.0",
     "@alanszp/datadog-client": "^5.0.0",
     "@types/bunyan": "^1.8.5",
     "@types/json5": "0.0.30",

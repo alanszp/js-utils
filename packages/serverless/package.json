@@ -1,7 +1,7 @@
 {
-  "name": "@alanszp/express",
+  "name": "@alanszp/serverless",
   "version": "5.0.0",
-  "description": "Alan's express utils and middlewares.",
+  "description": "Alan's serverless utils and middlewares.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
@@ -19,11 +19,13 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "peerDependencies": {
-    "express": "^4.17.1"
+    "@alanszp/logger": "^5.0.0",
+    "@alanszp/audit": "^5.0.0"
   },
   "devDependencies": {
-    "@types/body-parser": "^1.19.1",
-    "@types/express": "^4.17.12",
+    "@alanszp/logger": "^5.0.0",
+    "@alanszp/audit": "^5.0.0",
+    "@types/aws-lambda": "^8.10.97",
     "@types/lodash": "^4.14.170",
     "@types/node": "^15.12.3",
     "ts-node": "^10.0.0",
@@ -31,12 +33,11 @@
     "typescript": "^4.3.4"
   },
   "dependencies": {
-    "@alanszp/audit": "^5.0.0",
-    "@alanszp/errors": "^5.0.0",
-    "@alanszp/jwt": "^5.0.0",
-    "@alanszp/logger": "^5.0.0",
+    "@alanszp/typeorm": "^5.0.0",
     "@alanszp/shared-context": "^5.0.0",
-    "body-parser": "^1.19.0",
+    "@alanszp/core": "^5.0.0",
+    "@middy/core": "^3.0.3",
+    "@middy/util": "^3.0.3",
     "cuid": "^2.1.8",
     "lodash": "^4.17.21"
   }

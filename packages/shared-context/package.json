@@ -1,7 +1,7 @@
 {
-  "name": "@alanszp/axios-node",
+  "name": "@alanszp/shared-context",
   "version": "5.0.0",
-  "description": "Alan's axios wrapper with base interceptor.",
+  "description": "Alan's shared context util.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "@alanszp/errors": "^5.0.0",
-    "@alanszp/shared-context": "^5.0.0",
-    "axios": "^0.24.0"
+    "@alanszp/audit": "^5.0.0",
+    "@alanszp/logger": "^5.0.0",
+    "lodash": "^4.17.21"
   }
 }

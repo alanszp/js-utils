@@ -9,6 +9,7 @@ declare global {
       context: {
         lifecycleId: string;
         lifecycleChain: string;
+        contextId: string;
         authenticated: AuthMethod[];
         log: ILogger;
         audit: AuditWithState;

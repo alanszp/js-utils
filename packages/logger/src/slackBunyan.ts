@@ -1,8 +1,8 @@
-import { createAxios } from "@alanszp/axios-node";
+import AxiosGlobal from "axios";
 import { isDate, reduce } from "lodash";
 import { serialize, stringify } from "./serializer";
 
-const axios = createAxios();
+const axios = AxiosGlobal.create();
 
 const COLOR_FROM_LEVEL = {
   10: "#c4c4c4",
