@@ -6,7 +6,7 @@ Changes
 
 - Create `@alanszp/serverless` to store all logic and types related to lambda execution context and middlewares.
 - Create `@alanszp/shared-context` to isolate logic arount storing a context to use across the stack of an execution.
-- Modified `@alanszp/logger` to not use `@alanszp/axios-node` to avoid circular dependency.
+- Modified `@alanszp/logger` to not use `@alanszp/axios-node` to avoid circular dependency and to serialize the field response of an error.
 - Modified and renamed `@alanszp/express`' middleware `createExtraContext` to `createContext`, which uses the new `SharedContext`.
 - Added `appIdentifier` function to `@alanszp/core`.
 
