@@ -25,7 +25,6 @@
   "devDependencies": {
     "@alanszp/audit": "^6.0.0",
     "@alanszp/logger": "^6.0.0",
-    "@types/aws-lambda": "^8.10.97",
     "@types/lodash": "^4.14.170",
     "@types/node": "^15.12.3",
     "ts-node": "^10.0.0",
@@ -38,6 +37,7 @@
     "@alanszp/typeorm": "^6.0.0",
     "@middy/core": "^3.0.3",
     "@middy/util": "^3.0.3",
+    "@types/aws-lambda": "^8.10.97",
     "cuid": "^2.1.8",
     "lodash": "^4.17.21"
   }
