@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/serverless",
-  "version": "6.0.2",
+  "version": "6.0.3",
   "description": "Alan's serverless utils and middlewares.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@alanszp/core": "^6.0.0",
-    "@alanszp/shared-context": "^6.0.0",
+    "@alanszp/shared-context": "^6.0.3",
     "@alanszp/typeorm": "^6.0.0",
     "@middy/core": "^3.0.3",
     "@middy/util": "^3.0.3",
