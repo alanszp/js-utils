@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/shared-context",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "description": "Alan's shared context util.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
