@@ -10,6 +10,7 @@
     "packages/*"
   ],
   "scripts": {
+    "build": "lerna run build",
     "bump-version": "lerna version",
     "pack-all": "rm -rf tgzs/ && mkdir tgzs/ && ls -1 packages | xargs -tI % sh -c 'cd ./packages/%; yarn pack; mv ./*.tgz ../../tgzs'"
   },

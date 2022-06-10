@@ -13,21 +13,19 @@ export class SharedContext {
   private context = new AsyncLocalStorage<SharedInternalContext>();
 
   public run<R>(
-    executable: () => R,
+    executable: (context: SharedInternalContext) => R,
     internalContext: SharedInternalContext
   ): R {
     const { logger, contextId, lifecycleId, lifecycleChain } = internalContext;
-    return this.context.run(
-      {
-        ...internalContext,
-        logger: logger.child({
-          lid: lifecycleId,
-          lch: lifecycleChain,
-          cid: contextId,
-        }),
-      },
-      executable
-    );
+    const context = {
+      ...internalContext,
+      logger: logger.child({
+        lid: lifecycleId,
+        lch: lifecycleChain,
+        cid: contextId,
+      }),
+    };
+    return this.context.run(context, () => executable(context));
   }
 
   public getLogger(): ILogger | undefined {

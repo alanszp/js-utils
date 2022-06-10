@@ -1,5 +1,38 @@
 # Changelog
 
+## v6.0.4
+
+Changes
+
+- `@alanszp/shared-context`: Will now pass the context as the first executable.
+- FIX: `@alanszp/express`: `createContext` will now create the context before calling next.
+
+---
+
+## v6.0.3
+
+Changes
+
+- FIX: Name of the lifecycle ID and chain in the logger.
+
+---
+
+## v6.0.2
+
+Changes
+
+- FIX: `@alanszp/serverless` DB middleware will make suer to create once the connection of the DB.
+
+---
+
+## v6.0.1
+
+Changes
+
+- FIX: Adds `@alanszp/serverless` types of AWS Lambda as a dependency, so other repos will have the proxy types well defined.
+
+---
+
 ## v6.0.0
 
 Changes
@@ -9,6 +42,8 @@ Changes
 - Modified `@alanszp/logger` to not use `@alanszp/axios-node` to avoid circular dependency and to serialize the field response of an error.
 - Modified and renamed `@alanszp/express`' middleware `createExtraContext` to `createContext`, which uses the new `SharedContext`.
 - Added `appIdentifier` function to `@alanszp/core`.
+
+---
 
 ## v5.0.1
 

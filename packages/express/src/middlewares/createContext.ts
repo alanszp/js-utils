@@ -22,19 +22,23 @@ export function createContext(
 
     const contextId = cuid();
 
-    sharedContext.run(() => next(), {
-      logger: baseLogger,
-      audit: audit.withState(),
-      lifecycleId,
-      lifecycleChain,
-      contextId,
-    });
-
-    req.context.authenticated = [];
-    req.context.lifecycleId = lifecycleId;
-    req.context.lifecycleChain = lifecycleChain;
-    req.context.contextId = contextId;
-    req.context.log = sharedContext.getLogger() || baseLogger;
-    req.context.audit = sharedContext.getAudit() || audit.withState();
+    sharedContext.run(
+      (context) => {
+        req.context.authenticated = [];
+        req.context.lifecycleId = context.lifecycleId;
+        req.context.lifecycleChain = context.lifecycleChain;
+        req.context.contextId = context.contextId;
+        req.context.log = context.logger;
+        req.context.audit = context.audit;
+        next();
+      },
+      {
+        logger: baseLogger,
+        audit: audit.withState(),
+        lifecycleId,
+        lifecycleChain,
+        contextId,
+      }
+    );
   };
 }
