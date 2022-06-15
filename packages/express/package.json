@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/express",
-  "version": "6.0.4",
+  "version": "6.0.5",
   "description": "Alan's express utils and middlewares.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -31,11 +31,11 @@
     "typescript": "^4.3.4"
   },
   "dependencies": {
-    "@alanszp/audit": "^6.0.0",
+    "@alanszp/audit": "^6.0.5",
     "@alanszp/errors": "^6.0.0",
     "@alanszp/jwt": "^6.0.0",
-    "@alanszp/logger": "^6.0.0",
-    "@alanszp/shared-context": "^6.0.4",
+    "@alanszp/logger": "^6.0.5",
+    "@alanszp/shared-context": "^6.0.5",
     "body-parser": "^1.19.0",
     "cuid": "^2.1.8",
     "lodash": "^4.17.21"
