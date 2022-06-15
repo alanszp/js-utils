@@ -51,7 +51,7 @@ function errorSerializer(err) {
     message: err.message,
     code: functionOrPropValue(err, "code"),
     context: functionOrPropValue(err, "context"),
-    response: err.response,
+    response: err.name === "Non200ResponseError" ? err.response : undefined,
     renderMessage: functionOrPropValue(err, "renderMessage"),
     status: err.status,
     signal: err.signal,
