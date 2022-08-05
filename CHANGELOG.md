@@ -1,5 +1,21 @@
 # Changelog
 
+## v6.1.0
+
+Changes
+
+- `@alanszp/express-commons-fn`: Will now get logger inside function so that the context is already loaded
+
+---
+
+## v6.0.5
+
+Changes
+
+- FIX: `@alanszp/logger`: `serializer` error serializer will now only serialize response if it's Non200ResponseError
+
+---
+
 ## v6.0.4
 
 Changes
