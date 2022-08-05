@@ -20,14 +20,14 @@ const defaultsOption: CommonErrorOptions = {
 };
 
 export function commonErrorsHandler(loggerFn: () => ILogger) {
-  const logger = loggerFn();
-
   return function handleCommonErrors(
     error: unknown,
     res: Response,
     baseLog: string,
     options?: Partial<CommonErrorOptions>
   ): void {
+    const logger = loggerFn();
+
     const opts: CommonErrorOptions = {
       ...defaultsOption,
       ...options,
