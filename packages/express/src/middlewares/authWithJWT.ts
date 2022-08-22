@@ -4,6 +4,7 @@ import { errorView } from "../views/errorView";
 import { NextFunction, Response } from "express";
 import { getRequestLogger } from "../helpers/getRequestLogger";
 import { GenericRequest } from "../types/GenericRequest";
+import { IncomingHttpHeaders } from "http";
 
 function parseAuthorizationHeader(
   authorization: string | undefined
@@ -35,6 +36,26 @@ export function createAuthWithJWT(publicKey: string, options?: VerifyOptions) {
       return;
     }
 
+    if (eventBridgeRequest(req.headers)) {
+      logger.info("Authenticating EventBridge request");
+      const validApiKeys = options?.validApiKeys;
+      if (!validApiKeys || !options?.validApiKeys.includes(publicKey)) {
+        res
+          .status(401)
+          .json(
+            errorView(
+              new UnauthorizedError([
+                !eventBridgeRequest(req.headers)
+                  ? "Request must come from a valid source."
+                  : "The API KEY provided is invalid.",
+              ])
+            )
+          );
+        return;
+      }
+      next();
+    }
+
     try {
       const jwtUser = await verifyJWT(publicKey, jwt, options);
       logger.debug("auth.authWithJwt.authed", {
@@ -51,4 +72,7 @@ export function createAuthWithJWT(publicKey: string, options?: VerifyOptions) {
       res.status(401).json(errorView(new UnauthorizedError(["jwt"])));
     }
   };
+}
+function eventBridgeRequest(headers: IncomingHttpHeaders): boolean {
+  return headers["user-agent"] === "Amazon/EventBridge/ApiDestinations";
 }
