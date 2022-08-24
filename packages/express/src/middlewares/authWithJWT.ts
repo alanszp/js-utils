@@ -1,10 +1,10 @@
-import { verifyJWT, VerifyOptions } from "@alanszp/jwt";
+import { JWTUser, verifyJWT, VerifyOptions } from "@alanszp/jwt";
 import { UnauthorizedError } from "@alanszp/errors";
 import { errorView } from "../views/errorView";
 import { NextFunction, Response } from "express";
 import { getRequestLogger } from "../helpers/getRequestLogger";
 import { GenericRequest } from "../types/GenericRequest";
-import { IncomingHttpHeaders } from "http";
+import { Logger } from "@alanszp/logger";
 
 function parseAuthorizationHeader(
   authorization: string | undefined
@@ -17,62 +17,146 @@ function parseAuthorizationHeader(
   return jwt;
 }
 
-export function createAuthWithJWT(publicKey: string, options?: VerifyOptions) {
-  return async function authWithJwt(
-    req: GenericRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
-    const logger = getRequestLogger(req);
-    const cookies = (req.cookies as Record<string, string | undefined>) || {};
-    const jwt =
-      cookies.jwt || parseAuthorizationHeader(req.headers.authorization);
+enum AuthMethods {
+  JWT = "JWT",
+  API_KEY = "API_KEY",
+}
 
-    if (!jwt) {
-      logger.debug("auth.authWithJwt.error.notPresent", {
-        headers: req.headers,
-      });
-      res.status(401).json(errorView(new UnauthorizedError(["jwt"])));
-      return;
-    }
+interface JWTOptions {
+  jwtVerifyOptions: VerifyOptions;
+  types: [AuthMethods.JWT];
+}
 
-    if (eventBridgeRequest(req.headers)) {
-      logger.info("Authenticating EventBridge request");
-      const validApiKeys = options?.validApiKeys;
-      if (!validApiKeys || !options?.validApiKeys.includes(publicKey)) {
-        res
-          .status(401)
-          .json(
-            errorView(
-              new UnauthorizedError([
-                !eventBridgeRequest(req.headers)
-                  ? "Request must come from a valid source."
-                  : "The API KEY provided is invalid.",
-              ])
-            )
-          );
-        return;
-      }
-      next();
-    }
+interface TokenOptions {
+  validTokens: string[];
+  types: [AuthMethods.API_KEY];
+}
 
+interface BothMethodsOptions {
+  jwtVerifyOptions: VerifyOptions;
+  validTokens: string[];
+  types:
+    | [AuthMethods.JWT, AuthMethods.API_KEY]
+    | [AuthMethods.API_KEY, AuthMethods.JWT];
+}
+
+type AuthOptions = JWTOptions | TokenOptions | BothMethodsOptions;
+
+const middlewareGetterByAuthType = {
+  [AuthMethods.JWT]: async (
+    publicKey: string,
+    jwt: string,
+    options: Exclude<AuthOptions, TokenOptions>,
+    logger: Logger
+  ): Promise<JWTUser | null | undefined> => {
     try {
-      const jwtUser = await verifyJWT(publicKey, jwt, options);
+      if (!jwt) return undefined;
+      const jwtUser = await verifyJWT(publicKey, jwt, options.jwtVerifyOptions);
       logger.debug("auth.authWithJwt.authed", {
         user: jwtUser.id,
         org: jwtUser.organizationReference,
       });
-
-      req.context.jwtUser = jwtUser;
-      req.context.authenticated.push("jwt");
-
-      next();
+      return jwtUser;
     } catch (error: unknown) {
       logger.info("auth.authWithJwt.invalidJwt", { jwt, error });
-      res.status(401).json(errorView(new UnauthorizedError(["jwt"])));
+      return null;
     }
+  },
+  [AuthMethods.API_KEY]: async (
+    _: string,
+    token: string,
+    options: Exclude<AuthOptions, JWTOptions>,
+    logger: Logger
+  ): Promise<JWTUser | null | undefined> => {
+    try {
+      if (!token) return undefined;
+      if (options.validTokens.includes(token)) {
+        logger.debug("auth.authWithApiKey.authed", {
+          user: "0",
+          org: "0",
+        });
+        return Promise.resolve({
+          id: "0",
+          employeeReference: "0",
+          organizationReference: "none",
+          roles: [],
+          permissions: [],
+        });
+      } else {
+        return null;
+      }
+    } catch (error: unknown) {
+      logger.info("auth.authWithApiKey.invalidApiKey", { token, error });
+      return null;
+    }
+  },
+};
+
+export function createAuthContext<Options extends AuthOptions>(
+  publicKey: string,
+  options: Options
+) {
+  return function getMiddlewareForMethods(authMethods: Options["types"]) {
+    return async function authWithGivenMethods(
+      req: GenericRequest,
+      res: Response,
+      next: NextFunction
+    ): Promise<void> {
+      const logger = getRequestLogger(req);
+      const cookies = (req.cookies as Record<string, string | undefined>) || {};
+      const token = parseAuthorizationHeader(req.headers.authorization);
+      const jwt = cookies.jwt || token;
+
+      try {
+        const authAttempts = authMethods.map((method) =>
+          middlewareGetterByAuthType[method](
+            publicKey,
+            method === AuthMethods.JWT ? jwt : token,
+            options,
+            logger
+          )
+        );
+
+        if (authAttempts.every((attempt) => attempt === undefined)) {
+          res
+            .status(401)
+            .json(
+              errorView(
+                new UnauthorizedError(
+                  authMethods.map(
+                    (method) => `Token not set for method ${method}`
+                  )
+                )
+              )
+            );
+          return;
+        }
+
+        if (authAttempts.every((attempt) => attempt === null)) {
+          res
+            .status(401)
+            .json(
+              errorView(
+                new UnauthorizedError(
+                  authMethods.map(
+                    (method) => `Token invalid for method ${method}`
+                  )
+                )
+              )
+            );
+          return;
+        }
+
+        const jwtUser = authAttempts.find((attempt) => !!attempt);
+
+        req.context.jwtUser = jwtUser;
+        req.context.authenticated.push("jwt");
+
+        next();
+      } catch (error: unknown) {
+        logger.info("auth.authWithJwt.invalidJwt", { jwt, error });
+        res.status(401).json(errorView(new UnauthorizedError(authMethods)));
+      }
+    };
   };
-}
-function eventBridgeRequest(headers: IncomingHttpHeaders): boolean {
-  return headers["user-agent"] === "Amazon/EventBridge/ApiDestinations";
 }
