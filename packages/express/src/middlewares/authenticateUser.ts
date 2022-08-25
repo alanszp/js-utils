@@ -148,7 +148,12 @@ export function createAuthContext<Options extends AuthOptions>(
         );
         next();
       } catch (error: unknown) {
-        logger.info("auth.authWithJwt.invalidJwt", { jwt, error });
+        logger.info("auth.authenticateUser.error", {
+          jwt,
+          token: req.headers.authorization,
+          methods: AuthMethods,
+          error,
+        });
         res.status(401).json(errorView(new UnauthorizedError(authMethods)));
       }
     };
