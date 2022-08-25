@@ -5,6 +5,7 @@ import { NextFunction, Response } from "express";
 import { getRequestLogger } from "../helpers/getRequestLogger";
 import { GenericRequest } from "../types/GenericRequest";
 import { Logger } from "@alanszp/logger";
+import { compact, isEmpty } from "lodash";
 
 function parseAuthorizationHeader(
   authorization: string | undefined
@@ -22,36 +23,43 @@ enum AuthMethods {
   API_KEY = "API_KEY",
 }
 
+interface JWTVerifyOptions extends VerifyOptions {
+  publicKey: string;
+}
+
 interface JWTOptions {
-  jwtVerifyOptions: VerifyOptions;
+  jwtVerifyOptions: JWTVerifyOptions;
   types: [AuthMethods.JWT];
 }
 
-interface TokenOptions {
-  validTokens: string[];
+interface ApiKeyOptions {
+  validApiKeys: string[];
   types: [AuthMethods.API_KEY];
 }
 
 interface BothMethodsOptions {
-  jwtVerifyOptions: VerifyOptions;
-  validTokens: string[];
+  jwtVerifyOptions: JWTVerifyOptions;
+  validApiKeys: string[];
   types:
     | [AuthMethods.JWT, AuthMethods.API_KEY]
     | [AuthMethods.API_KEY, AuthMethods.JWT];
 }
 
-type AuthOptions = JWTOptions | TokenOptions | BothMethodsOptions;
+type AuthOptions = JWTOptions | ApiKeyOptions | BothMethodsOptions;
 
 const middlewareGetterByAuthType = {
   [AuthMethods.JWT]: async (
-    publicKey: string,
     jwt: string,
-    options: Exclude<AuthOptions, TokenOptions>,
+    options: Exclude<AuthOptions, ApiKeyOptions>,
     logger: Logger
   ): Promise<JWTUser | null | undefined> => {
     try {
       if (!jwt) return undefined;
-      const jwtUser = await verifyJWT(publicKey, jwt, options.jwtVerifyOptions);
+      const jwtUser = await verifyJWT(
+        options.jwtVerifyOptions.publicKey,
+        jwt,
+        options.jwtVerifyOptions
+      );
       logger.debug("auth.authWithJwt.authed", {
         user: jwtUser.id,
         org: jwtUser.organizationReference,
@@ -63,22 +71,21 @@ const middlewareGetterByAuthType = {
     }
   },
   [AuthMethods.API_KEY]: async (
-    _: string,
     token: string,
     options: Exclude<AuthOptions, JWTOptions>,
     logger: Logger
   ): Promise<JWTUser | null | undefined> => {
     try {
       if (!token) return undefined;
-      if (options.validTokens.includes(token)) {
+      if (options.validApiKeys.includes(token)) {
         logger.debug("auth.authWithApiKey.authed", {
           user: "0",
-          org: "0",
+          org: "lara",
         });
         return Promise.resolve({
           id: "0",
           employeeReference: "0",
-          organizationReference: "none",
+          organizationReference: "lara",
           roles: [],
           permissions: [],
         });
@@ -93,7 +100,6 @@ const middlewareGetterByAuthType = {
 };
 
 export function createAuthContext<Options extends AuthOptions>(
-  publicKey: string,
   options: Options
 ) {
   return function getMiddlewareForMethods(authMethods: Options["types"]) {
@@ -104,54 +110,40 @@ export function createAuthContext<Options extends AuthOptions>(
     ): Promise<void> {
       const logger = getRequestLogger(req);
       const cookies = (req.cookies as Record<string, string | undefined>) || {};
-      const token = parseAuthorizationHeader(req.headers.authorization);
-      const jwt = cookies.jwt || token;
+      const jwt =
+        cookies.jwt || parseAuthorizationHeader(req.headers.authorization);
 
       try {
         const authAttempts = authMethods.map((method) =>
           middlewareGetterByAuthType[method](
-            publicKey,
-            method === AuthMethods.JWT ? jwt : token,
+            method === AuthMethods.JWT ? jwt : req.headers.authorization,
             options,
             logger
           )
         );
 
-        if (authAttempts.every((attempt) => attempt === undefined)) {
+        const successfulAuthAttempts = compact(authAttempts);
+
+        if (isEmpty(successfulAuthAttempts)) {
           res
             .status(401)
             .json(
               errorView(
-                new UnauthorizedError(
-                  authMethods.map(
-                    (method) => `Token not set for method ${method}`
-                  )
-                )
+                new UnauthorizedError([
+                  authAttempts.includes(null)
+                    ? `Token invalid for methods ${authAttempts}`
+                    : `Token not set for methods ${authAttempts}`,
+                ])
               )
             );
           return;
         }
 
-        if (authAttempts.every((attempt) => attempt === null)) {
-          res
-            .status(401)
-            .json(
-              errorView(
-                new UnauthorizedError(
-                  authMethods.map(
-                    (method) => `Token invalid for method ${method}`
-                  )
-                )
-              )
-            );
-          return;
-        }
-
-        const jwtUser = authAttempts.find((attempt) => !!attempt);
-
+        const jwtUser: JWTUser = compact(authAttempts)[0];
         req.context.jwtUser = jwtUser;
-        req.context.authenticated.push("jwt");
-
+        req.context.authenticated.push(
+          jwtUser.employeeReference !== "0" ? "jwt" : "api_key"
+        );
         next();
       } catch (error: unknown) {
         logger.info("auth.authWithJwt.invalidJwt", { jwt, error });
