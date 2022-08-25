@@ -5,7 +5,7 @@ import { NextFunction, Response } from "express";
 import { getRequestLogger } from "../helpers/getRequestLogger";
 import { GenericRequest } from "../types/GenericRequest";
 import { Logger } from "@alanszp/logger";
-import { compact, isEmpty } from "lodash";
+import { compact, isEmpty, omit } from "lodash";
 
 function parseAuthorizationHeader(
   authorization: string | undefined
@@ -18,26 +18,26 @@ function parseAuthorizationHeader(
   return jwt;
 }
 
-enum AuthMethods {
+export enum AuthMethods {
   JWT = "JWT",
   API_KEY = "API_KEY",
 }
 
-interface JWTVerifyOptions extends VerifyOptions {
+export interface JWTVerifyOptions extends VerifyOptions {
   publicKey: string;
 }
 
-interface JWTOptions {
+export interface JWTOptions {
   jwtVerifyOptions: JWTVerifyOptions;
   types: [AuthMethods.JWT];
 }
 
-interface ApiKeyOptions {
+export interface ApiKeyOptions {
   validApiKeys: string[];
   types: [AuthMethods.API_KEY];
 }
 
-interface BothMethodsOptions {
+export interface BothMethodsOptions {
   jwtVerifyOptions: JWTVerifyOptions;
   validApiKeys: string[];
   types:
@@ -45,7 +45,7 @@ interface BothMethodsOptions {
     | [AuthMethods.API_KEY, AuthMethods.JWT];
 }
 
-type AuthOptions = JWTOptions | ApiKeyOptions | BothMethodsOptions;
+export type AuthOptions = JWTOptions | ApiKeyOptions | BothMethodsOptions;
 
 const middlewareGetterByAuthType = {
   [AuthMethods.JWT]: async (
@@ -58,7 +58,7 @@ const middlewareGetterByAuthType = {
       const jwtUser = await verifyJWT(
         options.jwtVerifyOptions.publicKey,
         jwt,
-        options.jwtVerifyOptions
+        omit(options.jwtVerifyOptions, "publicKey")
       );
       logger.debug("auth.authWithJwt.authed", {
         user: jwtUser.id,
@@ -114,11 +114,13 @@ export function createAuthContext<Options extends AuthOptions>(
         cookies.jwt || parseAuthorizationHeader(req.headers.authorization);
 
       try {
-        const authAttempts = authMethods.map((method) =>
-          middlewareGetterByAuthType[method](
-            method === AuthMethods.JWT ? jwt : req.headers.authorization,
-            options,
-            logger
+        const authAttempts = await Promise.all(
+          authMethods.map((method) =>
+            middlewareGetterByAuthType[method](
+              method === AuthMethods.JWT ? jwt : req.headers.authorization,
+              options,
+              logger
+            )
           )
         );
 
@@ -131,15 +133,15 @@ export function createAuthContext<Options extends AuthOptions>(
               errorView(
                 new UnauthorizedError([
                   authAttempts.includes(null)
-                    ? `Token invalid for methods ${authAttempts}`
-                    : `Token not set for methods ${authAttempts}`,
+                    ? `Token invalid for methods ${authMethods}`
+                    : `Token not set for methods ${authMethods}`,
                 ])
               )
             );
           return;
         }
 
-        const jwtUser: JWTUser = compact(authAttempts)[0];
+        const jwtUser: JWTUser = successfulAuthAttempts[0];
         req.context.jwtUser = jwtUser;
         req.context.authenticated.push(
           jwtUser.employeeReference !== "0" ? "jwt" : "api_key"
