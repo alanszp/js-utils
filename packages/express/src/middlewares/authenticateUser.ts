@@ -4,7 +4,7 @@ import { errorView } from "../views/errorView";
 import { NextFunction, Response } from "express";
 import { getRequestLogger } from "../helpers/getRequestLogger";
 import { GenericRequest } from "../types/GenericRequest";
-import { Logger } from "@alanszp/logger";
+import { ILogger } from "@alanszp/logger";
 import { compact, isEmpty, omit } from "lodash";
 
 function parseAuthorizationHeader(
@@ -47,12 +47,19 @@ export interface BothMethodsOptions {
 
 export type AuthOptions = JWTOptions | ApiKeyOptions | BothMethodsOptions;
 
-const middlewareGetterByAuthType = {
+const middlewareGetterByAuthType: Record<
+  AuthMethods,
+  (
+    tokenOrJwt: string | null | undefined,
+    options: AuthOptions,
+    logger: ILogger
+  ) => Promise<JWTUser | null | undefined>
+> = {
   [AuthMethods.JWT]: async (
-    jwt: string,
+    jwt: string | null | undefined,
     options: Exclude<AuthOptions, ApiKeyOptions>,
-    logger: Logger
-  ): Promise<JWTUser | null | undefined> => {
+    logger: ILogger
+  ) => {
     try {
       if (!jwt) return undefined;
       const jwtUser = await verifyJWT(
@@ -71,9 +78,9 @@ const middlewareGetterByAuthType = {
     }
   },
   [AuthMethods.API_KEY]: async (
-    token: string,
+    token: string | null | undefined,
     options: Exclude<AuthOptions, JWTOptions>,
-    logger: Logger
+    logger: ILogger
   ): Promise<JWTUser | null | undefined> => {
     try {
       if (!token) return undefined;
@@ -102,7 +109,9 @@ const middlewareGetterByAuthType = {
 export function createAuthContext<Options extends AuthOptions>(
   options: Options
 ) {
-  return function getMiddlewareForMethods(authMethods: Options["types"]) {
+  return function getMiddlewareForMethods(
+    authMethods: Options["types"][number][]
+  ) {
     return async function authWithGivenMethods(
       req: GenericRequest,
       res: Response,
