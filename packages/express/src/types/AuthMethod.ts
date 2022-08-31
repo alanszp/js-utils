@@ -21,4 +21,7 @@ type OverridableStringUnion<
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AuthMethodsOverride {}
 
-export type AuthMethod = OverridableStringUnion<"jwt", AuthMethodsOverride>;
+export type AuthMethod = OverridableStringUnion<
+  "jwt" | "api_key",
+  AuthMethodsOverride
+>;

@@ -4,7 +4,7 @@ export * from "./middlewares/auditLog";
 export * from "./middlewares/accessLogger";
 export * from "./middlewares/authedForOrg";
 export * from "./middlewares/createContext";
-export * from "./middlewares/authWithJWT";
+export * from "./middlewares/authenticateUser";
 export * from "./middlewares/returnInternalServerError";
 export * from "./middlewares/returnNotFound";
 export * from "./middlewares/jsonBodyParser";
