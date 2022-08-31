@@ -1,0 +1,33 @@
+{
+  "name": "@alanszp/eventbridge-client",
+  "version": "6.0.0",
+  "description": "Alan's basic eventbridge client.",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "license": "MIT",
+  "files": [
+    "**/*"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "compile": "rm -rf ./dist && tsc --declaration",
+    "compile-watch": "tsc -w",
+    "build": "yarn run compile",
+    "prepack": "yarn run build",
+    "yalc-publish": "yarn run yalc publish"
+  },
+  "devDependencies": {
+    "@types/node": "^15.12.3",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.4"
+  },
+  "dependencies": {
+    "@alanszp/logger": "^6.0.5",
+    "@alanszp/shared-context": "^6.0.5",
+    "aws-sdk": "^2.1204.0",
+    "cuid": "^2.1.8",
+    "lodash": "^4.17.21"
+  }
+}
