@@ -57,8 +57,6 @@ export class BasicEventbridgeClient {
   ): Promise<EventDispatchResult> {
     const logger = this.getLogger();
 
-    logger.info("eventbridge.client.sendEvents.start");
-
     const eventsToSend: EventRequest = {
       Entries: compact(
         events.map((event) =>
