@@ -23,7 +23,7 @@ export enum AuthMethods {
   API_KEY = "API_KEY",
 }
 
-export interface JWTVerifyOptions extends VerifyOptions {
+export interface JWTVerifyOptions extends Partial<VerifyOptions> {
   publicKey: string;
 }
 
