@@ -1,13 +1,8 @@
-import {
-  eventbridgeClient,
-  EventRequest,
-  PromiseEventResponse,
-  PutEventEntryResponse,
-} from "./aws";
+import { ILogger } from "@alanszp/logger";
+import { SharedContext } from "@alanszp/shared-context";
 import { compact, partition } from "lodash";
+import { eventbridgeClient, EventRequest, PutEventEntryResponse } from "./aws";
 import { mapLaraEventToAWSEvent } from "./helpers/mapLaraEventToAWSEvent";
-import type { ILogger } from "@alanszp/logger";
-import type { SharedContext } from "@alanszp/shared-context";
 
 /**
  * Represents an event that is sent in the Lara ecosystem.
@@ -23,13 +18,13 @@ export type LaraEvent = {
   modifiedKeys: string[];
 };
 
-export interface EmployeeEventDispatchResult {
+export interface EventDispatchResult {
   successful: PutEventEntryResponse[];
   failed: PutEventEntryResponse[];
   failedCount: number | undefined;
 }
 
-const DEFAULT_CUSTOM_BUS_NAME = "bus";
+const DEFAULT_CUSTOM_BUS_NAME_SUFFIX = "lara-eventbus";
 
 /**
  * Basic client for Eventbridge.
@@ -39,15 +34,16 @@ export class BasicEventbridgeClient {
   private appName: string;
   private env: string;
   private bus: string;
+
   protected getLogger: () => ILogger;
   protected context: SharedContext;
 
   constructor(
     appName: string,
     env: string,
-    bus: string = DEFAULT_CUSTOM_BUS_NAME,
     getLogger: () => ILogger,
-    context: SharedContext
+    context: SharedContext,
+    bus = `${env}-${DEFAULT_CUSTOM_BUS_NAME_SUFFIX}`
   ) {
     this.appName = appName;
     this.env = env;
@@ -58,7 +54,11 @@ export class BasicEventbridgeClient {
 
   protected async sendEvents(
     events: LaraEvent[]
-  ): Promise<EmployeeEventDispatchResult> {
+  ): Promise<EventDispatchResult> {
+    const logger = this.getLogger();
+
+    logger.info("eventbridge.client.sendEvents.start");
+
     const eventsToSend: EventRequest = {
       Entries: compact(
         events.map((event) =>
@@ -67,22 +67,21 @@ export class BasicEventbridgeClient {
             this.env,
             this.appName,
             this.bus,
-            this.getLogger(),
+            logger,
             this.context
           )
         )
       ),
     };
 
-    const result = await new AWS.EventBridge()
-      .putEvents(eventsToSend)
-      .promise();
-
+    const result = await eventbridgeClient.putEvents(eventsToSend).promise();
     const { Entries, FailedEntryCount: failedCount } = result;
-
-    this.getLogger().info(JSON.stringify(result));
-
     const [successful, failed] = partition(Entries, (entry) => entry.EventId);
+
+    logger.info("eventbridge.client.sendEvents.end", {
+      successful,
+      failed,
+    });
 
     return {
       successful,

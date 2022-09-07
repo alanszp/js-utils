@@ -5,7 +5,7 @@ import type { SharedContext } from "@alanszp/shared-context";
 import { compact } from "lodash";
 import cuid from "cuid";
 
-export function mapLaraEventToAWSEvent<T>(
+export function mapLaraEventToAWSEvent(
   { topic, entity }: LaraEvent,
   env: string,
   appName: string,
@@ -25,11 +25,13 @@ export function mapLaraEventToAWSEvent<T>(
       Time: new Date(),
       TraceHeader: lid,
     };
-  } catch (e: unknown) {
-    const org = entity.organizationReference;
-    logger.error(
-      `Event with topic ${topic} and regarding org: ${org} and with lid: ${lid} could not be parsed to json string, will not be sent`
-    );
+  } catch {
+    const org = entity.organizationReference as string;
+    logger.error("eventbridge.client.map_lara_to_aws_event.parse_error", {
+      topic,
+      org,
+      lid,
+    });
     return undefined;
   }
 }
