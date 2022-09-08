@@ -1,29 +1,19 @@
 import { BaseModel } from "@alanszp/validations";
-import { IsEnum, IsNotEmpty, IsString } from "class-validator";
-import { NotificationDetailType } from "./NotificationDetailTypes";
-
-type FixedDetail<T> = {
-  id: string;
-  organizationReference: string;
-  _previousValues: T;
-  lch: string;
-};
-
-type Detail<T> = FixedDetail<T> & T;
+import { IsDate, IsNotEmpty, IsString } from "class-validator";
 
 export interface NotificationInputParams<T> {
   version: string;
   id: string;
-  "detail-type": NotificationDetailType;
+  "detail-type": string;
   source: string;
   account: string;
   time: string;
   region: string;
   resources: unknown[];
-  detail: Detail<T>;
+  detail: T;
 }
 
-export class NotificationInput<T> extends BaseModel {
+export class NotificationInput<T extends Record<string, unknown> = Record<string, unknown>> extends BaseModel {
   @IsString()
   @IsNotEmpty()
   public version: string;
@@ -32,22 +22,23 @@ export class NotificationInput<T> extends BaseModel {
   @IsNotEmpty()
   public id: string;
 
-  @IsEnum(NotificationDetailType)
-  @IsNotEmpty()
-  public detailType: NotificationDetailType;
-
   @IsString()
   @IsNotEmpty()
-  public organizationReference: string;
+  public topic: string;
 
-  public data: Detail<T>;
+  @IsDate()
+  @IsNotEmpty()
+  public createdAt: Date;
+
+  @IsNotEmpty()
+  public data: T;
 
   constructor(params: NotificationInputParams<T>) {
     super();
-    this.organizationReference = params.detail.organizationReference;
-    this.detailType = params["detail-type"];
-    this.id = params.detail.id;
+    this.topic = params["detail-type"];
+    this.id = params.id;
     this.data = params.detail;
+    this.createdAt = new Date(params.time);
     this.version = params.version;
   }
 }
