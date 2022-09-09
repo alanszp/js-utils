@@ -22,8 +22,6 @@ export interface EventDispatchResult {
   failedCount: number | undefined;
 }
 
-const DEFAULT_CUSTOM_BUS_NAME_SUFFIX = "lara-eventbus";
-
 /**
  * Basic client for Eventbridge.
  * Usage will be done by extending this class and implementing methods that internally call the protected sendEvents method.
@@ -41,7 +39,7 @@ export class BasicEventbridgeClient {
     env: string,
     getLogger: () => ILogger,
     context: SharedContext,
-    bus = `${env}-${DEFAULT_CUSTOM_BUS_NAME_SUFFIX}`
+    bus: string
   ) {
     this.appName = appName;
     this.env = env;

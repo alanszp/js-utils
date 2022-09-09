@@ -1,5 +1,32 @@
 # Changelog
 
+## v7.1.1
+
+Changes
+
+- FIX: `@alanszp/eventbridge-client`: remove default eventbus name in constructor that was not
+  wrong.
+
+## v7.1.0
+
+Changes
+
+- Modify `@alanszp/eventbridge-client` add generic types for Update and Create entity events.
+
+## v7.0.1
+
+Changes
+
+- Create `@alanszp/eventbridge-client` to handle communication with AWS EventBridge.
+- FIX: `@alanszp/` now JWTVerifyOptions extends Partial<VerifyOptions> instead of VerifyOptions.
+
+## v7.0.0
+
+Changes
+
+- Modified `@alanszp/express` middleware authWithJWT now is called authenticateUser and provides
+  a way to authenticate using either JWT, API_KEY, or both for the same endpoint.
+
 ## v6.1.0
 
 Changes
