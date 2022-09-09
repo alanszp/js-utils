@@ -6,7 +6,7 @@ import { compact } from "lodash";
 import cuid from "cuid";
 
 export function mapLaraEventToAWSEvent(
-  { topic, entity }: LaraEvent,
+  { topic, body }: LaraEvent,
   env: string,
   appName: string,
   bus: string,
@@ -19,14 +19,14 @@ export function mapLaraEventToAWSEvent(
   try {
     return {
       DetailType: topic,
-      Detail: JSON.stringify({ ...entity, lch }),
+      Detail: JSON.stringify({ ...body, lch }),
       Source: `${env}.lara.${appName}`,
       EventBusName: bus,
       Time: new Date(),
       TraceHeader: lid,
     };
   } catch {
-    const org = entity.organizationReference as string;
+    const org = body.organizationReference as string;
     logger.error("eventbridge.client.map_lara_to_aws_event.parse_error", {
       topic,
       org,

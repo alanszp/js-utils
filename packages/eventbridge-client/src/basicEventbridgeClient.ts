@@ -8,14 +8,12 @@ import { mapLaraEventToAWSEvent } from "./helpers/mapLaraEventToAWSEvent";
  * Represents an event that is sent in the Lara ecosystem.
  *
  * @property topic: The topic of the event. E.g.: if an employee was created, topid would be employee.created.
- * @property lid: The lifecycle id to identify the execution that generated the event.
  * @property body: The body of the event. This will be used to match in the rules, along with the topic and maybe the id. If it has a property id it
  *                  will be overwritten by the id sent to this method in the parameters.
  */
 export type LaraEvent = {
   topic: string;
-  entity: Record<string, unknown>;
-  modifiedKeys: string[];
+  body: Record<string, unknown>;
 };
 
 export interface EventDispatchResult {
