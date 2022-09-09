@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/eventbridge-subscriber",
-  "version": "7.1.1",
+  "version": "7.2.0",
   "description": "Alan's basic eventbridge subscriber.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
