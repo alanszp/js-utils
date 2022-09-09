@@ -9,7 +9,7 @@ export interface NotificationInputParams<T> {
   account: string;
   time: string;
   region: string;
-  resources: unknown[];
+  resources: string[];
   detail: T;
 }
 
