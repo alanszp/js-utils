@@ -8,7 +8,7 @@ import {
   mockRequestWithBody,
   mockResponse,
 } from "../test/mocks/expressMocks";
-import { appIdentifier } from "../../dist/helpers/appIdentifier";
+import { appIdentifier } from "../helpers/appIdentifier";
 jest.mock("@alanszp/shared-context");
 
 const logger = createMockLogger({});
