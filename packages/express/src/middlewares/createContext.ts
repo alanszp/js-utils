@@ -16,13 +16,11 @@ export function createContext(
     req.context = req.context || {};
 
     const receivedChain =
-      req.header("x-lifecycle-chain") || req.body?.Detail?.lch;
+      req.header("x-lifecycle-chain") || req.body?.detail?.lch;
     const lifecycleChain = compact([receivedChain, appIdentifier()]).join(",");
 
     const lifecycleId =
-      req.headers["x-lifecycle-id"]?.toString() ||
-      req.body?.Detail?.lid ||
-      cuid();
+      req.header("x-lifecycle-id") || req.body?.detail?.lid || cuid();
 
     const contextId = cuid();
 
