@@ -15,10 +15,12 @@ export function createContext(
   return (req: GenericRequest, _res: Response, next: NextFunction): void => {
     req.context = req.context || {};
 
-    const receivedChain = req.header("x-lifecycle-chain") || req.body["Detail"]?.lch;
+    const receivedChain =
+      req.header("x-lifecycle-chain") || req.body?.detail?.lch;
     const lifecycleChain = compact([receivedChain, appIdentifier()]).join(",");
 
-    const lifecycleId = req.headers["x-lifecycle-id"]?.toString() || req.body["TraceHeader"] || cuid();
+    const lifecycleId =
+      req.header("x-lifecycle-id") || req.body?.detail?.lid || cuid();
 
     const contextId = cuid();
 

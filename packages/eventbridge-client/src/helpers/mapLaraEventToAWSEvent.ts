@@ -19,7 +19,7 @@ export function mapLaraEventToAWSEvent(
   try {
     return {
       DetailType: topic,
-      Detail: JSON.stringify({ ...body, lch }),
+      Detail: JSON.stringify({ ...body, lch, lid }), // lid is included here since the TraceHeader is not sent to the targets by aws
       Source: `${env}.lara.${appName}`,
       EventBusName: bus,
       Time: new Date(),
