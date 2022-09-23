@@ -1,6 +1,6 @@
 import { ILogger } from "@alanszp/logger";
 import { SharedContext } from "@alanszp/shared-context";
-import { compact, partition } from "lodash";
+import { chain, chunk, compact, partition } from "lodash";
 import { eventbridgeClient, EventRequest, PutEventEntryResponse } from "./aws";
 import { mapLaraEventToAWSEvent } from "./helpers/mapLaraEventToAWSEvent";
 
@@ -21,6 +21,11 @@ export interface EventDispatchResult {
   failed: PutEventEntryResponse[];
   failedCount: number | undefined;
 }
+
+/**
+ * Max batch size for the putEvents request defined by AWS.
+ */
+const MAX_BATCH_SIZE = 10;
 
 /**
  * Basic client for Eventbridge.
@@ -53,23 +58,58 @@ export class BasicEventbridgeClient {
   ): Promise<EventDispatchResult> {
     const logger = this.getLogger();
 
-    const eventsToSend: EventRequest = {
-      Entries: compact(
-        events.map((event) =>
-          mapLaraEventToAWSEvent(
-            event,
-            this.env,
-            this.appName,
-            this.bus,
-            logger,
-            this.context
-          )
+    const eventsToSend = chain(events)
+      .map((event) =>
+        mapLaraEventToAWSEvent(
+          event,
+          this.env,
+          this.appName,
+          this.bus,
+          logger,
+          this.context
         )
-      ),
-    };
+      )
+      .compact()
+      .chunk(MAX_BATCH_SIZE)
+      .map((mappedEventsChunk) => ({
+        Entries: mappedEventsChunk,
+      }))
+      .value();
 
-    const result = await eventbridgeClient.putEvents(eventsToSend).promise();
-    const { Entries, FailedEntryCount: failedCount } = result;
+    const results = await Promise.all(
+      eventsToSend.map((events) =>
+        eventbridgeClient
+          .putEvents(events)
+          .promise()
+          .then((...res) => {
+            logger.info(JSON.stringify(res));
+            return res[0];
+          })
+          .catch((...err) => {
+            logger.error(JSON.stringify(err));
+            return err[0];
+          })
+      )
+    );
+
+    const aggregatedResult = results.reduce(
+      (prev, act) => {
+        const { Entries: NewEntries, FailedEntryCount: newFailedCount } = act;
+        const { Entries, FailedEntryCount } = prev;
+
+        return {
+          Entries: [...(Entries || []), ...(NewEntries || [])],
+          FailedEntryCount: (FailedEntryCount || 0) + (newFailedCount || 0),
+        };
+      },
+      {
+        Entries: [],
+        FailedEntryCount: 0,
+      }
+    );
+
+    const { Entries, FailedEntryCount: failedCount } = aggregatedResult;
+
     const [successful, failed] = partition(Entries, (entry) => entry.EventId);
 
     logger.info("eventbridge.client.sendEvents.end", {
