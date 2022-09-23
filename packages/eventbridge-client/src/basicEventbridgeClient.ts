@@ -1,6 +1,6 @@
 import { ILogger } from "@alanszp/logger";
 import { SharedContext } from "@alanszp/shared-context";
-import { chunk, compact, partition } from "lodash";
+import { chain, chunk, compact, partition } from "lodash";
 import { eventbridgeClient, EventRequest, PutEventEntryResponse } from "./aws";
 import { mapLaraEventToAWSEvent } from "./helpers/mapLaraEventToAWSEvent";
 
@@ -58,27 +58,37 @@ export class BasicEventbridgeClient {
   ): Promise<EventDispatchResult> {
     const logger = this.getLogger();
 
-    const eventsToSend = chunk(
-      compact(
-        events.map((event) =>
-          mapLaraEventToAWSEvent(
-            event,
-            this.env,
-            this.appName,
-            this.bus,
-            logger,
-            this.context
-          )
+    const eventsToSend = chain(events)
+      .map((event) =>
+        mapLaraEventToAWSEvent(
+          event,
+          this.env,
+          this.appName,
+          this.bus,
+          logger,
+          this.context
         )
-      ),
-      MAX_BATCH_SIZE
-    ).map((mappedEventsChunk) => ({
-      Entries: mappedEventsChunk,
-    }));
+      )
+      .compact()
+      .chunk(MAX_BATCH_SIZE)
+      .map((mappedEventsChunk) => ({
+        Entries: mappedEventsChunk,
+      }))
+      .value();
 
     const results = await Promise.all(
       eventsToSend.map((events) =>
-        eventbridgeClient.putEvents(events).promise()
+        eventbridgeClient
+          .putEvents(events)
+          .promise()
+          .then((...res) => {
+            logger.info(JSON.stringify(res));
+            return res[0];
+          })
+          .catch((...err) => {
+            logger.error(JSON.stringify(err));
+            return err[0];
+          })
       )
     );
 
