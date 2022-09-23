@@ -1,6 +1,6 @@
 import { ILogger } from "@alanszp/logger";
 import { SharedContext } from "@alanszp/shared-context";
-import { compact, partition } from "lodash";
+import { chunk, compact, partition } from "lodash";
 import { eventbridgeClient, EventRequest, PutEventEntryResponse } from "./aws";
 import { mapLaraEventToAWSEvent } from "./helpers/mapLaraEventToAWSEvent";
 
@@ -53,8 +53,8 @@ export class BasicEventbridgeClient {
   ): Promise<EventDispatchResult> {
     const logger = this.getLogger();
 
-    const eventsToSend: EventRequest = {
-      Entries: compact(
+    const eventsToSend = chunk(
+      compact(
         events.map((event) =>
           mapLaraEventToAWSEvent(
             event,
@@ -66,10 +66,35 @@ export class BasicEventbridgeClient {
           )
         )
       ),
-    };
+      10
+    ).map((mappedEventsChunk) => ({
+      Entries: mappedEventsChunk,
+    }));
 
-    const result = await eventbridgeClient.putEvents(eventsToSend).promise();
-    const { Entries, FailedEntryCount: failedCount } = result;
+    const results = await Promise.all(
+      eventsToSend.map((events) =>
+        eventbridgeClient.putEvents(events).promise()
+      )
+    );
+
+    const aggregatedResult = results.reduce(
+      (prev, act) => {
+        const { Entries: NewEntries, FailedEntryCount: newFailedCount } = act;
+        const { Entries, FailedEntryCount } = prev;
+
+        return {
+          Entries: [...(Entries || []), ...(NewEntries || [])],
+          FailedEntryCount: (FailedEntryCount || 0) + (newFailedCount || 0),
+        };
+      },
+      {
+        Entries: [],
+        FailedEntryCount: 0,
+      }
+    );
+
+    const { Entries, FailedEntryCount: failedCount } = aggregatedResult;
+
     const [successful, failed] = partition(Entries, (entry) => entry.EventId);
 
     logger.info("eventbridge.client.sendEvents.end", {
