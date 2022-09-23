@@ -23,6 +23,11 @@ export interface EventDispatchResult {
 }
 
 /**
+ * Max batch size for the putEvents request defined by AWS.
+ */
+const MAX_BATCH_SIZE = 10;
+
+/**
  * Basic client for Eventbridge.
  * Usage will be done by extending this class and implementing methods that internally call the protected sendEvents method.
  */
@@ -66,7 +71,7 @@ export class BasicEventbridgeClient {
           )
         )
       ),
-      10
+      MAX_BATCH_SIZE
     ).map((mappedEventsChunk) => ({
       Entries: mappedEventsChunk,
     }));
