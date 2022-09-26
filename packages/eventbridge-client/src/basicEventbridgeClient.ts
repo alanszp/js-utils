@@ -81,14 +81,6 @@ export class BasicEventbridgeClient {
         eventbridgeClient
           .putEvents(events)
           .promise()
-          .then((...res) => {
-            logger.info(JSON.stringify(res));
-            return res[0];
-          })
-          .catch((...err) => {
-            logger.error(JSON.stringify(err));
-            return err[0];
-          })
       )
     );
 
