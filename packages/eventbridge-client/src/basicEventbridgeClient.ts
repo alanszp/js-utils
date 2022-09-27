@@ -21,9 +21,13 @@ export type LaraEvent = {
   body: Record<string, unknown>;
 };
 
+export type PutEventFailedEntryResponse = PutEventEntryResponse & {
+  event: PutEventEntryRequest;
+};
+
 export interface EventDispatchResult {
   successful: PutEventEntryResponse[];
-  failed: PutEventEntryResponse & { event: PutEventEntryRequest }[];
+  failed: PutEventFailedEntryResponse[];
   failedCount: number | undefined;
 }
 
