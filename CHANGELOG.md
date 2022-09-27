@@ -1,5 +1,48 @@
 # Changelog
 
+## v7.5.0
+
+Changes
+
+- Modify `@alanszp/eventbridge-client`: still receives multiple events to send to eventbridge, but sends them 1 by 1 in parallel and then aggregate result to allow to know which events actually failed.
+
+## v7.4.3
+
+Changes
+
+- Modify `@alanszp/eventbridge-client`: remove logs from responses and failures.
+
+## v7.4.2
+
+Changes
+
+- Modify `@alanszp/eventbridge-client`: now sends multiple events to eventbridge in the same request and logs responses and failures.
+
+## v7.4.1
+
+Changes
+
+- Modify `@alanszp/express` middleware createContext: change import from dist folder to src folder.
+
+## v7.4.0
+
+Changes
+
+- Modify `@alanszp/express` middleware createContext: fix bug that when body didn't exist, requests failed.
+- Modify `@alanszp/express` middleware returnInternalServerError: fix bug that when logger didn't exist it failed. Instead, get logger with `getLogger` function to hold the actual sharedContext.
+
+## v7.3.0
+
+Changes
+
+- Modify `@alanszp/express` middleware createContext: when headers "x-lifecycle-chain" and "x-lifecycle-id" are not present try to fetch them from request body as eventbridge events send them there.
+
+## v7.2.0
+
+Changes
+
+- Create `@alanszp/eventbridge-subscriber` to hold common classes useful to subscribe to events
+
 ## v7.1.1
 
 Changes
