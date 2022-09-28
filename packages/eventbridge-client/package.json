@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/eventbridge-client",
-  "version": "7.4.3",
+  "version": "7.5.0",
   "description": "Alan's basic eventbridge client.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
