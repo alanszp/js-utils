@@ -1,105 +1,41 @@
-export const fifteenEventsFixture = {
-  eventsToSend: [
-    { topic: "topic", body: { property: true } },
-    { topic: "topic", body: { property: true } },
-    { topic: "topic", body: { property: true } },
-    { topic: "topic", body: { property: true } },
-    { topic: "topic", body: { property: true } },
-    { topic: "topic", body: { property: true } },
-    { topic: "topic", body: { property: true } },
-    { topic: "topic", body: { property: true } },
-    { topic: "topic", body: { property: true } },
-    { topic: "topic", body: { property: true } },
-    { topic: "topic", body: { property: true } },
-    { topic: "topic", body: { property: true } },
-    { topic: "topic", body: { property: true } },
-    { topic: "topic", body: { property: true } },
-    { topic: "topic", body: { property: true } },
-  ],
+export const topics = ["topic1", "topic2"];
 
-  allSuccessfulResponses: {
-    firstResponse: {
-      Entries: [
-        { EventId: 1 },
-        { EventId: 2 },
-        { EventId: 3 },
-        { EventId: 4 },
-        { EventId: 5 },
-        { EventId: 6 },
-        { EventId: 7 },
-        { EventId: 8 },
-        { EventId: 9 },
-        { EventId: 10 },
-      ],
-      FailedEntryCount: 0,
-    },
+export const events = [{ property: "1" }, { property: "2" }];
 
-    secondResponse: {
-      Entries: [
-        { EventId: 11 },
-        { EventId: 12 },
-        { EventId: 13 },
-        { EventId: 14 },
-        { EventId: 15 },
-      ],
-      FailedEntryCount: 0,
-    },
+export const twoEventsToSend = [
+  { topic: topics[0], body: events[0] },
+  { topic: topics[1], body: events[1] },
+];
+
+export const twoSuccessfulResponses = [
+  {
+    Entries: [{ EventId: 1 }],
+    FailedEntryCount: 0,
   },
-
-  allUnsuccessfulResponses: {
-    firstResponse: {
-      Entries: [
-        { EventId: null },
-        { EventId: null },
-        { EventId: null },
-        { EventId: null },
-        { EventId: null },
-        { EventId: null },
-        { EventId: null },
-        { EventId: null },
-        { EventId: null },
-        { EventId: null },
-      ],
-      FailedEntryCount: 10,
-    },
-    secondResponse: {
-      Entries: [
-        { EventId: null },
-        { EventId: null },
-        { EventId: null },
-        { EventId: null },
-        { EventId: null },
-      ],
-      FailedEntryCount: 5,
-    },
+  {
+    Entries: [{ EventId: 2 }],
+    FailedEntryCount: 0,
   },
+];
 
-  sevenUnsuccessfulResponses: {
-    firstResponse: {
-      Entries: [
-        { EventId: 1 },
-        { EventId: 2 },
-        { EventId: 3 },
-        { EventId: 4 },
-        { EventId: null },
-        { EventId: null },
-        { EventId: null },
-        { EventId: null },
-        { EventId: null },
-        { EventId: null },
-      ],
-      FailedEntryCount: 6,
-    },
-
-    secondResponse: {
-      Entries: [
-        { EventId: 5 },
-        { EventId: 6 },
-        { EventId: 8 },
-        { EventId: null },
-        { EventId: 7 },
-      ],
-      FailedEntryCount: 1,
-    },
+export const twoUnsuccessfulResponses = [
+  {
+    Entries: [{ EventId: undefined }],
+    FailedEntryCount: 1,
   },
-};
+  {
+    Entries: [{ EventId: undefined }],
+    FailedEntryCount: 1,
+  },
+];
+
+export const oneSuccessfulOneUnsuccessfulResponses = [
+  {
+    Entries: [{ EventId: 1 }],
+    FailedEntryCount: 0,
+  },
+  {
+    Entries: [{ EventId: null }],
+    FailedEntryCount: 1,
+  },
+];
