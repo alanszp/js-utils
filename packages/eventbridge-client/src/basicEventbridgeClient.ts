@@ -1,9 +1,8 @@
 import { ILogger } from "@alanszp/logger";
 import { SharedContext } from "@alanszp/shared-context";
-import { chain, chunk, compact, omit, partition } from "lodash";
+import { chain, omit, partition } from "lodash";
 import {
-  eventbridgeClient,
-  EventRequest,
+  getEventbridgeClient,
   PutEventEntryRequest,
   PutEventEntryResponse,
 } from "./aws";
@@ -44,6 +43,7 @@ export class BasicEventbridgeClient {
   private appName: string;
   private env: string;
   private bus: string;
+  private client;
 
   protected getLogger: () => ILogger;
   protected context: SharedContext;
@@ -53,13 +53,16 @@ export class BasicEventbridgeClient {
     env: string,
     getLogger: () => ILogger,
     context: SharedContext,
-    bus: string
+    bus: string,
+    customEndpoint?: string,
+    customRegion?: string
   ) {
     this.appName = appName;
     this.env = env;
     this.bus = bus;
     this.getLogger = getLogger;
     this.context = context;
+    this.client = getEventbridgeClient(customEndpoint, customRegion);
   }
 
   protected async sendEvents(
@@ -90,7 +93,7 @@ export class BasicEventbridgeClient {
      */
     const results = await Promise.all(
       eventsToSend.map((singleEventArray) =>
-        eventbridgeClient
+        this.client
           .putEvents(singleEventArray)
           .promise()
           .then(({ Entries, FailedEntryCount }) => ({
