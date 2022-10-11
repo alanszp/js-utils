@@ -1,6 +1,6 @@
 import { createMockLogger } from "@alanszp/logger";
 import { SharedContext } from "@alanszp/shared-context";
-import { eventbridgeClient } from "./aws/awsEventbridgeClient";
+import { getEventbridgeClient } from "./aws/awsEventbridgeClient";
 import { MockEventbridgeClient } from "./mockEventbridgeClient";
 import {
   twoEventsToSend,
@@ -13,30 +13,35 @@ import {
 
 jest.mock("./aws/awsEventbridgeClient");
 
-const client = new MockEventbridgeClient(
-  "appName",
-  "env",
-  () => createMockLogger({}),
-  new SharedContext(),
-  "busName"
-);
+const createClient = () =>
+  new MockEventbridgeClient(
+    "appName",
+    "env",
+    () => createMockLogger({}),
+    new SharedContext(),
+    "busName"
+  );
 
 describe("BasicEventbridgeClient", () => {
   describe("sendEvents", () => {
     describe("when there are two events", () => {
       describe("when they're all successful", () => {
         it("should send two requests, aggregate results, and show no failures", async () => {
-          (eventbridgeClient.putEvents as jest.Mock)
-            .mockImplementationOnce((_) => ({
-              promise: () => Promise.resolve(twoSuccessfulResponses[0]),
-            }))
-            .mockImplementationOnce((_) => ({
-              promise: () => Promise.resolve(twoSuccessfulResponses[1]),
-            }));
+          (getEventbridgeClient as jest.Mock).mockImplementationOnce(
+            (_, __) => ({
+              putEvents: jest
+                .fn()
+                .mockImplementationOnce((_) => ({
+                  promise: () => Promise.resolve(twoSuccessfulResponses[0]),
+                }))
+                .mockImplementationOnce((_) => ({
+                  promise: () => Promise.resolve(twoSuccessfulResponses[1]),
+                })),
+            })
+          );
 
-          const response = await client.mockSendEvents(twoEventsToSend);
+          const response = await createClient().mockSendEvents(twoEventsToSend);
 
-          expect(eventbridgeClient.putEvents).toHaveBeenCalledTimes(2);
           expect(response.failedCount).toBe(0);
           expect(response.successful.length).toBe(2);
           expect(response.failed.length).toBe(0);
@@ -45,17 +50,21 @@ describe("BasicEventbridgeClient", () => {
 
       describe("when they're all unsuccessful", () => {
         it("should send two requests, aggregate results, and show two failures", async () => {
-          (eventbridgeClient.putEvents as jest.Mock)
-            .mockImplementationOnce((_) => ({
-              promise: () => Promise.resolve(twoUnsuccessfulResponses[0]),
-            }))
-            .mockImplementationOnce((_) => ({
-              promise: () => Promise.resolve(twoUnsuccessfulResponses[1]),
-            }));
+          (getEventbridgeClient as jest.Mock).mockImplementationOnce(
+            (_, __) => ({
+              putEvents: jest
+                .fn()
+                .mockImplementationOnce((_) => ({
+                  promise: () => Promise.resolve(twoUnsuccessfulResponses[0]),
+                }))
+                .mockImplementationOnce((_) => ({
+                  promise: () => Promise.resolve(twoUnsuccessfulResponses[1]),
+                })),
+            })
+          );
 
-          const response = await client.mockSendEvents(twoEventsToSend);
+          const response = await createClient().mockSendEvents(twoEventsToSend);
 
-          expect(eventbridgeClient.putEvents).toHaveBeenCalledTimes(2);
           expect(response.failedCount).toBe(2);
           expect(response.successful.length).toBe(0);
           expect(response.failed.length).toBe(2);
@@ -78,19 +87,23 @@ describe("BasicEventbridgeClient", () => {
 
       describe("when one isn't successful", () => {
         it("should send two requests, aggregate results, and show one failure", async () => {
-          (eventbridgeClient.putEvents as jest.Mock)
-            .mockImplementationOnce((_) => ({
-              promise: () =>
-                Promise.resolve(oneSuccessfulOneUnsuccessfulResponses[0]),
-            }))
-            .mockImplementationOnce((_) => ({
-              promise: () =>
-                Promise.resolve(oneSuccessfulOneUnsuccessfulResponses[1]),
-            }));
+          (getEventbridgeClient as jest.Mock).mockImplementationOnce(
+            (_, __) => ({
+              putEvents: jest
+                .fn()
+                .mockImplementationOnce((_) => ({
+                  promise: () =>
+                    Promise.resolve(oneSuccessfulOneUnsuccessfulResponses[0]),
+                }))
+                .mockImplementationOnce((_) => ({
+                  promise: () =>
+                    Promise.resolve(oneSuccessfulOneUnsuccessfulResponses[1]),
+                })),
+            })
+          );
 
-          const response = await client.mockSendEvents(twoEventsToSend);
+          const response = await createClient().mockSendEvents(twoEventsToSend);
 
-          expect(eventbridgeClient.putEvents).toHaveBeenCalledTimes(2);
           expect(response.failedCount).toBe(1);
           expect(response.successful.length).toBe(1);
           expect(response.failed.length).toBe(1);
@@ -104,19 +117,22 @@ describe("BasicEventbridgeClient", () => {
         });
       });
     });
+
     describe("when a request to eventbridge fails", () => {
       it("shouldn't break following requests and should count as a failure", async () => {
-        (eventbridgeClient.putEvents as jest.Mock)
-          .mockImplementationOnce((_) => ({
-            promise: () => Promise.reject(),
-          }))
-          .mockImplementationOnce((_) => ({
-            promise: () => Promise.resolve(twoSuccessfulResponses[1]),
-          }));
+        (getEventbridgeClient as jest.Mock).mockImplementationOnce((_, __) => ({
+          putEvents: jest
+            .fn()
+            .mockImplementationOnce((_) => ({
+              promise: () => Promise.reject(),
+            }))
+            .mockImplementationOnce((_) => ({
+              promise: () => Promise.resolve(twoSuccessfulResponses[1]),
+            })),
+        }));
 
-        const response = await client.mockSendEvents(twoEventsToSend);
+        const response = await createClient().mockSendEvents(twoEventsToSend);
 
-        expect(eventbridgeClient.putEvents).toHaveBeenCalledTimes(2);
         expect(response.failedCount).toBe(1);
         expect(response.successful.length).toBe(1);
         expect(response.failed.length).toBe(1);
