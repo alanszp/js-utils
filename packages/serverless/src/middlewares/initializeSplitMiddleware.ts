@@ -1,11 +1,6 @@
+import type { SplitClient } from "@alanszp/split";
 import { MiddlewareObj } from "@middy/core";
 import { SplitCouldNotLoadError } from "../errors/splitCouldNotLoadError";
-
-// TODO move interface to other place
-interface SplitClient {
-  hasLoaded(): Promise<boolean>;
-  destroy(): Promise<void>;
-}
 
 export function initializeSplitMiddleware<TEvent, TResult>(
   splitClient: SplitClient
