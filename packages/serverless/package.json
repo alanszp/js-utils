@@ -20,7 +20,8 @@
   },
   "peerDependencies": {
     "@alanszp/audit": "^5.0.0",
-    "@alanszp/logger": "^5.0.0"
+    "@alanszp/logger": "^5.0.0",
+    "@alanszp/split": "^7.0.0"
   },
   "devDependencies": {
     "@alanszp/audit": "^7.0.0",
