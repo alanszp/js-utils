@@ -20,11 +20,13 @@
   },
   "peerDependencies": {
     "@alanszp/audit": "^5.0.0",
-    "@alanszp/logger": "^5.0.0"
+    "@alanszp/logger": "^5.0.0",
+    "@alanszp/split": "7.8.0"
   },
   "devDependencies": {
     "@alanszp/audit": "^7.0.0",
     "@alanszp/logger": "^7.0.0",
+    "@alanszp/split": "7.8.0",
     "@types/lodash": "^4.14.170",
     "@types/node": "^15.12.3",
     "ts-node": "^10.0.0",
