@@ -1,9 +1,9 @@
-import type { SplitClient } from "@alanszp/split";
+import { BaseSplitClient } from "@alanszp/split";
 import { MiddlewareObj } from "@middy/core";
 import { SplitCouldNotLoadError } from "../errors/splitCouldNotLoadError";
 
 export function initializeSplitMiddleware<TEvent, TResult>(
-  splitClient: SplitClient
+  splitClient: BaseSplitClient
 ): MiddlewareObj<TEvent, TResult> {
   return {
     before: async (): Promise<void> => {
