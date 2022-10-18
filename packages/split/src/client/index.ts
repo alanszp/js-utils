@@ -1,6 +1,12 @@
 import { ILogger } from "@alanszp/logger";
 import { SplitFactory } from "@splitsoftware/splitio";
 
+/**
+ * Hack to force the compiler to import the types
+ * @deprecated
+ */
+export type DoNotUseSplitFactoryType = typeof SplitFactory;
+
 const ON = "on";
 const CONTROL = "control";
 const TIMEOUT_ERROR = 6000;
@@ -11,7 +17,6 @@ export interface SplitClientConstructor {
   timeout: number;
   debug: boolean;
 }
-
 export class BaseSplitClient {
   protected static client: SplitIO.IClient;
 
