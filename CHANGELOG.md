@@ -1,5 +1,27 @@
 # Changelog
 
+## v7.8.0
+
+Changes
+
+- Modify `@alanszp/serverless`: Adds middleware for SplitIO.
+- Modify `@alanszp/split`: Fixes types of SplitIO SDK.
+
+## v7.8.0
+
+- Add `@alanszp/split`: Wrapper of Split IO Javascript SDK and creation of a base class to init and consume the SDK.
+
+## v7.7.0
+
+Nothing changed. It was never published
+
+## v7.6.0
+
+Changes
+
+- Modify `@alanszp/eventbridge-client`: When some of the request fails, it adds the payload to the response of the `sendEvents` method.
+
+
 ## v7.5.0
 
 Changes
