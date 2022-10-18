@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/split",
-  "version": "7.8.1",
+  "version": "7.8.0",
   "description": "Alan's split client",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
