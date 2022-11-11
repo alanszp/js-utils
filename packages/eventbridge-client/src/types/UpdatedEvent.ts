@@ -32,3 +32,8 @@ export type UpdatedEvent<
     _previousValues?: UpdatedFields<Entity, Identifiers>;
     modifiedKeys: (keyof UpdatedFields<Entity, Identifiers>)[];
   };
+
+export type DeletedEvent<
+  Entity,
+  Identifiers extends keyof PropertyKeys<Entity>
+> = UpdatedIdentifiers<Entity, Identifiers>;
