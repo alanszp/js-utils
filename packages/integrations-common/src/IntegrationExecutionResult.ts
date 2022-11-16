@@ -1,7 +1,7 @@
 import { merge } from "lodash";
 import {
   IntegrationResultStatus,
-  CommunicationIntegrationStatus,
+  IntegrationStatus,
   IntegrationResultError,
 } from "./types";
 
@@ -28,7 +28,7 @@ export class IntegrationExecutionResult {
 
   private organizationReference: string;
 
-  private status: CommunicationIntegrationStatus;
+  private status: IntegrationStatus;
 
   private executedBy: string | undefined;
 
@@ -74,11 +74,11 @@ export class IntegrationExecutionResult {
     return this.organizationReference;
   }
 
-  public setStatus(status: CommunicationIntegrationStatus): void {
+  public setStatus(status: IntegrationStatus): void {
     this.status = status;
   }
 
-  public getStatus(): CommunicationIntegrationStatus {
+  public getStatus(): IntegrationStatus {
     return this.status;
   }
 
