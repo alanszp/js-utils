@@ -1,4 +1,4 @@
-export enum CommunicationIntegrationStatus {
+export enum IntegrationStatus {
   SUCCESS = "success",
   ERROR = "error",
 }
