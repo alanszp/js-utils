@@ -1,0 +1,31 @@
+export enum CommunicationIntegrationStatus {
+  SUCCESS = "success",
+  ERROR = "error",
+}
+
+export enum SyncError {
+  MISSING_FIELDS = "missing",
+  VALIDATION = "validation",
+  VALIDATION_SERVER = "validation_server",
+}
+
+export type IntegrationResultError = {
+  type: SyncError;
+  userReference: string;
+  metadata: string[];
+};
+
+export interface IntegrationResultStatus {
+  totals: {
+    added: number;
+    updated: number;
+    removed: number;
+    error: number;
+  };
+  details: {
+    added: string[];
+    updated: string[];
+    removed: string[];
+    error: IntegrationResultError[];
+  };
+}
