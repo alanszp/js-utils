@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "experimentalDecorators": true,
-
+    "emitDecoratorMetadata": true,
     "alwaysStrict": true,
     "strictNullChecks": true
   },
