@@ -4,6 +4,7 @@
 
 - Modify `@alanszp/split`: Removes the timeout functionality since its already implemented in the SplitClient lib.
 - Modify `@alanszp/split`: Adds a log in the succeed to measure how long did it take to init.
+- Modify `@alanszp/split`: Change base params to not be so aggressive on pushing analytics metrics.
 - Modify `@alanszp/serverless`: Assures that SplitIO is destroyed if for any reason it couldn't be loaded.
 
 ## v7.9.0

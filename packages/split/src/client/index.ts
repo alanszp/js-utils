@@ -31,8 +31,7 @@ export class BaseSplitClient {
         authorizationKey: apiKey,
       },
       scheduler: {
-        impressionsRefreshRate: 1,
-        eventsPushRate: 2,
+        impressionsRefreshRate: 60,
       },
       debug,
     });
