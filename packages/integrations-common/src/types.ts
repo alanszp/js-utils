@@ -7,6 +7,7 @@ export enum SyncError {
   MISSING_FIELDS = "missing",
   VALIDATION = "validation",
   VALIDATION_SERVER = "validation_server",
+  CREATION_DISABLED = "creation_disabled",
 }
 
 export type IntegrationResultError = {
