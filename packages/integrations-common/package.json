@@ -15,12 +15,15 @@
     "compile": "rm -rf ./dist && tsc --declaration",
     "compile-watch": "tsc -w",
     "build": "yarn run compile",
+    "test": "jest",
     "prepack": "yarn run build",
     "yalc-publish": "yarn run yalc publish"
   },
   "devDependencies": {
     "@types/jest": "^29.2.3",
     "@types/node": "^15.12.3",
+    "babel-jest": "^29.0.0",
+    "eslint-plugin-jest": "^26.8.7",
     "jest": "^29.3.1",
     "ts-node": "^10.0.0",
     "tslint": "^6.1.3",
