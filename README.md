@@ -1,4 +1,4 @@
-# js-monorepo
+# js-utils
 
 Monorepo for all JS internal dependencies
 
