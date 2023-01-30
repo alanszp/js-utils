@@ -1,5 +1,6 @@
 import { ILogger } from "@alanszp/logger";
 import { SplitFactory } from "@splitsoftware/splitio";
+import { now } from "../helpers/now";
 
 /**
  * Hack to force the compiler to import the types
@@ -9,7 +10,6 @@ export type DoNotUseSplitFactoryType = typeof SplitFactory;
 
 const ON = "on";
 const CONTROL = "control";
-const TIMEOUT_ERROR = 6000;
 
 export interface SplitClientConstructor {
   apiKey: string;
@@ -24,12 +24,7 @@ export class BaseSplitClient {
 
   protected promiseConstruction: Promise<boolean>;
 
-  constructor({
-    apiKey,
-    logger,
-    timeout = TIMEOUT_ERROR,
-    debug = false,
-  }: SplitClientConstructor) {
+  constructor({ apiKey, logger, debug = false }: SplitClientConstructor) {
     BaseSplitClient.logger = logger;
 
     const factory = SplitFactory({
@@ -37,30 +32,29 @@ export class BaseSplitClient {
         authorizationKey: apiKey,
       },
       scheduler: {
-        impressionsRefreshRate: 1,
-        eventsPushRate: 2,
+        impressionsRefreshRate: 60,
       },
       debug,
     });
 
+    const startedTime = now();
     BaseSplitClient.client = factory.client();
 
-    this.promiseConstruction = Promise.race([
-      new Promise<true>((resolve) => {
-        BaseSplitClient.client.on(
-          BaseSplitClient.client.Event.SDK_READY,
-          () => {
-            BaseSplitClient.logger.info("split_io_client.created.succeed");
-            resolve(true);
-          }
-        );
-      }),
-      new Promise<false>((resolve) => {
-        setTimeout(() => {
-          resolve(false);
-        }, timeout);
-      }),
-    ]);
+    this.promiseConstruction = BaseSplitClient.client
+      .ready()
+      .then(() => {
+        BaseSplitClient.logger.info("split_io_client.created.succeed", {
+          executionTime: now() - startedTime,
+        });
+        return true;
+      })
+      .catch((error) => {
+        BaseSplitClient.logger.info("split_io_client.created.error", {
+          executionTime: now() - startedTime,
+          error,
+        });
+        return false;
+      });
   }
 
   hasLoaded(): Promise<boolean> {

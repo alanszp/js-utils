@@ -1,5 +1,16 @@
 # Changelog
 
+## v7.9.1
+
+- Modify `@alanszp/split`: Removes the timeout functionality since its already implemented in the SplitClient lib.
+- Modify `@alanszp/split`: Adds a log in the succeed to measure how long did it take to init.
+- Modify `@alanszp/split`: Change base params to not be so aggressive on pushing analytics metrics.
+- Modify `@alanszp/serverless`: Assures that SplitIO is destroyed if for any reason it couldn't be loaded.
+
+## v7.9.0
+
+- Publish `@alanszp/queue`: Adds library to manage BullMQ queues. It contains publishers and workers.
+
 ## v7.8.5
 
 - Modify `@alanszp/integrations-common`: Add integration history base entity and common views
