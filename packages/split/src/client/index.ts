@@ -1,6 +1,6 @@
 import { ILogger } from "@alanszp/logger";
 import { SplitFactory } from "@splitsoftware/splitio";
-import now from "performance-now";
+import { now } from "../helpers/now";
 
 /**
  * Hack to force the compiler to import the types
