@@ -1,5 +1,6 @@
 import { ILogger } from "@alanszp/logger";
 import { SplitFactory } from "@splitsoftware/splitio";
+import now from "performance-now";
 
 /**
  * Hack to force the compiler to import the types
@@ -36,20 +37,20 @@ export class BaseSplitClient {
       debug,
     });
 
-    const startedTime = performance.now();
+    const startedTime = now();
     BaseSplitClient.client = factory.client();
 
     this.promiseConstruction = BaseSplitClient.client
       .ready()
       .then(() => {
         BaseSplitClient.logger.info("split_io_client.created.succeed", {
-          executionTime: performance.now() - startedTime,
+          executionTime: now() - startedTime,
         });
         return true;
       })
       .catch((error) => {
         BaseSplitClient.logger.info("split_io_client.created.error", {
-          executionTime: performance.now() - startedTime,
+          executionTime: now() - startedTime,
           error,
         });
         return false;
