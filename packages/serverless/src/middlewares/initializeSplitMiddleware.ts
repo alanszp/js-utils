@@ -8,6 +8,7 @@ export function initializeSplitMiddleware<TEvent, TResult>(
   return {
     before: async (): Promise<void> => {
       const loaded = await splitClient.hasLoaded();
+
       if (!loaded) {
         try {
           await splitClient.destroy();
