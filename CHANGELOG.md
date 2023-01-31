@@ -1,5 +1,14 @@
 # Changelog
 
+## v7.9.3
+
+- Modify `@alanszp/split`: Fix type for constructor.
+
+## v7.9.2
+
+- Modify `@alanszp/serverless`: Fix bad build.
+- Modify `@alanszp/split`: Fix bad build.
+
 ## v7.9.1
 
 - Modify `@alanszp/split`: Removes the timeout functionality since its already implemented in the SplitClient lib.
