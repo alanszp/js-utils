@@ -17,6 +17,7 @@ export interface SplitClientConstructor {
   timeout: number;
   debug: boolean;
 }
+
 export class BaseSplitClient {
   protected static client: SplitIO.IClient;
 
