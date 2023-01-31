@@ -14,7 +14,6 @@ const CONTROL = "control";
 export interface SplitClientConstructor {
   apiKey: string;
   logger: ILogger;
-  timeout: number;
   debug: boolean;
 }
 
