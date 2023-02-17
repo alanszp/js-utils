@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/serverless",
-  "version": "7.10.3",
+  "version": "7.10.4",
   "description": "Alan's serverless utils and middlewares.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
