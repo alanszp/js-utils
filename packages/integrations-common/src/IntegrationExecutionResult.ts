@@ -11,6 +11,7 @@ type ResultTotals = IntegrationResultStatus["totals"];
 export interface ChangesStatus {
   updated: string[];
   created: string[];
+  removed: string[];
   errors: IntegrationResultError[];
 }
 
@@ -49,12 +50,14 @@ export class IntegrationExecutionResult {
       updated: changes.updated.length,
       added: changes.created.length,
       error: changes.errors.length,
+      removed: changes.removed.length,
     });
 
     this.setDetails({
       updated: changes.updated,
       added: changes.created,
       error: changes.errors,
+      removed: changes.removed,
     });
   }
 
