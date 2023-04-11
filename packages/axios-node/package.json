@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/axios-node",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "description": "Alan's axios wrapper with base interceptor.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -19,8 +19,8 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "dependencies": {
-    "@alanszp/errors": "^7.0.0",
-    "@alanszp/shared-context": "^7.0.0",
+    "@alanszp/errors": "^8.0.0",
+    "@alanszp/shared-context": "^8.0.0",
     "axios": "^0.24.0"
   }
 }
