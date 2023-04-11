@@ -1,5 +1,8 @@
 # Changelog
 
+## v8.0.0
+- Modify `@alanszp/integrations-common`: strictly add `removed` into `details` property in `IntegrationExecutionResult` class
+
 ## v7.9.3
 
 - Modify `@alanszp/split`: Fix type for constructor.
