@@ -1,5 +1,6 @@
 import { merge } from "lodash";
 import { ConnectionOptions, JobData, QueueOptions, RawQueue } from "../types";
+import { JobsOptions } from "bullmq";
 
 const BULL_PREFIX = "b";
 
@@ -11,7 +12,12 @@ export class Queue<JobType = JobData> {
 
   private name: string;
 
-  constructor(connection: ConnectionOptions, name: string, prefix: string, queueOptions?: QueueOptions) {
+  constructor(
+    connection: ConnectionOptions,
+    name: string,
+    prefix: string,
+    queueOptions?: QueueOptions
+  ) {
     this.name = name;
 
     this._queue = new RawQueue<JobType>(name, {
@@ -36,12 +42,23 @@ export class Queue<JobType = JobData> {
     });
   }
 
-  async publishJob(job: JobType): Promise<void> {
-    await this.queue.add(this.name, job);
+  async publishJob(job: JobType, opts?: JobsOptions): Promise<void> {
+    await this.queue.add(this.name, job, opts);
   }
 
   async publishBulkJob(jobDatas: JobType[]): Promise<void> {
     const jobs = jobDatas.map((data) => ({ name: this.name, data }));
+    await this.queue.addBulk(jobs);
+  }
+
+  async publishBulkJobWithOptions(
+    jobDefinitions: { jobData: JobType; opts: JobsOptions }[]
+  ): Promise<void> {
+    const jobs = jobDefinitions.map(({ jobData: data, opts }) => ({
+      name: this.name,
+      data,
+      opts,
+    }));
     await this.queue.addBulk(jobs);
   }
 

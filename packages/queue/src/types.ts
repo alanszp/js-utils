@@ -7,6 +7,7 @@ export {
   WorkerOptions,
   Queue as RawQueue,
   QueueOptions,
+  JobsOptions,
 } from "bullmq";
 
 // This may seems odd but actual Job data type from bullmq is any 🤷‍♂️
