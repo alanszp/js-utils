@@ -1,6 +1,9 @@
 import { ILogger } from "@alanszp/logger";
 import { ConnectionManager } from "../connectionManager";
 import { JobData, Job, RawWorker, WorkerOptions } from "../types";
+import { SharedContext } from "@alanszp/shared-context";
+import { Audit } from "@alanszp/audit";
+import { withContext } from "../wrappers/withContext";
 
 export interface WorkerStatus {
   running: boolean;
@@ -10,6 +13,12 @@ export interface WorkerStatus {
 export interface WorkerSetup {
   queueName: string;
   workerOptions?: WorkerOptions;
+}
+
+export interface WorkerContext {
+  sharedContext: SharedContext;
+  baseLogger: ILogger;
+  audit: Audit;
 }
 
 // optional methods
@@ -55,6 +64,8 @@ abstract class Worker<T = JobData> {
 
   abstract setup(): WorkerSetup;
 
+  abstract getContext(): WorkerContext;
+
   public close(): Promise<void> {
     return this.worker.close();
   }
@@ -68,28 +79,41 @@ abstract class Worker<T = JobData> {
   }
 
   private processJob(): (job: Job<T>) => Promise<void> {
-    return async (job) => {
-      this.getLogger().info(`worker.process.job_received`, { queue: this.queueFullName, job });
+    return withContext(this.getContext(), async (job) => {
+      this.getLogger().info(`worker.process.job_received`, {
+        queue: this.queueFullName,
+        job,
+      });
       await this.process(job);
-    };
+    });
   }
 
   async processFailed(job: Job<T>, error: Error): Promise<void> {
-    this.getLogger().warn("worker.job.failed", { queue: this.queueFullName, job, error });
+    this.getLogger().warn("worker.job.failed", {
+      queue: this.queueFullName,
+      job,
+      error,
+    });
     if (this.handleJobFailed) {
       await this.handleJobFailed(job, error);
     }
   }
 
   async processCompleted(job: Job<T>): Promise<void> {
-    this.getLogger().info("worker.job.completed", { queue: this.queueFullName, job });
+    this.getLogger().info("worker.job.completed", {
+      queue: this.queueFullName,
+      job,
+    });
     if (this.handleJobCompleted) {
       await this.handleJobCompleted(job);
     }
   }
 
   async processError(error: Error): Promise<void> {
-    this.getLogger().error("worker.job.unhandled_exception", { queue: this.queueFullName, error });
+    this.getLogger().error("worker.job.unhandled_exception", {
+      queue: this.queueFullName,
+      error,
+    });
     if (this.handleJobError) {
       await this.handleJobError(error);
     }
@@ -97,12 +121,19 @@ abstract class Worker<T = JobData> {
 
   async run(): Promise<void> {
     try {
-      this.getLogger().info("worker.run.starting", { queue: this.queueFullName });
+      this.getLogger().info("worker.run.starting", {
+        queue: this.queueFullName,
+      });
 
       await this.worker.run();
-      this.getLogger().info("worker.run.started", { queue: this.queueFullName });
+      this.getLogger().info("worker.run.started", {
+        queue: this.queueFullName,
+      });
     } catch (error: unknown) {
-      this.getLogger().error("worker.run.error", { queue: this.queueFullName, error });
+      this.getLogger().error("worker.run.error", {
+        queue: this.queueFullName,
+        error,
+      });
       throw error;
     }
   }
@@ -113,7 +144,9 @@ abstract class Worker<T = JobData> {
     // on completed: allow to do something else after a job is completed
     this.worker.on("completed", (job: Job<T>) => this.processCompleted(job));
     // on failed: when the process fails with an exception it is possible to listen for the "failed" event
-    this.worker.on("failed", (job: Job<T>, error: Error) => this.processFailed(job, error));
+    this.worker.on("failed", (job: Job<T>, error: Error) =>
+      this.processFailed(job, error)
+    );
   }
 
   protected get worker(): RawWorker {

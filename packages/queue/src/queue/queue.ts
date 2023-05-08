@@ -1,6 +1,7 @@
 import { merge } from "lodash";
 import { ConnectionOptions, JobData, QueueOptions, RawQueue } from "../types";
 import { JobsOptions } from "bullmq";
+import { SharedContext } from "@alanszp/shared-context";
 
 const BULL_PREFIX = "b";
 
@@ -12,13 +13,18 @@ export class Queue<JobType = JobData> {
 
   private name: string;
 
+  private getSharedContext: () => SharedContext;
+
   constructor(
     connection: ConnectionOptions,
     name: string,
     prefix: string,
+    getSharedContext: () => SharedContext,
     queueOptions?: QueueOptions
   ) {
     this.name = name;
+
+    this.getSharedContext = getSharedContext;
 
     this._queue = new RawQueue<JobType>(name, {
       ...merge(
@@ -43,7 +49,10 @@ export class Queue<JobType = JobData> {
   }
 
   async publishJob(job: JobType, opts?: JobsOptions): Promise<void> {
-    await this.queue.add(this.name, job, opts);
+    const context = this.getSharedContext();
+    const lid = context.getLifecycleId();
+    const lch = context.getLifecycleChain();
+    await this.queue.add(this.name, { ...job, lid, lch }, opts);
   }
 
   async publishBulkJob(jobDatas: JobType[]): Promise<void> {
