@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/audit",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "description": "Alan's audit util.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -19,8 +19,8 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "dependencies": {
-    "@alanszp/errors": "^8.0.0",
-    "@alanszp/logger": "^8.0.0",
+    "@alanszp/errors": "^9.0.0",
+    "@alanszp/logger": "^9.0.0",
     "lodash": "^4.17.21"
   }
 }
