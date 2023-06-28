@@ -6,6 +6,8 @@ export interface JWTPayload extends LibPayload {
   org: string;
   rls: string[];
   prms: string[];
+  // segmentId
+  sid: string | null;
 }
 
 export interface JWTUser {
@@ -14,6 +16,7 @@ export interface JWTUser {
   organizationReference: string;
   roles: string[];
   permissions: string[];
+  segmentId: string | null;
 }
 
 export interface SignOptions {
