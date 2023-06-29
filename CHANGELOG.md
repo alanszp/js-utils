@@ -1,5 +1,11 @@
 # Changelog
 
+## v9.1.0
+- Modify `@alanszp/jwt`: to add segment_id in the payload of the JWT.
+
+## v9.0.0
+- Modify `@alanszp/queue`: add context to queues.
+
 ## v8.0.0
 - Modify `@alanszp/integrations-common`: strictly add `removed` into `details` property in `IntegrationExecutionResult` class
 
