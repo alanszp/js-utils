@@ -66,6 +66,7 @@ export function createTokenPayload(user: JWTUser): JWTPayload {
     org: user.organizationReference,
     rls: user.roles,
     prms: user.permissions,
+    sid: user.segmentId,
   };
 }
 
@@ -93,6 +94,7 @@ export async function verifyJWT(
     organizationReference: payload.org,
     roles: payload.rls,
     permissions: payload.prms,
+    segmentId: payload.sid,
   };
 }
 
