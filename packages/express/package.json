@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/express",
-  "version": "9.0.0",
+  "version": "9.1.0",
   "description": "Alan's express utils and middlewares.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -38,7 +38,7 @@
   "dependencies": {
     "@alanszp/audit": "^9.0.0",
     "@alanszp/errors": "^9.0.0",
-    "@alanszp/jwt": "^9.0.0",
+    "@alanszp/jwt": "^9.1.0",
     "@alanszp/logger": "^9.0.0",
     "@alanszp/shared-context": "^9.0.0",
     "body-parser": "^1.19.0",
