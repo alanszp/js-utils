@@ -94,6 +94,7 @@ const middlewareGetterByAuthType: Record<
           employeeReference: "0",
           organizationReference: "lara",
           roles: [],
+          segmentId: null,
           permissions: [],
         });
       } else {

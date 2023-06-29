@@ -94,7 +94,7 @@ export async function verifyJWT(
     organizationReference: payload.org,
     roles: payload.rls,
     permissions: payload.prms,
-    segmentId: payload.sid,
+    segmentId: payload.sid || null,
   };
 }
 
