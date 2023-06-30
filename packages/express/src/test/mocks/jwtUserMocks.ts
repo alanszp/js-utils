@@ -6,7 +6,7 @@ export const userJwtUserMock: JWTUser = {
   organizationReference: "test",
   roles: [],
   permissions: [],
-  segmentId: null,
+  segmentReference: null,
 };
 
 export const laraJwtUserMock: JWTUser = {
@@ -15,5 +15,5 @@ export const laraJwtUserMock: JWTUser = {
   organizationReference: "lara",
   roles: [],
   permissions: [],
-  segmentId: null,
+  segmentReference: null,
 };

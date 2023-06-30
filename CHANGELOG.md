@@ -1,12 +1,19 @@
 # Changelog
 
+## v9.2.0
+
+- Modify `@alanszp/jwt`: Rename segment_id to segment_reference. Will invalidate v9.1.0, so we will remove that version to make sure that it's never used.
+
 ## v9.1.0
+
 - Modify `@alanszp/jwt`: to add segment_id in the payload of the JWT.
 
 ## v9.0.0
+
 - Modify `@alanszp/queue`: add context to queues.
 
 ## v8.0.0
+
 - Modify `@alanszp/integrations-common`: strictly add `removed` into `details` property in `IntegrationExecutionResult` class
 
 ## v7.9.3
