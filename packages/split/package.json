@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/split",
-  "version": "9.0.0",
+  "version": "9.2.2",
   "description": "Alan's split client",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -30,7 +30,7 @@
     "typescript": "^4.3.4"
   },
   "dependencies": {
-    "@alanszp/core": "^9.0.0",
+    "@alanszp/core": "^9.2.2",
     "@alanszp/shared-context": "^9.0.0",
     "@alanszp/typeorm": "^9.0.0",
     "@splitsoftware/splitio": "^10.22.0",
