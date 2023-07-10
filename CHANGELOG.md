@@ -1,5 +1,9 @@
 # Changelog
 
+## v9.2.1
+
+- Add `@alanszp/core`: Add utility function assignPaginableKeys
+
 ## v9.2.0
 
 - Modify `@alanszp/jwt`: Rename segment_id to segment_reference. Will invalidate v9.1.0, so we will remove that version to make sure that it's never used.
