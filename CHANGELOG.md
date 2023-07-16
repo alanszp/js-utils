@@ -1,8 +1,12 @@
 # Changelog
 
-## v9.2.1
+## v9.2.2
 
 - Add `@alanszp/core`: Add utility function assignPaginableKeys
+
+## v9.2.1
+
+- Skipped version
 
 ## v9.2.0
 
