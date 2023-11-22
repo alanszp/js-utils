@@ -16,38 +16,38 @@ export type WithNonBusinessDaysOutput<IdentifyObject> = {
   addBusinessDays: (
     dirtyDate: Date | number,
     dirtyAmount: number,
-    identify?: IdentifyObject
+    identify?: IdentifyObject,
   ) => Promise<Date> | Date;
   subBusinessDays: (
     dirtyDate: Date | number,
     dirtyAmount: number,
-    identify?: IdentifyObject
+    identify?: IdentifyObject,
   ) => Promise<Date> | Date;
   differenceInBusinessDays: (
     dirtyDate: Date | number,
     dirtyAmount: number,
-    identify?: IdentifyObject
+    identify?: IdentifyObject,
   ) => Promise<number> | number;
   isNonBusinessDay: (
     date: Date,
-    identify?: IdentifyObject
+    identify?: IdentifyObject,
   ) => Promise<boolean> | boolean;
   isBusinessDay: (
     date: Date,
-    identify?: IdentifyObject
+    identify?: IdentifyObject,
   ) => Promise<boolean> | boolean;
-  cache: LRUCache<IdentifyObject, Promise<Date[]>>;
+  cache: LRUCache<string, Promise<Date[]>>;
 };
 
-export function withNonBusinessDays<Options>(
-  fetchStrategy: ((opts: Options) => Promise<Date[]>) | Date[],
-  cacheOpts?: CacheOptions<string, Date[]> & {
-    serializeOptions?: (opts: Options) => string;
-  }
-): WithNonBusinessDaysOutput<Options> {
+export function withNonBusinessDays<T>(
+  fetchStrategy: ((opts: T) => Promise<Date[]>) | Date[],
+  cacheOpts?: CacheOptions<string, Promise<Date[]>> & {
+    serializeOptions?: (opts: T) => string;
+  },
+): WithNonBusinessDaysOutput<T> {
   if (!isFunction(fetchStrategy) && !isArray(fetchStrategy)) {
     throw new Error(
-      "You must send a function for fetchStrategy or a list of dates"
+      "You must send a function for fetchStrategy or a list of dates",
     );
   }
 
@@ -58,32 +58,32 @@ export function withNonBusinessDays<Options>(
       cache,
       fetchStrategy,
       addBusinessDays,
-      cacheOpts?.serializeOptions
+      cacheOpts?.serializeOptions,
     ),
     differenceInBusinessDays: wrapperDateAndNumberNonBusinessDays(
       cache,
 
       fetchStrategy,
       differenceInBusinessDays,
-      cacheOpts?.serializeOptions
+      cacheOpts?.serializeOptions,
     ),
     subBusinessDays: wrapperDateAndNumberNonBusinessDays(
       cache,
       fetchStrategy,
       subBusinessDays,
-      cacheOpts?.serializeOptions
+      cacheOpts?.serializeOptions,
     ),
     isNonBusinessDay: wrapperDateNonBusinessDays(
       cache,
       fetchStrategy,
       isNonBusinessDay,
-      cacheOpts?.serializeOptions
+      cacheOpts?.serializeOptions,
     ),
     isBusinessDay: wrapperDateNonBusinessDays(
       cache,
       fetchStrategy,
       isBusinessDay,
-      cacheOpts?.serializeOptions
+      cacheOpts?.serializeOptions,
     ),
     cache,
   };

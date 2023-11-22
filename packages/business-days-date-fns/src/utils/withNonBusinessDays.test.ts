@@ -66,7 +66,7 @@ describe("withNonBusinessDays", () => {
       mockFetchStrategy,
       {
         serializeOptions: (obj) => JSON.stringify(obj),
-      }
+      },
     );
 
     await isBusinessDay(new Date("2022-01-18"));
@@ -82,7 +82,7 @@ describe("withNonBusinessDays", () => {
       mockFetchStrategy,
       {
         serializeOptions: (obj) => JSON.stringify(obj),
-      }
+      },
     );
 
     const promise1 = isBusinessDay(new Date("2022-01-18"));
@@ -113,7 +113,7 @@ describe("withNonBusinessDays", () => {
       mockFetchStrategy,
       {
         serializeOptions: (obj) => JSON.stringify(obj),
-      }
+      },
     );
 
     const promise1 = isBusinessDay(new Date("2022-01-18"));
@@ -128,14 +128,14 @@ describe("withNonBusinessDays", () => {
   it("bootstrapping async should call fetchStrategy but just one time, second go to cache if the promise is resolved before the second call", async () => {
     const mockFetchStrategy = jest.fn();
     mockFetchStrategy.mockImplementation((obj: { number: number }) =>
-      Promise.resolve(mockNBD)
+      Promise.resolve(mockNBD),
     );
 
     const { isBusinessDay } = withNonBusinessDays<{ number: number }>(
       mockFetchStrategy,
       {
         serializeOptions: (obj) => JSON.stringify(obj),
-      }
+      },
     );
 
     const promise1 = isBusinessDay(new Date("2022-01-18"), { number: 1 });
@@ -161,14 +161,14 @@ describe("withNonBusinessDays", () => {
     }
 
     mockFetchStrategy.mockImplementation(
-      (obj: { number: number }) => new Promise(verifyResolve)
+      (obj: { number: number }) => new Promise(verifyResolve),
     );
 
     const { isBusinessDay } = withNonBusinessDays<{ number: number }>(
       mockFetchStrategy,
       {
         serializeOptions: (obj) => JSON.stringify(obj),
-      }
+      },
     );
 
     const promise1 = isBusinessDay(new Date("2022-01-18"), { number: 1 });
@@ -183,14 +183,14 @@ describe("withNonBusinessDays", () => {
   it("bootstrapping async should call fetchStrategy two times if the promise is resolved before the second call", async () => {
     const mockFetchStrategy = jest.fn();
     mockFetchStrategy.mockImplementation((obj: { number: number }) =>
-      Promise.resolve(mockNBD)
+      Promise.resolve(mockNBD),
     );
 
     const { isBusinessDay } = withNonBusinessDays<{ number: number }>(
       mockFetchStrategy,
       {
         serializeOptions: (obj) => JSON.stringify(obj),
-      }
+      },
     );
 
     const promise1 = isBusinessDay(new Date("2022-01-18"), { number: 1 });
@@ -229,14 +229,14 @@ describe("withNonBusinessDays", () => {
     const mockFetchStrategy = jest.fn();
     mockFetchStrategy.mockImplementation(
       (obj: { number: number }) =>
-        new Promise(obj.number == 1 ? verifyResolve1 : verifyResolve2)
+        new Promise(obj.number == 1 ? verifyResolve1 : verifyResolve2),
     );
 
     const { isBusinessDay } = withNonBusinessDays<{ number: number }>(
       mockFetchStrategy,
       {
         serializeOptions: (obj) => JSON.stringify(obj),
-      }
+      },
     );
 
     const promise1 = isBusinessDay(new Date("2022-01-18"), { number: 1 });
@@ -273,9 +273,10 @@ describe("withNonBusinessDays", () => {
 
   it("should export cache correctly", () => {
     const { cache } = withNonBusinessDays(mockNBD);
+    const date = new Date();
 
-    cache.set("key-name", "key-value");
+    cache.set("key-name", Promise.resolve([date]));
 
-    expect(cache.get("key-name")).toEqual("key-value");
+    expect(cache.get("key-name")).toEqual(date);
   });
 });
