@@ -37,6 +37,9 @@ export function auditLog(action: string, bodyModifier?: AuditBodyModifier) {
             res.statusCode === 304 ||
             (res.statusCode >= 200 && res.statusCode < 300),
           ...partialBody,
+          lid: req.context.lifecycleId ?? undefined,
+          lch: req.context.lifecycleChain ?? undefined,
+          cid: req.context.contextId ?? undefined,
           action,
         });
       } catch (error: unknown) {

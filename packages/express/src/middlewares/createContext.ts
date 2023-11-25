@@ -12,7 +12,7 @@ export function createContext(
   baseLogger: ILogger,
   audit: Audit
 ) {
-  return (req: GenericRequest, _res: Response, next: NextFunction): void => {
+  return (req: GenericRequest, res: Response, next: NextFunction): void => {
     req.context = req.context || {};
 
     const receivedChain =
@@ -23,6 +23,9 @@ export function createContext(
       req.header("x-lifecycle-id") || req.body?.detail?.lid || cuid();
 
     const contextId = cuid();
+
+    res.setHeader("x-lifecycle-id", lifecycleId);
+    res.setHeader("x-context-id", contextId);
 
     sharedContext.run(
       (context) => {
