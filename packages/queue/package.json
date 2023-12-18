@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/queue",
-  "version": "9.0.0",
+  "version": "9.2.3",
   "description": "Workers and queues",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
