@@ -1,5 +1,9 @@
 # Changelog
 
+## v9.2.4
+
+- Add `@alanszp/queue`: Add `ReturnValue` to `Worker` generics.
+
 ## v9.2.3
 
 - Add `@alanszp/queue`: Add `getName` method for class `Queue`

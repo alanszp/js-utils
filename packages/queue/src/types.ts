@@ -10,6 +10,6 @@ export {
   JobsOptions,
 } from "bullmq";
 
-// This may seems odd but actual Job data type from bullmq is any 🤷‍♂️
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type JobData = any;
+export type JobData = unknown;
+
+export type JobReturnValue = unknown;

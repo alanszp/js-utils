@@ -1,6 +1,12 @@
 import { ILogger } from "@alanszp/logger";
 import { ConnectionManager } from "../connectionManager";
-import { JobData, Job, RawWorker, WorkerOptions } from "../types";
+import {
+  JobData,
+  Job,
+  RawWorker,
+  WorkerOptions,
+  JobReturnValue,
+} from "../types";
 import { SharedContext } from "@alanszp/shared-context";
 import { Audit } from "@alanszp/audit";
 import { withContext } from "../wrappers/withContext";
@@ -23,9 +29,12 @@ export interface WorkerContext {
 
 // optional methods
 
-interface Worker<T = JobData> {
-  handleJobFailed?(job: Job<T>, error: Error): Promise<void> | void;
-  handleJobCompleted?(job: Job<T>): Promise<void> | void;
+interface Worker<Data = JobData, ReturnValue = JobReturnValue> {
+  handleJobFailed?(
+    job: Job<Data, ReturnValue>,
+    error: Error
+  ): Promise<void> | void;
+  handleJobCompleted?(job: Job<Data, ReturnValue>): Promise<void> | void;
   handleJobError?(error: Error): Promise<void> | void;
 }
 
@@ -33,7 +42,7 @@ type QueueName = { name: string; prefix: string; namespace: string };
 
 const BULL_PREFIX = "b";
 
-abstract class Worker<T = JobData> {
+abstract class Worker<Data = JobData, ReturnValue = unknown> {
   private _worker: RawWorker;
 
   private _queue: QueueName;
@@ -48,7 +57,7 @@ abstract class Worker<T = JobData> {
 
     const prefix = connectionManager.getServiceName();
     this._queue = { name, prefix, namespace: BULL_PREFIX };
-    this._worker = new RawWorker<T>(name, this.processJob(), {
+    this._worker = new RawWorker<Data, ReturnValue>(name, this.processJob(), {
       autorun: false,
       connection: connectionManager.getConnection(),
       prefix: `{${prefix}}:${BULL_PREFIX}`,
@@ -60,7 +69,7 @@ abstract class Worker<T = JobData> {
   }
 
   // Handle job
-  abstract process(job: Job<T>): Promise<void>;
+  abstract process(job: Job<Data, ReturnValue>): Promise<ReturnValue>;
 
   abstract setup(): WorkerSetup;
 
@@ -78,17 +87,20 @@ abstract class Worker<T = JobData> {
     return this.worker.id;
   }
 
-  private processJob(): (job: Job<T>) => Promise<void> {
+  private processJob(): (job: Job<Data, ReturnValue>) => Promise<ReturnValue> {
     return withContext(this.getContext(), async (job) => {
       this.getLogger().info(`worker.process.job_received`, {
         queue: this.queueFullName,
         job,
       });
-      await this.process(job);
+      return this.process(job);
     });
   }
 
-  async processFailed(job: Job<T>, error: Error): Promise<void> {
+  async processFailed(
+    job: Job<Data, ReturnValue>,
+    error: Error
+  ): Promise<void> {
     this.getLogger().warn("worker.job.failed", {
       queue: this.queueFullName,
       job,
@@ -99,10 +111,14 @@ abstract class Worker<T = JobData> {
     }
   }
 
-  async processCompleted(job: Job<T>): Promise<void> {
+  async processCompleted(
+    job: Job<Data, ReturnValue>,
+    returnValue: ReturnValue
+  ): Promise<void> {
     this.getLogger().info("worker.job.completed", {
       queue: this.queueFullName,
       job,
+      returnValue,
     });
     if (this.handleJobCompleted) {
       await this.handleJobCompleted(job);
@@ -142,9 +158,13 @@ abstract class Worker<T = JobData> {
     // on error: handle unhandled exceptions
     this.worker.on("error", (error: Error) => this.processError(error));
     // on completed: allow to do something else after a job is completed
-    this.worker.on("completed", (job: Job<T>) => this.processCompleted(job));
+    this.worker.on(
+      "completed",
+      (job: Job<Data, ReturnValue>, result: ReturnValue) =>
+        this.processCompleted(job, result)
+    );
     // on failed: when the process fails with an exception it is possible to listen for the "failed" event
-    this.worker.on("failed", (job: Job<T>, error: Error) =>
+    this.worker.on("failed", (job: Job<Data, ReturnValue>, error: Error) =>
       this.processFailed(job, error)
     );
   }
