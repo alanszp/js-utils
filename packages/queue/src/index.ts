@@ -1,4 +1,5 @@
 export * from "./queue/createQueue";
+export * from "./queue/queue";
 export * from "./connectionManager";
 export * from "./shutdownQueue";
 export * from "./types";
