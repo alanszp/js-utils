@@ -1,5 +1,11 @@
 # Changelog
 
+## v9.2.3
+
+- Add `@alanszp/queue`: Add `getName` method for class `Queue`
+- Add `@alanszp/queue`: Add return type to `publishJob` and `publishBulkJob` on class `Queue`
+- Add `@alanszp/queue`: Export Queue entity
+
 ## v9.2.2
 
 - Add `@alanszp/core`: Add utility function assignPaginableKeys

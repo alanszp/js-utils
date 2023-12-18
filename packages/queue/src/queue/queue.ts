@@ -1,7 +1,7 @@
 import { merge } from "lodash";
-import { ConnectionOptions, JobData, QueueOptions, RawQueue } from "../types";
-import { JobsOptions } from "bullmq";
+import { Job, JobsOptions } from "bullmq";
 import { SharedContext } from "@alanszp/shared-context";
+import { ConnectionOptions, JobData, QueueOptions, RawQueue } from "../types";
 
 const BULL_PREFIX = "b";
 
@@ -48,16 +48,20 @@ export class Queue<JobType = JobData> {
     });
   }
 
-  async publishJob(job: JobType, opts?: JobsOptions): Promise<void> {
+  public getName(): string {
+    return this.name;
+  }
+
+  async publishJob(job: JobType, opts?: JobsOptions): Promise<Job<JobType>> {
     const context = this.getSharedContext();
     const lid = context.getLifecycleId();
     const lch = context.getLifecycleChain();
-    await this.queue.add(this.name, { ...job, lid, lch }, opts);
+    return this.queue.add(this.name, { ...job, lid, lch }, opts);
   }
 
-  async publishBulkJob(jobDatas: JobType[]): Promise<void> {
+  async publishBulkJob(jobDatas: JobType[]): Promise<Job<JobType>[]> {
     const jobs = jobDatas.map((data) => ({ name: this.name, data }));
-    await this.queue.addBulk(jobs);
+    return this.queue.addBulk(jobs);
   }
 
   async publishBulkJobWithOptions(
