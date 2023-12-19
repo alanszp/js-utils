@@ -123,9 +123,20 @@ export class Queue<Data = JobData, ReturnValue = JobReturnValue> {
     this.queue.remove(jobId);
   }
 
-  public async changeDelayToJob(jobId: string, delayMs: number) {
+  public async getJob(
+    jobId: string
+  ): Promise<Job<Data, ReturnValue> | undefined> {
+    return this.queue.getJob(jobId);
+  }
+
+  public async getJobOrFail(jobId: string): Promise<Job<Data, ReturnValue>> {
     const job = await this.queue.getJob(jobId);
     if (!job) throw new JobNotFoundError(jobId);
+    return job;
+  }
+
+  public async changeDelayToJob(jobId: string, delayMs: number) {
+    const job = await this.getJobOrFail(jobId);
 
     const state = await job.getState();
     if (state !== JobStateEnum.DELAYED) {
