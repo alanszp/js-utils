@@ -4,13 +4,13 @@ import { ConnectionManager } from "../connectionManager";
 import { JobData, QueueOptions } from "../types";
 import { SharedContext } from "@alanszp/shared-context";
 
-export function createQueue<JobType = JobData>(
+export function createQueue<Data = JobData>(
   name: string,
   getContext: () => SharedContext,
   queueOptions?: QueueOptions
-): Queue {
+): Queue<Data> {
   const connection = ConnectionManager.getInstance().getConnection();
-  const queue = new Queue<JobType>(
+  const queue = new Queue<Data>(
     connection,
     name,
     ConnectionManager.getInstance().getServiceName(),
