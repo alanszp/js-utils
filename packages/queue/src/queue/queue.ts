@@ -13,6 +13,7 @@ import {
 } from "../types";
 import { JobNotFoundError } from "../errors/JobNotFoundError";
 import { JobCannotBePromotedError } from "../errors/JobCannotBePromotedError";
+import { ResultTypes } from "ioredis/built/utils/RedisCommander";
 
 const BULL_PREFIX = "b";
 
@@ -169,7 +170,7 @@ export class Queue<Data = JobData, ReturnValue = JobReturnValue> {
     await this.queue.close();
   }
 
-  private get queue(): RawQueue<Data> {
+  private get queue(): RawQueue<Data, ReturnValue> {
     return this._queue;
   }
 }
