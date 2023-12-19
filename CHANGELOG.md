@@ -1,5 +1,9 @@
 # Changelog
 
+## v9.2.6
+
+- Add `@alanszp/queue`: Add `Queue` generic on `createQueue` return param.
+
 ## v9.2.5
 
 - Add `@alanszp/eventbridge-subscriber`: Add `INotificationInput<T>` to the interface.
