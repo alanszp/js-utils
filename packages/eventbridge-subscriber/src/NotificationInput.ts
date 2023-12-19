@@ -13,7 +13,20 @@ export interface NotificationInputParams<T> {
   detail: T;
 }
 
-export class NotificationInput<T extends Record<string, unknown> = Record<string, unknown>> extends BaseModel {
+export interface INotificationInput<T> {
+  version: string;
+  id: string;
+  topic: string;
+  createdAt: Date | string;
+  data: T;
+}
+
+export class NotificationInput<
+    T extends Record<string, unknown> = Record<string, unknown>
+  >
+  extends BaseModel
+  implements INotificationInput<T>
+{
   @IsString()
   @IsNotEmpty()
   public version: string;
@@ -33,12 +46,18 @@ export class NotificationInput<T extends Record<string, unknown> = Record<string
   @IsNotEmpty()
   public data: T;
 
-  constructor(params: NotificationInputParams<T>) {
+  constructor(params: INotificationInput<T> | NotificationInputParams<T>) {
     super();
-    this.topic = params["detail-type"];
+    if ("topic" in params) {
+      this.topic = params.topic;
+      this.data = params.data;
+      this.createdAt = new Date(params.createdAt);
+    } else {
+      this.topic = params["detail-type"];
+      this.data = params.detail;
+      this.createdAt = new Date(params.time);
+    }
     this.id = params.id;
-    this.data = params.detail;
-    this.createdAt = new Date(params.time);
     this.version = params.version;
   }
 }
