@@ -100,15 +100,16 @@ export class Queue<Data = JobData, ReturnValue = JobReturnValue> {
     };
   }
 
-  public async getByStatus(
+  public async getJobsAndCountByStatus(
     statuses: JobTypeEnum[],
     page: number = 1,
-    pageSize: number = 50
+    pageSize: number = 50,
+    ascending: boolean = false
   ): Promise<ListResult<Job<Data, ReturnValue>>> {
     const { start, end } = this.pageToStartEnd(page, pageSize);
     const [total, elements] = await Promise.all([
       this.queue.getJobCountByTypes(...statuses),
-      this.queue.getJobs(statuses, start, end, true),
+      this.queue.getJobs(statuses, start, end, ascending),
     ]);
 
     return {
@@ -117,6 +118,24 @@ export class Queue<Data = JobData, ReturnValue = JobReturnValue> {
       page,
       pageSize,
     };
+  }
+
+  public async getJobCountByStatus(
+    statuses: JobTypeEnum[],
+    page: number = 1,
+    pageSize: number = 50
+  ): Promise<number> {
+    return this.queue.getJobCountByTypes(...statuses);
+  }
+
+  public async getJobsByStatus(
+    statuses: JobTypeEnum[],
+    page: number = 1,
+    pageSize: number = 50,
+    ascending: boolean = false
+  ): Promise<Job<Data, ReturnValue>[]> {
+    const { start, end } = this.pageToStartEnd(page, pageSize);
+    return this.queue.getJobs(statuses, start, end, ascending);
   }
 
   public async deleteJob(jobId: string) {
