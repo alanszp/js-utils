@@ -1,5 +1,10 @@
 # Changelog
 
+## v9.2.5
+
+- Add `@alanszp/eventbridge-subscriber`: Add `INotificationInput<T>` to the interface.
+- Modify `@alanszp/eventbridge-subscriber`: `NotificationInput` supports initialization with param of type `INotificationInput<T>`.
+
 ## v9.2.4
 
 - Add `@alanszp/queue`: Add `ReturnValue` to `Worker` generics.
