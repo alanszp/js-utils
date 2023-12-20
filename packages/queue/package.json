@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@alanszp/audit": "^9.0.0",
+    "@alanszp/core": "^9.2.2",
     "@alanszp/logger": "^9.0.0",
     "@alanszp/shared-context": "^9.0.0",
     "bullmq": "^2.1.2",
