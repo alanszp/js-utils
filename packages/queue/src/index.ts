@@ -6,3 +6,4 @@ export * from "./types";
 export * from "./runner";
 export * from "./worker/worker";
 export * from "./worker/workerRepository";
+export * from "./jobsManagement";
