@@ -1,4 +1,4 @@
-import { Job } from "@alanszp/queue";
+import { Job } from "../../types";
 import { ITotalCountReporter } from "./ITotalCountReporter";
 
 export class JobTotalCountReporter<JobInstance extends Job>

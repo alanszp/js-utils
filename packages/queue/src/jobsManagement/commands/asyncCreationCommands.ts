@@ -1,7 +1,8 @@
 import { ILogger } from "@alanszp/logger";
-import { Job, Queue } from "@alanszp/queue";
 import { BaseModel } from "@alanszp/validations";
 import { CreateAsyncJobInput } from "../inputs/CreateAsyncJobInput";
+import { Queue } from "../../queue/queue";
+import { Job } from "../../types";
 
 export async function asyncJobCreationCommand<
   QueueInputBody,

@@ -1,8 +1,9 @@
 import { ILogger } from "@alanszp/logger";
-import { Job, Queue } from "@alanszp/queue";
 import { GetJobInput } from "../inputs/GetJobInput";
 import { SearchJobsInput } from "../inputs/SearchJobsInput";
 import { ListResult } from "@alanszp/core";
+import { Queue } from "../../queue/queue";
+import { Job } from "../../types";
 
 export async function getJobStatus<QueueInputBody, ReturnValue>(
   logger: ILogger,
