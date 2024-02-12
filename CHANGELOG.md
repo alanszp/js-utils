@@ -1,5 +1,9 @@
 # Changelog
 
+## v9.3.1
+
+- Add `@alanszp/queue`: Add missing export of the new modules published in v9.3.0.
+
 ## v9.3.0
 
 - Add `@alanszp/queue`: Add job management commands to create & get/search jobs.
