@@ -5,7 +5,7 @@ import { errorView } from "../views/errorView";
 import { GenericRequest } from "../types/GenericRequest";
 
 export function jsonBodyParser(options?: OptionsJson) {
-  const bodyParser = json(options);
+  const bodyParser = json({ limit: "1mb", ...options });
   return function jsonBodyParserMiddleware(
     req: GenericRequest,
     res: Response,
