@@ -1,5 +1,14 @@
 # Changelog
 
+## v9.3.0
+
+- Add `@alanszp/queue`: Add job management commands to create & get/search jobs.
+- Add `@alanszp/queue`: Add reporter class with it's mock to be able to update progress to jobs.
+
+## v9.2.7
+
+- Add `@alanszp/express`: Add limit of 1mb to json body parse.
+
 ## v9.2.6
 
 - Add `@alanszp/queue`: Add `Queue` generic on `createQueue` return param.
