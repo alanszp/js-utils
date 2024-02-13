@@ -24,15 +24,15 @@
   },
   "dependencies": {
     "@alanszp/errors": "^9.0.0",
-    "@babel/core": "^7.16.12",
     "date-fns": "^2.28.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-typescript": "^7.16.7",
-    "@types/jest": "^27.4.0",
+    "@babel/core": "^7.23.9",
+    "@babel/preset-env": "^7.23.9",
+    "@babel/preset-typescript": "^7.23.3",
+    "@types/jest": "^29.5.12",
     "assert": "^2.0.0",
-    "jest": "^27.4.7"
+    "jest": "^29.7.0"
   }
 }

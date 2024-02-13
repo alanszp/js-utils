@@ -1,9 +1,7 @@
-import { DatadogStream } from "./datadogBunyan";
 import { createLogger as createBunyanLogger, Stream } from "bunyan";
 import { resolve } from "path";
 import {
   ConsoleLoggerConfig,
-  DatadogConfig,
   FileLoggerConfig,
   LoggerConfig,
   SlackConfig,
@@ -34,14 +32,6 @@ function fileStreamFactory(config: FileLoggerConfig): Stream {
   return stream;
 }
 
-function datadogStreamFactory(config: DatadogConfig): Stream {
-  return {
-    type: "raw",
-    level: LogLevel.ERROR,
-    stream: new DatadogStream(config.client),
-  };
-}
-
 function slackStreamFactory(config: SlackConfig): Stream {
   return {
     type: "raw",
@@ -59,10 +49,6 @@ export function createStreams(config: LoggerConfig): Stream[] {
 
   if (config.console) {
     streams.push(consoleStreamFactory(config.console));
-  }
-
-  if (config.datadog) {
-    streams.push(datadogStreamFactory(config.datadog));
   }
 
   if (config.slack) {

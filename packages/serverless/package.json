@@ -19,9 +19,9 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "peerDependencies": {
-    "@alanszp/audit": "^5.0.0",
-    "@alanszp/logger": "^5.0.0",
-    "@alanszp/split": "^7.10.3"
+    "@alanszp/audit": "*",
+    "@alanszp/logger": "*",
+    "@alanszp/split": "*"
   },
   "devDependencies": {
     "@alanszp/audit": "^9.0.0",
