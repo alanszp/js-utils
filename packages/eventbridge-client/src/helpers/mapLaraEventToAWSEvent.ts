@@ -15,7 +15,7 @@ export function mapLaraEventToAWSEvent(
 ): PutEventsRequestEntry | undefined {
   const lid = context.getLifecycleId() || cuid();
   const oldlLch = context.getLifecycleChain();
-  const lch = compact([oldlLch, "aws.eventbridge"]).join(",");
+  const lch = compact([oldlLch, "aws.eb"]).join(",");
   try {
     return {
       DetailType: topic,
