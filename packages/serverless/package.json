@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/serverless",
-  "version": "10.0.1",
+  "version": "10.0.2",
   "description": "Alan's serverless utils and middlewares.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -24,9 +24,9 @@
     "@alanszp/split": "*"
   },
   "devDependencies": {
-    "@alanszp/audit": "^10.0.1",
+    "@alanszp/audit": "^10.0.2",
     "@alanszp/logger": "^10.0.1",
-    "@alanszp/split": "^10.0.1",
+    "@alanszp/split": "^10.0.2",
     "@types/lodash": "^4.14.170",
     "@types/node": "^20.11.17",
     "ts-node": "^10.0.0",
@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@alanszp/core": "^10.0.1",
-    "@alanszp/shared-context": "^10.0.1",
+    "@alanszp/shared-context": "^10.0.2",
     "@alanszp/typeorm": "^10.0.1",
     "@middy/core": "^3.0.3",
     "@middy/util": "^3.0.3",

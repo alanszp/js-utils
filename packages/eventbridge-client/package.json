@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/eventbridge-client",
-  "version": "10.0.1",
+  "version": "10.0.2",
   "description": "Alan's basic eventbridge client.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@alanszp/logger": "^10.0.1",
-    "@alanszp/shared-context": "^10.0.1",
+    "@alanszp/shared-context": "^10.0.2",
     "aws-sdk": "^2.1204.0",
     "cuid": "^2.1.8",
     "lodash": "^4.17.21"
