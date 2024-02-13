@@ -22,5 +22,8 @@
     "@alanszp/errors": "^10.0.0",
     "@alanszp/shared-context": "^10.0.0",
     "axios": "^0.28.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17"
   }
 }

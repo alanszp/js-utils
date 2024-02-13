@@ -17,5 +17,8 @@
     "build": "yarn run compile",
     "prepack": "yarn run build",
     "yalc-publish": "yarn run yalc publish"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17"
   }
 }

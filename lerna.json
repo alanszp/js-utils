@@ -4,5 +4,5 @@
   ],
   "version": "10.0.0",
   "npmClient": "yarn",
-  "useWorkspaces": true
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }

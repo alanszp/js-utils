@@ -19,7 +19,7 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "devDependencies": {
-    "@types/node": "^15.12.3",
+    "@types/node": "^20.11.17",
     "class-validator": "^0.14.0",
     "ts-node": "^10.0.0",
     "tslint": "^6.1.3",

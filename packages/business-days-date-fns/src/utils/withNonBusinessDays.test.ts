@@ -273,9 +273,10 @@ describe("withNonBusinessDays", () => {
 
   it("should export cache correctly", () => {
     const { cache } = withNonBusinessDays(mockNBD);
+    const promise = new Promise<Date[]>((resolve) => resolve([new Date()]));
 
-    cache.set("key-name", "key-value");
+    cache.set("key-name", promise);
 
-    expect(cache.get("key-name")).toEqual("key-value");
+    expect(cache.get("key-name")).toEqual(promise);
   });
 });

@@ -3,7 +3,7 @@ import { EditableAndNullableField, JustEditableField } from "./types";
 function id<FieldType extends unknown, EditionType extends unknown>(
   param: EditionType
 ): FieldType {
-  return param as FieldType;
+  return param as unknown as FieldType;
 }
 function idAsync<FieldType extends unknown, EditionType extends unknown>(
   param: EditionType
