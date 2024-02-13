@@ -2,16 +2,17 @@
 
 ## v10.0.1
 
-- Upgrade to lerna v8
-- Fix building issues
+- Upgrade to lerna v8.
+- Fix building issues.
+- Add needed dependencies to build project correctly.
 
 ## v10.0.0
 
-- Fix vulnerabilites. Most of them were dev ones.
+- Fix vulnerabilities. Most of them were dev ones.
 - What might break
-  - `class-validator` upgraded to v0.14.1
-  - `jose` upgraded to v5.2.2 (this was not a vulnerability but made it anyways)
-  - `axios` upgraded to v0.28
+  - `class-validator` upgraded to v0.14.1.
+  - `jose` upgraded to v5.2.2 (this was not a vulnerability but made it anyways).
+  - `axios` upgraded to v0.28.
 
 ## v9.3.1
 
