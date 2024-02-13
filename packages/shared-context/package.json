@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/shared-context",
-  "version": "9.0.0",
+  "version": "10.0.1",
   "description": "Alan's shared context util.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -19,9 +19,12 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "dependencies": {
-    "@alanszp/audit": "^9.0.0",
-    "@alanszp/errors": "^9.0.0",
-    "@alanszp/logger": "^9.0.0",
+    "@alanszp/audit": "^10.0.1",
+    "@alanszp/errors": "^10.0.1",
+    "@alanszp/logger": "^10.0.1",
     "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17"
   }
 }

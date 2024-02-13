@@ -4,7 +4,6 @@ Monorepo for all JS internal dependencies
 
 ## Packages
 
-- @alanszp/datadog-client - A simple datadog clinet
 - @alanszp/logger - Logger made simple
 - @alanszp/express - Express utils and middlewares
 - @alanszp/errors - BaseError for typescript and many more

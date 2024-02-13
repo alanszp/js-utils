@@ -16,8 +16,8 @@ export class NetworkRequestError<T> extends RequestError<T> {
       host: error.request.host,
       path: error.request.path,
       method: error.request.method,
-      data: error.config.data,
-      params: error.config.params,
+      data: error.config?.data,
+      params: error.config?.params,
     };
   }
 }

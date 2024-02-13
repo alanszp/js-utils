@@ -1,6 +1,5 @@
 import { createPublicKey, createPrivateKey, KeyObject } from "crypto";
-import { SignJWT } from "jose/jwt/sign";
-import { jwtVerify } from "jose/jwt/verify";
+import { SignJWT, jwtVerify } from "jose";
 import type { JWTPayload, JWTUser, SignOptions, VerifyOptions } from "./types";
 
 export const JWT_ALGORITHM = "RS512";

@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/eventbridge-client",
-  "version": "9.0.0",
+  "version": "10.0.1",
   "description": "Alan's basic eventbridge client.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -20,17 +20,17 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "devDependencies": {
-    "@types/jest": "^28.1.8",
-    "@types/node": "^15.12.3",
-    "babel-jest": "^29.0.0",
-    "eslint-plugin-jest": "^26.8.7",
-    "jest": "^29.0.0",
-    "ts-node": "^10.0.0",
+    "@babel/core": "^7.23.9",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.17",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "ts-node": "^10.9.2",
     "typescript": "^4.3.4"
   },
   "dependencies": {
-    "@alanszp/logger": "^9.0.0",
-    "@alanszp/shared-context": "^9.0.0",
+    "@alanszp/logger": "^10.0.1",
+    "@alanszp/shared-context": "^10.0.1",
     "aws-sdk": "^2.1204.0",
     "cuid": "^2.1.8",
     "lodash": "^4.17.21"

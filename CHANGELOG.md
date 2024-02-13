@@ -1,5 +1,51 @@
 # Changelog
 
+## v10.0.1
+
+- Upgrade to lerna v8.
+- Fix building issues.
+- Add needed dependencies to build project correctly.
+
+## v10.0.0
+
+- Fix vulnerabilities. Most of them were dev ones.
+- What might break
+  - `class-validator` upgraded to v0.14.1.
+  - `jose` upgraded to v5.2.2 (this was not a vulnerability but made it anyways).
+  - `axios` upgraded to v0.28.
+
+## v9.3.1
+
+- Add `@alanszp/queue`: Add missing export of the new modules published in v9.3.0.
+
+## v9.3.0
+
+- Add `@alanszp/queue`: Add job management commands to create & get/search jobs.
+- Add `@alanszp/queue`: Add reporter class with it's mock to be able to update progress to jobs.
+
+## v9.2.7
+
+- Add `@alanszp/express`: Add limit of 1mb to json body parse.
+
+## v9.2.6
+
+- Add `@alanszp/queue`: Add `Queue` generic on `createQueue` return param.
+
+## v9.2.5
+
+- Add `@alanszp/eventbridge-subscriber`: Add `INotificationInput<T>` to the interface.
+- Modify `@alanszp/eventbridge-subscriber`: `NotificationInput` supports initialization with param of type `INotificationInput<T>`.
+
+## v9.2.4
+
+- Add `@alanszp/queue`: Add `ReturnValue` to `Worker` generics.
+
+## v9.2.3
+
+- Add `@alanszp/queue`: Add `getName` method for class `Queue`
+- Add `@alanszp/queue`: Add return type to `publishJob` and `publishBulkJob` on class `Queue`
+- Add `@alanszp/queue`: Export Queue entity
+
 ## v9.2.2
 
 - Add `@alanszp/core`: Add utility function assignPaginableKeys

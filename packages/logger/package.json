@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/logger",
-  "version": "9.0.0",
+  "version": "10.0.1",
   "description": "Alan's logger util.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -18,26 +18,16 @@
     "prepack": "yarn run build",
     "yalc-publish": "yarn run yalc publish"
   },
-  "peerDependencies": {
-    "@alanszp/datadog-client": "^5.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@alanszp/datadog-client": {
-      "optional": true
-    }
-  },
   "dependencies": {
-    "axios": "^0.24.0",
-    "bunyan": "^1.8.12",
-    "json5": "^2.1.1",
+    "axios": "^0.28.0",
+    "bunyan": "^1.8.15",
+    "json5": "^2.2.3",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "@alanszp/datadog-client": "^9.0.0",
     "@types/bunyan": "^1.8.5",
-    "@types/json5": "0.0.30",
     "@types/lodash": "^4.14.170",
-    "@types/node": "^15.12.3",
+    "@types/node": "^20.11.17",
     "ts-node": "^10.0.0",
     "tslint": "^5.11.0",
     "typescript": "^4.3.4"

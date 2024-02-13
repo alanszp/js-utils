@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/queue",
-  "version": "9.0.0",
+  "version": "10.0.1",
   "description": "Workers and queues",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -19,15 +19,18 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "devDependencies": {
-    "@types/node": "^15.12.3",
+    "@types/node": "^20.11.17",
+    "class-validator": "^0.14.1",
     "ts-node": "^10.0.0",
     "tslint": "^6.1.3",
     "typescript": "^4.3.4"
   },
   "dependencies": {
-    "@alanszp/audit": "^9.0.0",
-    "@alanszp/logger": "^9.0.0",
-    "@alanszp/shared-context": "^9.0.0",
+    "@alanszp/audit": "^10.0.1",
+    "@alanszp/core": "^10.0.1",
+    "@alanszp/logger": "^10.0.1",
+    "@alanszp/shared-context": "^10.0.1",
+    "@alanszp/validations": "^10.0.1",
     "bullmq": "^2.1.2",
     "ioredis": "^5.2.3",
     "lodash": "^4.17.21"

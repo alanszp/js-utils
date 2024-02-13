@@ -17,8 +17,8 @@ export class Non200ResponseError<T> extends RequestError<T> {
       host: error.request.host,
       path: error.request.path,
       method: error.request.method,
-      data: error.config.data,
-      params: error.config.params,
+      data: error.config?.data,
+      params: error.config?.params,
     };
     this.response = {
       status: error.response?.status as number,

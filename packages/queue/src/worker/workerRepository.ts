@@ -3,7 +3,7 @@ import { compact, isEmpty } from "lodash";
 import { ConnectionManager } from "../connectionManager";
 import { Worker, WorkerStatus } from "./worker";
 
-export type WokerStatusWithId = { status: WorkerStatus } & { id: string };
+export type WorkerStatusWithId = { status: WorkerStatus } & { id: string };
 interface WorkerClass {
   new (): Worker;
 }
@@ -32,7 +32,10 @@ export class WorkerRepository {
     return this._instance;
   }
 
-  public registerWorker(queueName: string, workerClass: WorkerClass): WorkerRepository {
+  public registerWorker(
+    queueName: string,
+    workerClass: WorkerClass
+  ): WorkerRepository {
     Object.assign(this.workers, { [queueName]: workerClass });
     return this;
   }
@@ -51,14 +54,19 @@ export class WorkerRepository {
           this._activeWorkers.push(worker);
           return worker;
         }
-        this.getLogger().warn("worker_repository.invalid_queue_name", { queueName });
+        this.getLogger().warn("worker_repository.invalid_queue_name", {
+          queueName,
+        });
         return null;
       })
     );
   }
 
-  getWorkerStatuses(): WokerStatusWithId[] {
-    return this.activeWorkers.map((worker) => ({ id: worker.id, status: worker.status }));
+  getWorkerStatuses(): WorkerStatusWithId[] {
+    return this.activeWorkers.map((worker) => ({
+      id: worker.id,
+      status: worker.status,
+    }));
   }
 
   public getCloseConnections(): Promise<void>[] {

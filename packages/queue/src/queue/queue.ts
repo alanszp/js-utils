@@ -1,14 +1,27 @@
 import { merge } from "lodash";
-import { ConnectionOptions, JobData, QueueOptions, RawQueue } from "../types";
-import { JobsOptions } from "bullmq";
+import { Job, JobsOptions } from "bullmq";
+import { ListResult } from "@alanszp/core";
 import { SharedContext } from "@alanszp/shared-context";
+import {
+  ConnectionOptions,
+  JobData,
+  JobReturnValue,
+  JobStateEnum,
+  JobTypeEnum,
+  QueueOptions,
+  RawQueue,
+} from "../types";
+import { JobNotFoundError } from "../errors/JobNotFoundError";
+import { JobCannotBePromotedError } from "../errors/JobCannotBePromotedError";
+import { ResultTypes } from "ioredis/built/utils/RedisCommander";
 
 const BULL_PREFIX = "b";
 
 const DEFAULT_COMPLETED_JOB_MAX_AGE_IN_SECONDS = 60 * 60 * 24 * 30;
 const DEFAULT_COMPLETED_JOB_MAX_COUNT = 500;
+const DEFAULT_FAILED_JOB_MAX_COUNT = 1000;
 
-export class Queue<JobType = JobData> {
+export class Queue<Data = JobData, ReturnValue = JobReturnValue> {
   private _queue: RawQueue;
 
   private name: string;
@@ -26,13 +39,16 @@ export class Queue<JobType = JobData> {
 
     this.getSharedContext = getSharedContext;
 
-    this._queue = new RawQueue<JobType>(name, {
+    this._queue = new RawQueue<Data>(name, {
       ...merge(
         {
           defaultJobOptions: {
             removeOnComplete: {
               age: DEFAULT_COMPLETED_JOB_MAX_AGE_IN_SECONDS,
               count: DEFAULT_COMPLETED_JOB_MAX_COUNT,
+            },
+            removeOnFail: {
+              count: DEFAULT_FAILED_JOB_MAX_COUNT,
             },
             attempts: 3,
             backoff: {
@@ -48,34 +64,113 @@ export class Queue<JobType = JobData> {
     });
   }
 
-  async publishJob(job: JobType, opts?: JobsOptions): Promise<void> {
+  public getName(): string {
+    return this.name;
+  }
+
+  async publishJob(
+    job: Data,
+    opts?: JobsOptions
+  ): Promise<Job<Data, ReturnValue>> {
     const context = this.getSharedContext();
     const lid = context.getLifecycleId();
     const lch = context.getLifecycleChain();
-    await this.queue.add(this.name, { ...job, lid, lch }, opts);
+    return this.queue.add(this.name, { ...job, lid, lch }, opts);
   }
 
-  async publishBulkJob(jobDatas: JobType[]): Promise<void> {
+  async publishBulkJob(jobDatas: Data[]): Promise<Job<Data, ReturnValue>[]> {
     const jobs = jobDatas.map((data) => ({ name: this.name, data }));
-    await this.queue.addBulk(jobs);
+    return this.queue.addBulk(jobs);
   }
 
   async publishBulkJobWithOptions(
-    jobDefinitions: { jobData: JobType; opts: JobsOptions }[]
-  ): Promise<void> {
+    jobDefinitions: { jobData: Data; opts: JobsOptions }[]
+  ): Promise<Job<Data, ReturnValue>[]> {
     const jobs = jobDefinitions.map(({ jobData: data, opts }) => ({
       name: this.name,
       data,
       opts,
     }));
-    await this.queue.addBulk(jobs);
+    return this.queue.addBulk(jobs);
+  }
+
+  private pageToStartEnd(pageNumber: number, pageSize: number) {
+    return {
+      start: (pageNumber - 1) * pageSize,
+      end: pageNumber * pageSize - 1,
+    };
+  }
+
+  public async getJobsAndCountByStatus(
+    statuses: JobTypeEnum[],
+    page: number = 1,
+    pageSize: number = 50,
+    ascending: boolean = false
+  ): Promise<ListResult<Job<Data, ReturnValue>>> {
+    const { start, end } = this.pageToStartEnd(page, pageSize);
+    const [total, elements] = await Promise.all([
+      this.queue.getJobCountByTypes(...statuses),
+      this.queue.getJobs(statuses, start, end, ascending),
+    ]);
+
+    return {
+      total,
+      elements,
+      page,
+      pageSize,
+    };
+  }
+
+  public async getJobCountByStatus(
+    statuses: JobTypeEnum[],
+    page: number = 1,
+    pageSize: number = 50
+  ): Promise<number> {
+    return this.queue.getJobCountByTypes(...statuses);
+  }
+
+  public async getJobsByStatus(
+    statuses: JobTypeEnum[],
+    page: number = 1,
+    pageSize: number = 50,
+    ascending: boolean = false
+  ): Promise<Job<Data, ReturnValue>[]> {
+    const { start, end } = this.pageToStartEnd(page, pageSize);
+    return this.queue.getJobs(statuses, start, end, ascending);
+  }
+
+  public async deleteJob(jobId: string) {
+    this.queue.remove(jobId);
+  }
+
+  public async getJob(
+    jobId: string
+  ): Promise<Job<Data, ReturnValue> | undefined> {
+    return this.queue.getJob(jobId);
+  }
+
+  public async getJobOrFail(jobId: string): Promise<Job<Data, ReturnValue>> {
+    const job = await this.queue.getJob(jobId);
+    if (!job) throw new JobNotFoundError(jobId);
+    return job;
+  }
+
+  public async changeDelayToJob(jobId: string, delayMs: number) {
+    const job = await this.getJobOrFail(jobId);
+
+    const state = await job.getState();
+    if (state !== JobStateEnum.DELAYED) {
+      throw new JobCannotBePromotedError(jobId, state);
+    }
+
+    job.changeDelay(delayMs);
   }
 
   async close(): Promise<void> {
     await this.queue.close();
   }
 
-  private get queue(): RawQueue<JobType> {
+  private get queue(): RawQueue<Data, ReturnValue> {
     return this._queue;
   }
 }
