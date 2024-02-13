@@ -1,4 +1,3 @@
-import { IDatadogClient } from "@alanszp/datadog-client";
 import { Serializers } from "bunyan";
 import { LogLevel } from "./interfaces";
 import { SlackStreamOptions } from "./slackBunyan";
@@ -19,10 +18,6 @@ export interface FileLoggerConfig {
   rotate?: FileRotation;
 }
 
-export interface DatadogConfig {
-  client: IDatadogClient;
-}
-
 export interface SlackConfig {
   level: LogLevel;
   options: SlackStreamOptions;
@@ -34,7 +29,6 @@ export interface LoggerConfig {
   appName: string;
   file?: FileLoggerConfig;
   console?: ConsoleLoggerConfig;
-  datadog?: DatadogConfig;
   slack?: SlackConfig;
   serializers?: SerializersConfig;
 }

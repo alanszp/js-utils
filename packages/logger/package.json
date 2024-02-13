@@ -18,14 +18,6 @@
     "prepack": "yarn run build",
     "yalc-publish": "yarn run yalc publish"
   },
-  "peerDependencies": {
-    "@alanszp/datadog-client": "^5.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@alanszp/datadog-client": {
-      "optional": true
-    }
-  },
   "dependencies": {
     "axios": "^0.24.0",
     "bunyan": "^1.8.12",
@@ -33,7 +25,6 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "@alanszp/datadog-client": "^9.0.0",
     "@types/bunyan": "^1.8.5",
     "@types/json5": "0.0.30",
     "@types/lodash": "^4.14.170",
