@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/queue",
-  "version": "9.3.1",
+  "version": "10.0.0",
   "description": "Workers and queues",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -26,11 +26,11 @@
     "typescript": "^4.3.4"
   },
   "dependencies": {
-    "@alanszp/audit": "^9.0.0",
-    "@alanszp/core": "^9.2.2",
-    "@alanszp/logger": "^9.0.0",
-    "@alanszp/shared-context": "^9.0.0",
-    "@alanszp/validations": "^9.0.0",
+    "@alanszp/audit": "^10.0.0",
+    "@alanszp/core": "^10.0.0",
+    "@alanszp/logger": "^10.0.0",
+    "@alanszp/shared-context": "^10.0.0",
+    "@alanszp/validations": "^10.0.0",
     "bullmq": "^2.1.2",
     "ioredis": "^5.2.3",
     "lodash": "^4.17.21"
