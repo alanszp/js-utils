@@ -3,8 +3,10 @@ import { appIdentifier } from "../helpers/appIdentifier";
 import { Job, JobData } from "bullmq";
 import { WorkerContext } from "../worker/worker";
 import { JobReturnValue } from "../types";
+import { compact } from "lodash";
 
 export function withContext<T = JobData, ReturnValue = JobReturnValue>(
+  queueName: string,
   workerContext: WorkerContext,
   executor: (job: Job<T>) => Promise<ReturnValue>
 ): (job: Job<T>) => Promise<ReturnValue> {
@@ -18,7 +20,8 @@ export function withContext<T = JobData, ReturnValue = JobReturnValue>(
         logger: workerContext.baseLogger,
         audit: workerContext.audit.withState(),
         lifecycleId: lid || cuid(),
-        lifecycleChain: lch || appIdentifier(),
+        lifecycleChain:
+          compact([lch, `wkr:${queueName}`]).join(",") || appIdentifier(),
         contextId: cuid(),
       }
     );

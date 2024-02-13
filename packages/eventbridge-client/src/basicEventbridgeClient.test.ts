@@ -73,14 +73,14 @@ describe("BasicEventbridgeClient", () => {
             JSON.parse(response.failed[0].event.Detail || "")
           ).toMatchObject({
             ...events[0],
-            lch: "aws.eventbridge",
+            lch: "aws.eb",
           });
           expect(response.failed[1].event.DetailType).toBe(topics[1]);
           expect(
             JSON.parse(response.failed[1].event.Detail || "")
           ).toMatchObject({
             ...events[1],
-            lch: "aws.eventbridge",
+            lch: "aws.eb",
           });
         });
       });
@@ -112,7 +112,7 @@ describe("BasicEventbridgeClient", () => {
             JSON.parse(response.failed[0].event.Detail || "")
           ).toMatchObject({
             ...events[1],
-            lch: "aws.eventbridge",
+            lch: "aws.eb",
           });
         });
       });
@@ -140,7 +140,7 @@ describe("BasicEventbridgeClient", () => {
         expect(JSON.parse(response.failed[0].event.Detail || "")).toMatchObject(
           {
             ...events[0],
-            lch: "aws.eventbridge",
+            lch: "aws.eb",
           }
         );
       });

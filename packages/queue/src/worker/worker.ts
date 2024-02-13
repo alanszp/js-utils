@@ -88,7 +88,7 @@ abstract class Worker<Data = JobData, ReturnValue = unknown> {
   }
 
   private processJob(): (job: Job<Data, ReturnValue>) => Promise<ReturnValue> {
-    return withContext(this.getContext(), async (job) => {
+    return withContext(this.queueFullName, this.getContext(), async (job) => {
       this.getLogger().info(`worker.process.job_received`, {
         queue: this.queueFullName,
         job,

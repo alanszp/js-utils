@@ -11,6 +11,11 @@ export interface AuditBody {
   succeed: boolean;
   targetRef?: string;
   metadata?: Metadata;
+
+  // Context
+  lid?: string;
+  lch?: string;
+  cid?: string;
 }
 
 export enum CommonMetadataKeys {
