@@ -33,7 +33,7 @@
     "@alanszp/errors": "^9.0.0",
     "@alanszp/logger": "^9.0.0",
     "@alanszp/typeorm": "^9.0.0",
-    "class-validator": "^0.13.1",
+    "class-validator": "^0.14.1",
     "lodash": "^4.17.21",
     "typeorm": "^0.2.34"
   }
