@@ -19,7 +19,7 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "peerDependencies": {
-    "@alanszp/logger": "^5.0.0"
+    "@alanszp/logger": "*"
   },
   "devDependencies": {
     "@alanszp/logger": "^9.0.0",

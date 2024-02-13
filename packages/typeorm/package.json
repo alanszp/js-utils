@@ -28,7 +28,7 @@
     "typescript": "^4.3.4"
   },
   "peerDependencies": {
-    "@alanszp/logger": "^4.0.0",
+    "@alanszp/logger": "*",
     "class-validator": "^0.14.0",
     "typeorm": "^0.2.34"
   },
