@@ -1,6 +1,5 @@
 import { IsDateString, IsDefined, IsOptional } from "class-validator";
 import { BaseModel } from "@alanszp/validations";
-import { differenceInMilliseconds } from "date-fns";
 
 export interface CreateAsyncJobQueryParams {
   executeOn?: string;
@@ -31,7 +30,7 @@ export class CreateAsyncJobInput<
   getDelayInMs(): number | undefined {
     if (!this.executeOn) return undefined;
     const date = new Date(this.executeOn);
-    const delay = differenceInMilliseconds(date, new Date());
+    const delay = date.getTime() - new Date().getTime();
     return delay > 0 ? delay : undefined;
   }
 }

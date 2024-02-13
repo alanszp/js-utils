@@ -36,54 +36,56 @@ export type WithNonBusinessDaysOutput<IdentifyObject> = {
     date: Date,
     identify?: IdentifyObject
   ) => Promise<boolean> | boolean;
-  cache: LRUCache<IdentifyObject, Promise<Date[]>>;
+  cache: LRUCache<string, Promise<Date[]>>;
 };
 
 export function withNonBusinessDays<Options>(
   fetchStrategy: ((opts: Options) => Promise<Date[]>) | Date[],
-  cacheOpts?: CacheOptions<string, Date[]> & {
+  cacheOpts?: CacheOptions<string, Promise<Date[]>> & {
     serializeOptions?: (opts: Options) => string;
   }
 ): WithNonBusinessDaysOutput<Options> {
+  const { serializeOptions, ...opts } = cacheOpts || {};
+
   if (!isFunction(fetchStrategy) && !isArray(fetchStrategy)) {
     throw new Error(
       "You must send a function for fetchStrategy or a list of dates"
     );
   }
 
-  const cache = buildNonBusinessDaysCache(cacheOpts);
+  const cache = buildNonBusinessDaysCache(opts);
 
   return {
     addBusinessDays: wrapperDateAndNumberNonBusinessDays(
       cache,
       fetchStrategy,
       addBusinessDays,
-      cacheOpts?.serializeOptions
+      serializeOptions
     ),
     differenceInBusinessDays: wrapperDateAndNumberNonBusinessDays(
       cache,
 
       fetchStrategy,
       differenceInBusinessDays,
-      cacheOpts?.serializeOptions
+      serializeOptions
     ),
     subBusinessDays: wrapperDateAndNumberNonBusinessDays(
       cache,
       fetchStrategy,
       subBusinessDays,
-      cacheOpts?.serializeOptions
+      serializeOptions
     ),
     isNonBusinessDay: wrapperDateNonBusinessDays(
       cache,
       fetchStrategy,
       isNonBusinessDay,
-      cacheOpts?.serializeOptions
+      serializeOptions
     ),
     isBusinessDay: wrapperDateNonBusinessDays(
       cache,
       fetchStrategy,
       isBusinessDay,
-      cacheOpts?.serializeOptions
+      serializeOptions
     ),
     cache,
   };

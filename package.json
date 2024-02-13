@@ -6,16 +6,21 @@
   "author": "Alan Szpigiel <alanszp@gmail.com>",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/business-days-date-fns/**"
+    ]
+  },
   "scripts": {
     "build": "lerna run build",
     "bump-version": "lerna version",
     "pack-all": "rm -rf tgzs/ && mkdir tgzs/ && ls -1 packages | xargs -tI % sh -c 'cd ./packages/%; yarn pack; mv ./*.tgz ../../tgzs'"
   },
   "dependencies": {
-    "lerna": "^4.0.0",
+    "lerna": "^8.1.2",
     "yalc": "^1.0.0-pre.53"
   }
 }

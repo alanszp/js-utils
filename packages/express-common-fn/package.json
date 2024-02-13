@@ -30,7 +30,9 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.12",
-    "typeorm": "^0.2.34"
+    "@types/node": "^20.11.17",
+    "typeorm": "^0.2.34",
+    "typescript": "4.7.4"
   },
   "gitHead": "cad2d00dbdeb845477a9c610a78e093b8fbb64ae"
 }

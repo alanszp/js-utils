@@ -1,4 +1,4 @@
-import { capitalize, merge } from "lodash";
+import { merge } from "lodash";
 import { Job, JobsOptions } from "bullmq";
 import { ListResult } from "@alanszp/core";
 import { SharedContext } from "@alanszp/shared-context";
