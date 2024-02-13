@@ -33,7 +33,7 @@
     "@alanszp/core": "^9.2.2",
     "@alanszp/shared-context": "^9.0.0",
     "@alanszp/typeorm": "^9.0.0",
-    "@splitsoftware/splitio": "^10.22.0",
+    "@splitsoftware/splitio": "^10.25.1",
     "cuid": "^2.1.8",
     "lodash": "^4.17.21"
   }
