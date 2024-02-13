@@ -1,4 +1,4 @@
-import type { JWTPayload as LibPayload } from "jose/jwt/sign";
+import type { JWTPayload as LibPayload } from "jose";
 
 export interface JWTPayload extends LibPayload {
   sub: string;
