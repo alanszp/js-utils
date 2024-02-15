@@ -3,7 +3,7 @@ import { Audit } from "@alanszp/audit";
 import { SharedContext } from "@alanszp/shared-context";
 import { Context } from "aws-lambda";
 import middy, { MiddlewareObj } from "@middy/core";
-import cuid from "cuid";
+import { createId } from "@paralleldrive/cuid2";
 import { appIdentifier } from "@alanszp/core";
 import { Lambda } from "../../types";
 
@@ -26,9 +26,9 @@ export function withContext<TEvent, TContext extends Context, TResult>(
       {
         logger: baseLogger,
         audit: audit.withState(),
-        lifecycleId: cuid(),
+        lifecycleId: createId(),
         lifecycleChain: appIdentifier(),
-        contextId: cuid(),
+        contextId: createId(),
       }
     );
 }

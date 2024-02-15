@@ -3,7 +3,7 @@ import { PutEventsRequestEntry } from "aws-sdk/clients/eventbridge";
 import type { ILogger } from "@alanszp/logger";
 import type { SharedContext } from "@alanszp/shared-context";
 import { compact } from "lodash";
-import cuid from "cuid";
+import { createId } from "@paralleldrive/cuid2";
 
 export function mapLaraEventToAWSEvent(
   { topic, body }: LaraEvent,
@@ -13,7 +13,7 @@ export function mapLaraEventToAWSEvent(
   logger: ILogger,
   context: SharedContext
 ): PutEventsRequestEntry | undefined {
-  const lid = context.getLifecycleId() || cuid();
+  const lid = context.getLifecycleId() || createId();
   const oldlLch = context.getLifecycleChain();
   const lch = compact([oldlLch, "aws.eb"]).join(",");
   try {

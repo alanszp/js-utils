@@ -1,4 +1,4 @@
-import cuid from "cuid";
+import { createId } from "@paralleldrive/cuid2";
 import { NextFunction, Response } from "express";
 import { ILogger } from "@alanszp/logger";
 import { Audit } from "@alanszp/audit";
@@ -20,9 +20,9 @@ export function createContext(
     const lifecycleChain = compact([receivedChain, appIdentifier()]).join(",");
 
     const lifecycleId =
-      req.header("x-lifecycle-id") || req.body?.detail?.lid || cuid();
+      req.header("x-lifecycle-id") || req.body?.detail?.lid || createId();
 
-    const contextId = cuid();
+    const contextId = createId();
 
     res.setHeader("x-lifecycle-id", lifecycleId);
     res.setHeader("x-context-id", contextId);

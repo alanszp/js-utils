@@ -1,4 +1,4 @@
-import cuid from "cuid";
+import { createId } from "@paralleldrive/cuid2";
 import { appIdentifier } from "../helpers/appIdentifier";
 import { Job, JobData } from "bullmq";
 import { WorkerContext } from "../worker/worker";
@@ -19,10 +19,10 @@ export function withContext<T = JobData, ReturnValue = JobReturnValue>(
       {
         logger: workerContext.baseLogger,
         audit: workerContext.audit.withState(),
-        lifecycleId: lid || cuid(),
+        lifecycleId: lid || createId(),
         lifecycleChain:
           compact([lch, `wkr:${queueName}`]).join(",") || appIdentifier(),
-        contextId: cuid(),
+        contextId: createId(),
       }
     );
   };

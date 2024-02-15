@@ -1,5 +1,17 @@
 # Changelog
 
+## v10.0.3
+
+- Remove cuid in favor of @paralleldrive/cuid2
+
+## v10.0.2
+
+- Add `@alanszp/audit`: Add lid, lch & lid to audit interface.
+- Add `@alanszp/eventbridge-client`: Shorten lch string.
+- Add `@alanszp/express`: Add lid, lch & lid to audit log.
+- Add `@alanszp/express`: Add lid & lid response header.
+- Add `@alanszp/worker`: Add queue name to lch.
+
 ## v10.0.1
 
 - Upgrade to lerna v8.

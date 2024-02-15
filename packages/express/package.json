@@ -41,8 +41,8 @@
     "@alanszp/logger": "^10.0.1",
     "@alanszp/shared-context": "^10.0.2",
     "@babel/core": "^7.23.9",
+    "@paralleldrive/cuid2": "^2.2.2",
     "body-parser": "^1.20.2",
-    "cuid": "^2.1.8",
     "lodash": "^4.17.21"
   },
   "gitHead": "cad2d00dbdeb845477a9c610a78e093b8fbb64ae"

@@ -39,8 +39,8 @@
     "@alanszp/typeorm": "^10.0.1",
     "@middy/core": "^3.0.3",
     "@middy/util": "^3.0.3",
+    "@paralleldrive/cuid2": "^2.2.2",
     "@types/aws-lambda": "^8.10.97",
-    "cuid": "^2.1.8",
     "lodash": "^4.17.21"
   }
 }
