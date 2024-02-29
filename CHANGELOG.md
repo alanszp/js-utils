@@ -1,5 +1,10 @@
 # Changelog
 
+## v10.1.0
+
+- Add @alanszp/queue: add repeatable job methods
+
+
 ## v10.0.3
 
 - Remove cuid in favor of @paralleldrive/cuid2
