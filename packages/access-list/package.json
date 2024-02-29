@@ -28,5 +28,8 @@
   "peerDependencies": {
     "class-validator": "^0.14.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@alanszp/validations": "^10.0.1",
+    "@alanszp/jwt": "^10.0.1"
+  }
 }
