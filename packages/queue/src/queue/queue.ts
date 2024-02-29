@@ -1,5 +1,5 @@
 import { merge } from "lodash";
-import { Job, JobsOptions } from "bullmq";
+import { Job, JobsOptions, RepeatOptions } from "bullmq";
 import { ListResult } from "@alanszp/core";
 import { SharedContext } from "@alanszp/shared-context";
 import {
@@ -76,6 +76,18 @@ export class Queue<Data = JobData, ReturnValue = JobReturnValue> {
     const lid = context.getLifecycleId();
     const lch = context.getLifecycleChain();
     return this.queue.add(this.name, { ...job, lid, lch }, opts);
+  }
+
+  async publishRepeatableJob(
+    job: Data,
+    repeatOptions: RepeatOptions,
+    jobId: string
+  ): Promise<Job<Data, ReturnValue>> {
+    return this.queue.add(this.name, job, { ...repeatOptions, jobId });
+  }
+
+  async removeRepeatableJobByKey(repeatJobKey: string): Promise<boolean> {
+    return this.queue.removeRepeatableByKey(repeatJobKey);
   }
 
   async publishBulkJob(jobDatas: Data[]): Promise<Job<Data, ReturnValue>[]> {
