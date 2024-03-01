@@ -1,8 +1,16 @@
 # Changelog
 
-## v10.0.4
+## v10.2.0
 
 - Add `@alanszp/access-list`: Add new module for check and filter segments
+
+## v10.1.1
+
+- Fix @alanszp/queue: Add maxEventListener to redis connection manager to avoid incorrect warning of possible leak
+
+## v10.1.0
+
+- Add @alanszp/queue: add repeatable job methods
 
 ## v10.0.3
 
