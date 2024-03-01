@@ -1,5 +1,9 @@
 # Changelog
 
+## v10.0.4
+
+- Add `@alanszp/access-list`: Add new module for check and filter segments
+
 ## v10.0.3
 
 - Remove cuid in favor of @paralleldrive/cuid2
