@@ -26,9 +26,12 @@ export class ConnectionManager {
     }
 
     const redis = new Redis(this.redisConfiguration);
+    redis.setMaxListeners(20);
     redis.on("connect", () => this.getLogger().info("redis.connected"));
     redis.on("ready", () => this.getLogger().info("redis.ready"));
-    redis.on("error", (error: Error) => this.getLogger().error("redis.error", { error }));
+    redis.on("error", (error: Error) =>
+      this.getLogger().error("redis.error", { error })
+    );
     redis.on("close", () => this.getLogger().warn("redis.closed"));
     redis.on("reconnecting", () => this.getLogger().info("redis.reconnecting"));
     redis.on("end", () => this.getLogger().info("redis.ended"));
@@ -37,7 +40,11 @@ export class ConnectionManager {
     return redis;
   }
 
-  public setConfiguration(configuration: RedisOptions, service: string, getLogger: () => ILogger) {
+  public setConfiguration(
+    configuration: RedisOptions,
+    service: string,
+    getLogger: () => ILogger
+  ) {
     this.redisConfiguration = configuration;
     this.serviceName = service;
     this.getLogger = getLogger;

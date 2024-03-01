@@ -1,9 +1,12 @@
 # Changelog
 
+## v10.1.1
+
+- Fix @alanszp/queue: Add maxEventListener to redis connection manager to avoid incorrect warning of possible leak
+
 ## v10.1.0
 
 - Add @alanszp/queue: add repeatable job methods
-
 
 ## v10.0.3
 
