@@ -5,7 +5,8 @@ import { AccessListClient } from "..";
  * Check access to list of employees
  * @param segmentReference the segment which wants to know if it has access to the employee
  * @param employeeReference list of employees
- * @returns true if segment reference can access to employee
+ * @param addFormerEmployees consider left employees
+ * @returns true if segment reference can access to any of the employees on the list
  */
 export async function hasAccessToSomeEmployees(
   segmentReference: string,
