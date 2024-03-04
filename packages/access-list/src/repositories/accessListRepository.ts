@@ -1,12 +1,18 @@
 import { getManager, SelectQueryBuilder } from "typeorm";
 import { AccessListClient } from "..";
 
+/**
+ * Check access to list of employees
+ * @param segmentReference the segment which wants to know if it has access to the employee
+ * @param employeeReference list of employees
+ * @returns true if segment reference can access to employee
+ */
 export async function hasAccessToSomeEmployees(
   segmentReference: string,
   employeeReference: string[],
   addFormerEmployees: boolean,
 ): Promise<boolean> {
-  const query = `SELECT true as granted
+  const query = `SELECT bool_or(true) as granted
     FROM segments_employee_relation_with_attrition ser
     WHERE ser.segment_id = $2 AND ser.employee_id::text = ANY($1)
     ${addFormerEmployees ? "" : " AND left_organization_at IS NULL"};`;
