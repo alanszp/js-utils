@@ -1,5 +1,13 @@
 # Changelog
 
+## v11.0.0
+
+Breaking changes for `@alanszp/jwt`.
+
+- Modify `@alanszp/jwt`: JWTUser is now a class
+- Modify `@alanszp/jwt`: createTokenPayload is now a method of JWTUser, fn is not exported anymore
+- Modify `@alanszp/jwt`: jwtUserHasRoles is now a method of JWTUser, fn is not exported anymore
+
 ## v10.2.0
 
 - Add `@alanszp/access-list`: Add new module for check and filter segments

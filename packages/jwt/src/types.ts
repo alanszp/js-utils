@@ -5,17 +5,17 @@ export interface JWTPayload extends LibPayload {
   ref: string | null;
   org: string;
   rls: string[];
-  prms: string[];
+  prms: string;
   // segmentReference
   seg: string | null;
 }
 
-export interface JWTUser {
+export interface IJWTUser {
   id: string;
   employeeReference: string | null;
   organizationReference: string;
   roles: string[];
-  permissions: string[];
+  permissions: string;
   segmentReference: string | null;
 }
 
