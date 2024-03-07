@@ -18,6 +18,8 @@ export class Audit {
       throw new MissingAuditFieldsError(missingFields);
     }
 
+    asd
+
     this.logger.info(body.action, {
       log_type: null, // test
       ...body,
