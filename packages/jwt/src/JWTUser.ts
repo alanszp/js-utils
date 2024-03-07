@@ -66,7 +66,10 @@ export class JWTUser implements IJWTUser {
    * Old way of checking for roles
    * Will be replaced by permission checks
    */
-  public hasRoles(validateRoles: string[]): boolean {
+  public hasRoles(validateRoles: string | string[]): boolean {
+    if (typeof validateRoles === "string") {
+      return this.hasRole(validateRoles);
+    }
     return validateRoles.some((role) => this.hasRole(role));
   }
 
