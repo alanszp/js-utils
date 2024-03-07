@@ -1,6 +1,7 @@
 import { createPublicKey, createPrivateKey, KeyObject } from "crypto";
 import { SignJWT, jwtVerify } from "jose";
-import type { JWTPayload, JWTUser, SignOptions, VerifyOptions } from "./types";
+import type { JWTPayload, SignOptions, VerifyOptions } from "./types";
+import { JWTUser } from "./JWTUser";
 
 export const JWT_ALGORITHM = "RS512";
 
@@ -49,24 +50,13 @@ export async function generateJWT(
 
   const opts = withDefaultSignOptions(options);
 
-  return new SignJWT(createTokenPayload(user))
+  return new SignJWT(user.toTokenPayload())
     .setProtectedHeader({ alg: JWT_ALGORITHM })
     .setIssuedAt()
     .setIssuer(opts.issuer)
     .setAudience(opts.audience)
     .setExpirationTime(opts.expiration)
     .sign(key);
-}
-
-export function createTokenPayload(user: JWTUser): JWTPayload {
-  return {
-    sub: user.id,
-    ref: user.employeeReference,
-    org: user.organizationReference,
-    rls: user.roles,
-    prms: user.permissions,
-    seg: user.segmentReference,
-  };
 }
 
 export async function verifyJWT(
@@ -87,20 +77,5 @@ export async function verifyJWT(
 
   const payload = verify.payload as JWTPayload;
 
-  return {
-    id: payload.sub,
-    employeeReference: payload.ref,
-    organizationReference: payload.org,
-    roles: payload.rls,
-    permissions: payload.prms,
-    segmentReference: payload.seg || null,
-  };
-}
-
-export function jwtUserHasRoles(
-  jwtUser: JWTUser,
-  roles: string | string[]
-): boolean {
-  const validateRoles = typeof roles === "string" ? [roles] : roles;
-  return validateRoles.some((role) => jwtUser.roles.includes(role));
+  return JWTUser.fromPayload(payload);
 }
