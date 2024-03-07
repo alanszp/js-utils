@@ -19,7 +19,7 @@ export class Audit {
     }
 
     this.logger.info(body.action, {
-      log_type: LogType.AUDIT,
+      log_type: null,
       ...body,
       action: undefined,
     });
