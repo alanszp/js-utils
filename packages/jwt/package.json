@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/jwt",
-  "version": "10.0.1",
+  "version": "11.0.0",
   "description": "Alan's jwt validator & signer.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
