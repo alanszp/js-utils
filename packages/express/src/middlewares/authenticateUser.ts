@@ -89,14 +89,17 @@ const middlewareGetterByAuthType: Record<
           user: "0",
           org: "lara",
         });
-        return Promise.resolve({
-          id: "0",
-          employeeReference: "0",
-          organizationReference: "lara",
-          roles: [],
-          segmentReference: null,
-          permissions: [],
-        });
+        return Promise.resolve(
+          new JWTUser({
+            id: "0",
+            employeeReference: "0",
+            organizationReference: "lara",
+            roles: [],
+            segmentReference: null,
+            // This will be changed in the near future to grab all permissions.
+            permissions: "MA==", // 0 in base64
+          })
+        );
       } else {
         return null;
       }
