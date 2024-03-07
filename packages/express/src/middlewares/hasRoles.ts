@@ -1,7 +1,6 @@
 import { UnauthorizedError } from "@alanszp/errors";
 import { errorView } from "../views/errorView";
 import { NextFunction, Response } from "express";
-import { jwtUserHasRoles } from "@alanszp/jwt";
 import { GenericRequest } from "../types/GenericRequest";
 
 function response401(res: Response): void {
@@ -17,7 +16,7 @@ export function hasRoles(
       return response401(res);
     }
 
-    if (jwtUserHasRoles(jwtUser, roles)) {
+    if (jwtUser.hasRoles(roles)) {
       return next();
     }
 

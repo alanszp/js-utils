@@ -1,5 +1,5 @@
 import { ILogger } from "@alanszp/logger";
-import { Audit, AuditWithState } from "@alanszp/audit";
+import { AuditWithState } from "@alanszp/audit";
 import { AsyncLocalStorage } from "async_hooks";
 
 export interface SharedInternalContext {
