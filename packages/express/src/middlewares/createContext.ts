@@ -2,7 +2,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { NextFunction, Response } from "express";
 import { ILogger } from "@alanszp/logger";
 import { Audit } from "@alanszp/audit";
-import { appIdentifier } from "../helpers/appIdentifier";
+import { appIdentifier } from "@alanszp/core";
 import { GenericRequest } from "../types/GenericRequest";
 import { SharedContext } from "@alanszp/shared-context";
 import { compact } from "lodash";

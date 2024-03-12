@@ -1,3 +1,4 @@
-export * from "./errors/BaseError";
-export * from "./errors/RenderableError";
-export * from "./errors/http";
+export * from "./BaseError";
+export * from "./RenderableError";
+export * from "./HttpRenderableError";
+export * from "./InternalServerError";

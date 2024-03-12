@@ -1,16 +1,16 @@
-import { RenderableContext } from "../RenderableError";
-import { HttpError } from "./HttpError";
+import { HttpRenderableError } from "./HttpRenderableError";
+import { RenderableContext, RenderableError } from "./RenderableError";
 
-export class InternalServerError extends HttpError {
+export class InternalServerError extends HttpRenderableError {
   public error;
 
   constructor(error?: unknown) {
-    super();
+    super("Internal Server Error");
     this.error = error;
   }
 
-  public renderMessage(): string {
-    return "Internal Server Error";
+  httpCode(): number {
+    return 500;
   }
 
   public context(): RenderableContext {
@@ -22,12 +22,10 @@ export class InternalServerError extends HttpError {
       error: {
         name: this.error.name,
         message: this.error.message,
-        code: this.error.code,
-        context: this.error.context,
-        renderMessage: this.error.renderMessage,
-        stack: this.error.stack,
+        ...(this.error instanceof RenderableError ? this.error.toView() : {}),
         status: this.error.status,
         signal: this.error.signal,
+        stack: this.error.stack,
       },
     };
   }

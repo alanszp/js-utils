@@ -1,3 +1,3 @@
-import { BaseError } from "@alanszp/errors";
+import { HttpRenderableError } from "@alanszp/errors";
 
-export class AuditError extends BaseError {}
+export abstract class AuditError extends HttpRenderableError {}

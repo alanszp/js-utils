@@ -19,6 +19,7 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "dependencies": {
+    "@alanszp/core": "^11.0.0",
     "@alanszp/errors": "^11.0.0",
     "@alanszp/express": "^11.0.0",
     "@alanszp/logger": "^11.0.0",

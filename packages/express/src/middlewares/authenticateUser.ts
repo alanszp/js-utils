@@ -1,11 +1,10 @@
 import { JWTUser, verifyJWT, VerifyOptions } from "@alanszp/jwt";
-import { UnauthorizedError } from "@alanszp/errors";
-import { errorView } from "../views/errorView";
 import { NextFunction, Response } from "express";
 import { getRequestLogger } from "../helpers/getRequestLogger";
 import { GenericRequest } from "../types/GenericRequest";
 import { ILogger } from "@alanszp/logger";
 import { compact, isEmpty, omit } from "lodash";
+import { render401Error } from "../helpers/renderErrorJson";
 
 function parseAuthorizationHeader(
   authorization: string | undefined
@@ -143,13 +142,11 @@ export function createAuthContext<Options extends AuthOptions>(
           res
             .status(401)
             .json(
-              errorView(
-                new UnauthorizedError([
-                  authAttempts.includes(null)
-                    ? `Token invalid for methods ${authMethods}`
-                    : `Token not set for methods ${authMethods}`,
-                ])
-              )
+              render401Error([
+                authAttempts.includes(null)
+                  ? `Token invalid for methods ${authMethods}`
+                  : `Token not set for methods ${authMethods}`,
+              ])
             );
           return;
         }
@@ -167,7 +164,7 @@ export function createAuthContext<Options extends AuthOptions>(
           methods: AuthMethods,
           error,
         });
-        res.status(401).json(errorView(new UnauthorizedError(authMethods)));
+        res.status(401).json(render401Error(authMethods));
       }
     };
   };
