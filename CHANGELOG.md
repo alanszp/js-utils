@@ -2,7 +2,12 @@
 
 ## v12.0.0
 
-Breaking changes for `@alanszp/errors`.
+### Features
+
+- Modify `@alanszp/core`: `appIdentifier` will now use `SERVICE_NAME` before `API_ORIGIN_NAME` to define the service name. `API_ORIGIN_NAME` will be deprecated.
+- Added `@alanszp/core`: `appIdentifier` will set `ROLE_NAME` on the identifier.
+
+### Breaking changes on `@alanszp/errors`.
 
 - Modify `@alanszp/errors`: `RenderableError` is now an abstract class and inherits `BaseError`.
 - Added `@alanszp/errors`: `HttpRenderableError` which inherits `RenderableError`.
@@ -12,7 +17,7 @@ Breaking changes for `@alanszp/errors`.
 
 ## v11.0.0
 
-Breaking changes for `@alanszp/jwt`.
+Breaking changes on `@alanszp/jwt`.
 
 - Modify `@alanszp/jwt`: JWTUser is now a class
 - Modify `@alanszp/jwt`: createTokenPayload is now a method of JWTUser, fn is not exported anymore
