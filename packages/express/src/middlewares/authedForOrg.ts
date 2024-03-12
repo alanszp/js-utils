@@ -1,11 +1,10 @@
-import { NotFoundError, UnauthorizedError } from "@alanszp/errors";
-import { errorView } from "../views/errorView";
 import { NextFunction, Response } from "express";
 import { getRequestLogger } from "../helpers/getRequestLogger";
 import { GenericRequest } from "../types/GenericRequest";
+import { render401Error, render404Error } from "../helpers/renderErrorJson";
 
 function response401(res: Response): void {
-  res.status(401).json(errorView(new UnauthorizedError(["jwt"])));
+  res.status(401).json(render401Error(["jwt"]));
 }
 
 export function authForOrg(
@@ -46,6 +45,6 @@ export function authForOrg(
     logger.info("middleware.authForOrg.error.noOrganization", {
       error,
     });
-    res.status(404).json(errorView(new NotFoundError()));
+    res.status(404).json(render404Error());
   }
 }

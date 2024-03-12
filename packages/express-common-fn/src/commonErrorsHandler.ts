@@ -1,11 +1,11 @@
-import { errorView } from "@alanszp/express";
+import { appIdentifier } from "@alanszp/core";
 import {
-  BadRequestError,
   InternalServerError,
-  NotFoundError,
+  RenderableError,
+  HttpRenderableError,
+  RenderableView,
 } from "@alanszp/errors";
 import { Context, ILogger } from "@alanszp/logger";
-import { ModelValidationError } from "@alanszp/validations";
 import { Response } from "express";
 import { EntityNotFoundError, QueryFailedError } from "typeorm";
 
@@ -18,6 +18,24 @@ const defaultsOption: CommonErrorOptions = {
   entityNotFound: 404,
   extraContext: {},
 };
+
+function render404Error(): RenderableView {
+  return {
+    code: "not_found",
+    message: "Not Found",
+    context: {},
+    origin: appIdentifier(),
+  };
+}
+
+function render400Error(message: string): RenderableView {
+  return {
+    code: "bad_request",
+    message,
+    context: {},
+    origin: appIdentifier(),
+  };
+}
 
 export function commonErrorsHandler(loggerFn: () => ILogger) {
   return function handleCommonErrors(
@@ -34,9 +52,14 @@ export function commonErrorsHandler(loggerFn: () => ILogger) {
     };
     const instanceLogger = logger.child(opts.extraContext);
 
-    if (error instanceof ModelValidationError) {
-      instanceLogger.info(`${baseLog}.error.validation`, { error });
-      res.status(400).json(errorView(error));
+    if (error instanceof RenderableError) {
+      const statusCode =
+        error instanceof HttpRenderableError ? error.httpCode() : 500;
+      instanceLogger.info(`${baseLog}.error.${error.code()}`, {
+        statusCode,
+        error,
+      });
+      res.status(statusCode).json(error.toView());
       return;
     }
 
@@ -45,11 +68,9 @@ export function commonErrorsHandler(loggerFn: () => ILogger) {
         error,
       });
       if (opts.entityNotFound === 400) {
-        res
-          .status(400)
-          .json(errorView(new BadRequestError("Entity not present")));
+        res.status(400).json(render400Error("Entity not present"));
       } else {
-        res.status(404).json(errorView(new NotFoundError()));
+        res.status(404).json(render404Error());
       }
       return;
     }
@@ -59,19 +80,17 @@ export function commonErrorsHandler(loggerFn: () => ILogger) {
         instanceLogger.info(`${baseLog}.error.typeorm.query_error.duplicate`, {
           error,
         });
-        res
-          .status(400)
-          .json(errorView(new BadRequestError("Entity already exists")));
+        res.status(400).json(render400Error("Entity already exists"));
       } else {
         instanceLogger.error(`${baseLog}.error.typeorm.query_error.unknown`, {
           error,
         });
-        res.status(500).json(errorView(new InternalServerError(error)));
+        res.status(500).json(new InternalServerError(error).toView());
       }
       return;
     }
 
     instanceLogger.error(`${baseLog}.error.unknown`, { error });
-    res.status(500).json(errorView(new InternalServerError(error)));
+    res.status(500).json(new InternalServerError(error).toView());
   };
 }

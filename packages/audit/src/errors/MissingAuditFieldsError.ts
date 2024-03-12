@@ -1,10 +1,7 @@
-import { RenderableContext, RenderableError } from "@alanszp/errors";
+import { RenderableContext } from "@alanszp/errors";
 import { AuditError } from "./AuditError";
 
-export class MissingAuditFieldsError
-  extends AuditError
-  implements RenderableError
-{
+export class MissingAuditFieldsError extends AuditError {
   public missingFields: string[];
 
   constructor(missingFields: string[]) {
@@ -12,8 +9,8 @@ export class MissingAuditFieldsError
     this.missingFields = missingFields;
   }
 
-  code(): string {
-    return "missing_audit_fields_error";
+  httpCode(): number {
+    return 500;
   }
 
   renderMessage(): string {

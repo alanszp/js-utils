@@ -1,10 +1,9 @@
-import { UnauthorizedError } from "@alanszp/errors";
-import { errorView } from "../views/errorView";
 import { NextFunction, Response } from "express";
 import { GenericRequest } from "../types/GenericRequest";
+import { render401Error } from "../helpers/renderErrorJson";
 
 function response401(res: Response): void {
-  res.status(401).json(errorView(new UnauthorizedError(["permissions"])));
+  res.status(401).json(render401Error(["permissions"]));
 }
 
 export function hasRoles(

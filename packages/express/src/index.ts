@@ -1,4 +1,3 @@
-export * from "./views/errorView";
 export * from "./types/AuthMethod";
 export * from "./middlewares/auditLog";
 export * from "./middlewares/accessLogger";

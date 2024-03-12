@@ -1,26 +1,19 @@
-import { BaseError, RenderableContext, RenderableError } from "@alanszp/errors";
 import { JobState } from "bullmq";
+import { RenderableContext, HttpRenderableError } from "@alanszp/errors";
 
-export class JobCannotBePromotedError
-  extends BaseError
-  implements RenderableError
-{
+export class JobCannotBePromotedError extends HttpRenderableError {
   public jobId: string;
 
   public currentJobState: JobState | "unknown";
 
   constructor(jobId: string, currentJobState: JobState | "unknown") {
-    super("JobCannotBePromotedError");
+    super("Job cannot be promoted Error");
     this.jobId = jobId;
     this.currentJobState = currentJobState;
   }
 
-  code(): string {
-    return "job_cannot_be_promoted_error";
-  }
-
-  renderMessage(): string {
-    return "Job not found";
+  httpCode(): number {
+    return 400;
   }
 
   context(): RenderableContext {

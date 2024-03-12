@@ -1,13 +1,13 @@
 import { ValidationError } from "class-validator";
 import { isArray } from "lodash";
-import { BaseError, RenderableError, RenderableContext } from "@alanszp/errors";
+import { RenderableContext, HttpRenderableError } from "@alanszp/errors";
 
 export interface ValidationObject {
   property: string;
   constraints: { [type: string]: string };
 }
 
-export class ModelValidationError extends BaseError implements RenderableError {
+export class ModelValidationError extends HttpRenderableError {
   public errors: ValidationError[];
 
   constructor(errors: ValidationError[]) {
@@ -35,6 +35,10 @@ export class ModelValidationError extends BaseError implements RenderableError {
 
   public renderMessage(): string {
     return "Model validation error";
+  }
+
+  httpCode(): number {
+    return 400;
   }
 
   public code(): string {

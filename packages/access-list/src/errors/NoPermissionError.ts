@@ -1,8 +1,12 @@
-import { BaseError, RenderableContext, RenderableError } from "@alanszp/errors";
+import { HttpRenderableError, RenderableContext } from "@alanszp/errors";
 
-export class NoPermissionError extends BaseError implements RenderableError {
+export class NoPermissionError extends HttpRenderableError {
   constructor() {
     super("No Permission");
+  }
+
+  httpCode(): number {
+    return 401;
   }
 
   code(): string {

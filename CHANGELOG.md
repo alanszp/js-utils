@@ -1,8 +1,23 @@
 # Changelog
 
+## v12.0.0
+
+### Features
+
+- Modify `@alanszp/core`: `appIdentifier` will now use `SERVICE_NAME` before `API_ORIGIN_NAME` to define the service name. `API_ORIGIN_NAME` will be deprecated.
+- Added `@alanszp/core`: `appIdentifier` will set `ROLE_NAME` on the identifier.
+
+### Breaking changes on `@alanszp/errors`.
+
+- Modify `@alanszp/errors`: `RenderableError` is now an abstract class and inherits `BaseError`.
+- Added `@alanszp/errors`: `HttpRenderableError` which inherits `RenderableError`.
+- Remove `@alanszp/errors`: `HttpError` in favour of implementing our own domain errors.
+- Modify `@alanszp/express-commons-fn`: `commonErrorsHandler` now renders `RenderableError` and if the error defines `HttpRenderableError` will use that code.
+- Modify many libs to be compliant with above changes.
+
 ## v11.0.0
 
-Breaking changes for `@alanszp/jwt`.
+Breaking changes on `@alanszp/jwt`.
 
 - Modify `@alanszp/jwt`: JWTUser is now a class
 - Modify `@alanszp/jwt`: createTokenPayload is now a method of JWTUser, fn is not exported anymore

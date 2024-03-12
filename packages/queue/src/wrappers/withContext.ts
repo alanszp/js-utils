@@ -1,5 +1,5 @@
 import { createId } from "@paralleldrive/cuid2";
-import { appIdentifier } from "../helpers/appIdentifier";
+import { appIdentifier } from "@alanszp/core";
 import { Job, JobData } from "bullmq";
 import { WorkerContext } from "../worker/worker";
 import { JobReturnValue } from "../types";

@@ -1,19 +1,15 @@
-import { BaseError, RenderableContext, RenderableError } from "@alanszp/errors";
+import { HttpRenderableError, RenderableContext } from "@alanszp/errors";
 
-export class JobNotFoundError extends BaseError implements RenderableError {
+export class JobNotFoundError extends HttpRenderableError {
   public jobId: string;
 
   constructor(jobId: string) {
-    super("JobNotFoundError");
+    super("Job not found");
     this.jobId = jobId;
   }
 
-  code(): string {
-    return "job_not_found_error";
-  }
-
-  renderMessage(): string {
-    return "Job not found";
+  httpCode(): number {
+    return 404;
   }
 
   context(): RenderableContext {
