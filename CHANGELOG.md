@@ -6,7 +6,7 @@ Breaking changes for `@alanszp/errors`.
 
 - Modify `@alanszp/errors`: `RenderableError` is now an abstract class and inherits `BaseError`.
 - Added `@alanszp/errors`: `HttpRenderableError` which inherits `RenderableError`.
-- Remove `@alanszp/errors`: `HttpErros` in favour of implementing our own domain errors.
+- Remove `@alanszp/errors`: `HttpError` in favour of implementing our own domain errors.
 - Modify `@alanszp/express-commons-fn`: `commonErrorsHandler` now renders `RenderableError` and if the error defines `HttpRenderableError` will use that code.
 - Modify many libs to be compliant with above changes.
 
