@@ -1,5 +1,17 @@
 # Changelog
 
+## v12.0.3
+
+- Modify `@alanszp/*`: Removed from `package.json` the key `files` since it was preventing to remove `node_modules` when publishing the libs and where generating problems.
+
+## v12.0.2
+
+- Try to fix node_modules deps and move `@alanszp/error` to peerDependency only.
+
+## v12.0.1
+
+- Added `@alanszp/express-commons-fn`: `commonErrorsHandler` logs error when the error is `RenderableError` and statusCode >= 500
+
 ## v12.0.0
 
 ### Features
