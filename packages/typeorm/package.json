@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/typeorm",
-  "version": "12.0.0",
+  "version": "12.0.1",
   "description": "Alan's typeorm utils.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -19,7 +19,7 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "devDependencies": {
-    "@alanszp/errors": "^12.0.0",
+    "@alanszp/errors": "^12.0.1",
     "@alanszp/logger": "^12.0.0",
     "@types/node": "^20.11.17",
     "class-validator": "^0.14.1",
@@ -35,6 +35,6 @@
     "typeorm": "^0.2.34"
   },
   "dependencies": {
-    "@alanszp/validations": "^12.0.0"
+    "@alanszp/validations": "^12.0.1"
   }
 }

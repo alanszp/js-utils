@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/audit",
-  "version": "12.0.0",
+  "version": "12.0.1",
   "description": "Alan's audit util.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -26,7 +26,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@alanszp/errors": "^12.0.0",
+    "@alanszp/errors": "^12.0.1",
     "@types/node": "^20.11.17"
   }
 }
