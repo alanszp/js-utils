@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/integrations-common",
-  "version": "12.0.2",
+  "version": "12.0.3",
   "description": "Common logic shared between integrations.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -29,8 +29,8 @@
     "typescript": "^4.3.4"
   },
   "dependencies": {
-    "@alanszp/logger": "^12.0.0",
-    "@alanszp/typeorm": "^12.0.2",
+    "@alanszp/logger": "^12.0.3",
+    "@alanszp/typeorm": "^12.0.3",
     "class-validator": "^0.14.1",
     "lodash": "^4.17.21",
     "typeorm": "^0.2.34"

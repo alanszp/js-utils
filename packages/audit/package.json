@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/audit",
-  "version": "12.0.2",
+  "version": "12.0.3",
   "description": "Alan's audit util.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -19,7 +19,7 @@
     "@alanszp/errors": ">=12.0.0"
   },
   "dependencies": {
-    "@alanszp/logger": "^12.0.0",
+    "@alanszp/logger": "^12.0.3",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
