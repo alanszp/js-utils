@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/split",
-  "version": "12.0.1",
+  "version": "12.0.2",
   "description": "Alan's split client",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -31,8 +31,8 @@
   },
   "dependencies": {
     "@alanszp/core": "^12.0.0",
-    "@alanszp/shared-context": "^12.0.1",
-    "@alanszp/typeorm": "^12.0.1",
+    "@alanszp/shared-context": "^12.0.2",
+    "@alanszp/typeorm": "^12.0.2",
     "@splitsoftware/splitio": "^10.25.1",
     "lodash": "^4.17.21"
   }

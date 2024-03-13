@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/typeorm",
-  "version": "12.0.1",
+  "version": "12.0.2",
   "description": "Alan's typeorm utils.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -34,6 +34,6 @@
     "typeorm": "^0.2.34"
   },
   "dependencies": {
-    "@alanszp/validations": "^12.0.1"
+    "@alanszp/validations": "^12.0.2"
   }
 }
