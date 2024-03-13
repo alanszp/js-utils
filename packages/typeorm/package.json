@@ -19,7 +19,6 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "devDependencies": {
-    "@alanszp/errors": "^12.0.1",
     "@alanszp/logger": "^12.0.0",
     "@types/node": "^20.11.17",
     "class-validator": "^0.14.1",

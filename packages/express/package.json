@@ -24,7 +24,6 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "@alanszp/errors": "^12.0.1",
     "@types/body-parser": "^1.19.1",
     "@types/express": "^4.17.12",
     "@types/jest": "^28.1.8",
@@ -45,6 +44,5 @@
     "@paralleldrive/cuid2": "^2.2.2",
     "body-parser": "^1.20.2",
     "lodash": "^4.17.21"
-  },
-  "gitHead": "cad2d00dbdeb845477a9c610a78e093b8fbb64ae"
+  }
 }
