@@ -20,16 +20,17 @@
   },
   "dependencies": {
     "@alanszp/core": "^12.0.0",
-    "@alanszp/errors": "^12.0.0",
     "@alanszp/express": "^12.0.0",
     "@alanszp/logger": "^12.0.0",
     "@alanszp/validations": "^12.0.0"
   },
   "peerDependencies": {
+    "@alanszp/errors": ">=12.0.0",
     "express": "^4.17.1",
     "typeorm": "^0.2.34"
   },
   "devDependencies": {
+    "@alanszp/errors": "^12.0.0",
     "@types/express": "^4.17.12",
     "@types/node": "^20.11.17",
     "typeorm": "^0.2.34",

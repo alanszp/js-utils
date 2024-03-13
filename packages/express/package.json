@@ -20,9 +20,11 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "peerDependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "@alanszp/errors": ">=12.0.0"
   },
   "devDependencies": {
+    "@alanszp/errors": "^12.0.0",
     "@types/body-parser": "^1.19.1",
     "@types/express": "^4.17.12",
     "@types/jest": "^28.1.8",
@@ -36,7 +38,6 @@
   },
   "dependencies": {
     "@alanszp/audit": "^12.0.0",
-    "@alanszp/errors": "^12.0.0",
     "@alanszp/jwt": "^12.0.0",
     "@alanszp/logger": "^12.0.0",
     "@alanszp/shared-context": "^12.0.0",

@@ -55,10 +55,19 @@ export function commonErrorsHandler(loggerFn: () => ILogger) {
     if (error instanceof RenderableError) {
       const statusCode =
         error instanceof HttpRenderableError ? error.httpCode() : 500;
-      instanceLogger.info(`${baseLog}.error.${error.code()}`, {
-        statusCode,
-        error,
-      });
+
+      if (statusCode >= 500) {
+        instanceLogger.error(`${baseLog}.error.${error.code()}`, {
+          statusCode,
+          error,
+        });
+      } else {
+        instanceLogger.info(`${baseLog}.error.${error.code()}`, {
+          statusCode,
+          error,
+        });
+      }
+
       res.status(statusCode).json(error.toView());
       return;
     }
