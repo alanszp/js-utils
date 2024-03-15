@@ -8,3 +8,5 @@ export * from "./middlewares/returnInternalServerError";
 export * from "./middlewares/returnNotFound";
 export * from "./middlewares/jsonBodyParser";
 export * from "./middlewares/hasRoles";
+export * from "./middlewares/hasPermissions";
+export * from "./helpers/getRequestBaseLog";

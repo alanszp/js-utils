@@ -10,6 +10,15 @@ export function render401Error(requiredChecks: string[]): RenderableView {
   };
 }
 
+export function render403Error(): RenderableView {
+  return {
+    code: "forbidden",
+    message: "Forbidden",
+    context: {},
+    origin: appIdentifier(),
+  };
+}
+
 export function render404Error(): RenderableView {
   return {
     code: "not_found",
