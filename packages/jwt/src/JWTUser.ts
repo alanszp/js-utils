@@ -1,5 +1,5 @@
 import { ILogger } from "@alanszp/logger";
-import { Bitmask } from "./Bitmask";
+import { BitmaskUtils } from "./BitmaskUtils";
 import { AxiosInstance, PermissionService } from "./PermissionService";
 import { PermissionNotFound } from "./errors/PermissionNotFound";
 import { PermissionServiceNotInstantiated } from "./errors/PermissionServiceNotInstantiated";
@@ -128,9 +128,9 @@ export class JWTUser implements IJWTUser {
    */
   public async hasPermission(permissionCode: string): Promise<boolean> {
     const definition = await this.getPermissionDefinition(permissionCode);
-    const checkBitmask = Bitmask.encodeFromPosition(definition.position);
-    const permissionsBitmask = Bitmask.decodeFromBase64(this.permissions);
-    return Bitmask.checkBitmask(permissionsBitmask, checkBitmask);
+    const checkBitmask = BitmaskUtils.encodeFromPosition(definition.position);
+    const permissionsBitmask = BitmaskUtils.decodeFromBase64(this.permissions);
+    return BitmaskUtils.checkBitmask(permissionsBitmask, checkBitmask);
   }
 
   /**

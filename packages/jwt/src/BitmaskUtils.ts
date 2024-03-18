@@ -2,7 +2,7 @@
  * Bitmask utility class
  * - Use to handle binary numbers as bitmasks
  */
-export class Bitmask {
+export class BitmaskUtils {
   /**
    * Encode a position into a binary number
    * @example Bitmask.encodeFromPosition(0) // 1 or 0b1
