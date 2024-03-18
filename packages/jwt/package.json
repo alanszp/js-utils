@@ -17,6 +17,7 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "devDependencies": {
+    "@babel/core": "^7.24.0",
     "@babel/preset-env": "^7.24.0",
     "@babel/preset-typescript": "^7.23.3",
     "@types/bignum": "^0.0.33",
