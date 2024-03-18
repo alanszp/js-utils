@@ -1,7 +1,7 @@
 import { ILogger } from "@alanszp/logger";
 import { BitmaskUtils } from "./BitmaskUtils";
 import { AxiosInstance, PermissionService } from "./PermissionService";
-import { PermissionNotFound } from "./errors/PermissionNotFound";
+import { PermissionDefinitionNotFound } from "./errors/PermissionNotFound";
 import { PermissionServiceNotInstantiated } from "./errors/PermissionServiceNotInstantiated";
 import { IJWTUser, JWTPayload, Permission } from "./types";
 import { NoPermissionError } from "./errors/NoPermissionError";
@@ -123,7 +123,7 @@ export class JWTUser implements IJWTUser {
    * Check if user has permission to perform an action
    * @param permissionCode - permission code to check
    * @returns boolean
-   * @throws {PermissionNotFound}
+   * @throws {PermissionDefinitionNotFound}
    * @throws {PermissionServiceNotInstantiated}
    */
   public async hasPermission(permissionCode: string): Promise<boolean> {
@@ -137,7 +137,7 @@ export class JWTUser implements IJWTUser {
    * Throws an error if the user does not have the required permission
    * @param permissionCode
    * @throws {NoPermissionError}
-   * @throws {PermissionNotFound}
+   * @throws {PermissionDefinitionNotFound}
    * @throws {PermissionServiceNotInstantiated}
    */
   public async validatePermission(permissionCode: string): Promise<void> {
@@ -151,7 +151,7 @@ export class JWTUser implements IJWTUser {
    * Check if user has all permissions to perform an action
    * @param permissionCodes - permission codes to check
    * @returns boolean
-   * @throws {PermissionNotFound}
+   * @throws {PermissionDefinitionNotFound}
    * @throws {PermissionServiceNotInstantiated}
    */
   public async hasEveryPermission(permissionCodes: string[]): Promise<boolean> {
@@ -169,7 +169,7 @@ export class JWTUser implements IJWTUser {
    * Throws an error if the user does not have all permissions
    * @param permissionCode
    * @throws {NoPermissionError}
-   * @throws {PermissionNotFound}
+   * @throws {PermissionDefinitionNotFound}
    * @throws {PermissionServiceNotInstantiated}
    */
   public async validateEveryPermission(
@@ -191,7 +191,7 @@ export class JWTUser implements IJWTUser {
    * Check if user has at least one permission
    * @param permissionCodes - permission codes to check
    * @returns boolean
-   * @throws {PermissionNotFound}
+   * @throws {PermissionDefinitionNotFound}
    * @throws {PermissionServiceNotInstantiated}
    */
   public async hasSomePermission(permissionCodes: string[]): Promise<boolean> {
@@ -208,7 +208,7 @@ export class JWTUser implements IJWTUser {
    * Throws an error if the user does not have at least one of the permissions
    * @param permissionCode
    * @throws {NoPermissionError}
-   * @throws {PermissionNotFound}
+   * @throws {PermissionDefinitionNotFound}
    * @throws {PermissionServiceNotInstantiated}
    */
   public async validateSomePermission(
@@ -221,7 +221,7 @@ export class JWTUser implements IJWTUser {
   }
 
   /**
-   * @throws {PermissionNotFound}
+   * @throws {PermissionDefinitionNotFound}
    * @throws {PermissionServiceNotInstantiated}
    */
   private async getPermissionDefinition(
@@ -230,7 +230,7 @@ export class JWTUser implements IJWTUser {
     const definitions = await JWTUser.PermissionService.getPermissions();
     const definition = definitions.find((def) => def.code === permissionCode);
     if (!definition) {
-      throw new PermissionNotFound(permissionCode);
+      throw new PermissionDefinitionNotFound(permissionCode);
     }
     return definition;
   }

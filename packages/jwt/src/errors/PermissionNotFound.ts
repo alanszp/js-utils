@@ -1,7 +1,7 @@
 import { RenderableContext } from "@alanszp/errors";
 import { PermissionServiceError } from "./PermissionServiceError";
 
-export class PermissionNotFound extends PermissionServiceError {
+export class PermissionDefinitionNotFound extends PermissionServiceError {
   permissionCode: string;
 
   constructor(permissionCode: string) {
@@ -14,7 +14,7 @@ export class PermissionNotFound extends PermissionServiceError {
   }
 
   httpCode(): number {
-    // 500 Internal Server Error because this indicates a problem with the server
+    // 500 Internal Server Error because this indicates a configuration problem.
     return 500;
   }
 
