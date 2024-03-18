@@ -1,6 +1,9 @@
+import Bignum from "bignum";
+
 /**
  * Bitmask utility class
- * - Use to handle binary numbers as bitmasks
+ * - Use to handle binary numbers
+ * - Support binary numbers larger than 32 bits (Node.js uses 32-bit numbers)
  */
 export class BitmaskUtils {
   /**
@@ -10,8 +13,8 @@ export class BitmaskUtils {
    * @example Bitmask.encodeFromPosition(2) // 4 or 0b100
    * @example Bitmask.encodeFromPosition(3) // 8 or 0b1000
    */
-  static encodeFromPosition(position: number): number {
-    return 1 << position;
+  static encodeFromPosition(position: number): Bignum {
+    return new Bignum(1).shiftLeft(position);
   }
 
   /**
@@ -21,8 +24,8 @@ export class BitmaskUtils {
    * @example Bitmask.checkBitmask(0b1010, 0b1000) // true
    * @example Bitmask.checkBitmask(0b1010, 0b0100) // false
    */
-  static checkBitmask(bitmask: number, check: number): boolean {
-    return (bitmask & check) === check;
+  static checkBitmask(bitmask: Bignum, check: Bignum): boolean {
+    return bitmask.and(check).eq(check);
   }
 
   /**
@@ -32,7 +35,7 @@ export class BitmaskUtils {
    * @example Bitmask.decodeFromBase64("AQ==") // 1 or 0b1
    * @example Bitmask.decodeFromBase64("Ag==") // 2 or 0b10
    */
-  static decodeFromBase64(base64: string): number {
-    return Number(Buffer.from(base64, "base64").toString("binary"));
+  static decodeFromBase64(base64: string): Bignum {
+    return Bignum.fromBuffer(Buffer.from(base64, "base64"));
   }
 }
