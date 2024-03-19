@@ -113,11 +113,13 @@ export class PermissionService implements IPermissionService {
    * @returns {Promise<Permission[]>}
    */
   public async getPermissions(checkCache = true): Promise<Permission[]> {
-    if (checkCache && this.#cachedPermissions) {
-      this.logger.debug("auth.permission_service.get_permissions.cache_hit");
-      return this.#cachedPermissions;
+    if (checkCache) {
+      if (this.#cachedPermissions) {
+        this.logger.debug("auth.permission_service.get_permissions.cache_hit");
+        return this.#cachedPermissions;
+      }
+      this.logger.debug("auth.permission_service.get_permissions.cache_miss");
     }
-    this.logger.debug("auth.permission_service.get_permissions.cache_miss");
 
     const permissions = await this.getAllPagesFromPaginatedRequest(
       this.getPermissionsPage
