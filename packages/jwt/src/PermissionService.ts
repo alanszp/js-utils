@@ -3,11 +3,8 @@ import { createAxios, createAxiosWithTrace } from "@alanszp/axios-node";
 import { Permission } from "./types";
 import { PermissionServiceRequestError } from "./errors/PermissionServiceRequestError";
 import { ListResult } from "@alanszp/core";
-import NodeCache from "node-cache";
 
-const permissionsCache = new NodeCache({
-  stdTTL: 1 * 60 * 60, // 1 hour
-});
+const DEFAULT_PERMISSIONS_REFETCH_TIMEOUT = 1000 * 60 * 60; // 1hs
 
 export type AxiosInstance =
   | ReturnType<typeof createAxios>
@@ -20,7 +17,11 @@ export class PermissionService {
 
   readonly #axios: ReturnType<typeof createAxios>;
 
-  #permissionsPreheatedSuccessfully: Promise<void> = Promise.resolve();
+  #cachedPermissions: Permission[] | null;
+
+  #observerInterval: NodeJS.Timeout | null;
+
+  #permissionsPreheatedSuccessfully: Promise<void>;
 
   private readonly logger: ILogger;
 
@@ -29,6 +30,9 @@ export class PermissionService {
     this.#axios = createAxios();
     this.#baseUrl = baseUrl;
     this.#accessToken = accessToken;
+    this.#cachedPermissions = null;
+    this.#observerInterval = null;
+    this.#permissionsPreheatedSuccessfully = Promise.resolve();
   }
 
   private async makeRequest<T>(
@@ -100,37 +104,40 @@ export class PermissionService {
     return acc;
   }
 
+  public hasCachedPermissions(): boolean {
+    return this.#cachedPermissions !== null;
+  }
+
   /**
    * Retrieve the permissions definitions
    * @returns {Promise<Permission[]>}
    */
   public async getPermissions(checkCache = true): Promise<Permission[]> {
-    const cached: Permission[] | undefined = permissionsCache.get("all");
-    if (checkCache && cached) {
+    if (checkCache && this.#cachedPermissions) {
       this.logger.debug("auth.permission_service.get_permissions.cache_hit");
-      return cached;
+      return this.#cachedPermissions;
     }
     this.logger.debug("auth.permission_service.get_permissions.cache_miss");
 
-    const permissions = this.getAllPagesFromPaginatedRequest(
+    const permissions = await this.getAllPagesFromPaginatedRequest(
       this.getPermissionsPage
     );
 
-    permissionsCache.set("all", permissions);
+    this.#cachedPermissions = permissions;
 
     return permissions;
   }
 
   public async isPermissionsCacheReady(): Promise<boolean> {
     await this.#permissionsPreheatedSuccessfully;
-    return permissionsCache.has("all");
+    return this.#cachedPermissions !== null;
   }
 
   /**
    * Populate the permissions cache
    * @todo Implement retry strategy
    */
-  public reloadPermissionCache() {
+  public reloadPermissionCache(): Promise<void> {
     this.#permissionsPreheatedSuccessfully = this.getPermissions(false)
       .then(() => {
         this.logger.debug(
@@ -144,5 +151,23 @@ export class PermissionService {
         );
         return;
       });
+
+    return this.#permissionsPreheatedSuccessfully;
+  }
+
+  public startPermissionObserver(
+    permissionRefetchInMs: number = DEFAULT_PERMISSIONS_REFETCH_TIMEOUT
+  ): void {
+    this.#observerInterval = setInterval(
+      () => this.reloadPermissionCache(),
+      permissionRefetchInMs
+    );
+  }
+
+  public stopPermissionObserver(): void {
+    if (this.#observerInterval) {
+      clearInterval(this.#observerInterval);
+      this.#observerInterval = null;
+    }
   }
 }
