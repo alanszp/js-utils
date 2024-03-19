@@ -1,16 +1,16 @@
 import { ILogger } from "@alanszp/logger";
-import { createAxios, createAxiosWithTrace } from "@alanszp/axios-node";
+import { createAxios } from "@alanszp/axios-node";
 import { Permission } from "./types";
 import { PermissionServiceRequestError } from "./errors/PermissionServiceRequestError";
 import { ListResult } from "@alanszp/core";
 
+export interface IPermissionService {
+  getPermissions(): Promise<Permission[]>;
+}
+
 const DEFAULT_PERMISSIONS_REFETCH_TIMEOUT = 1000 * 60 * 60; // 1hs
 
-export type AxiosInstance =
-  | ReturnType<typeof createAxios>
-  | ReturnType<typeof createAxiosWithTrace>;
-
-export class PermissionService {
+export class PermissionService implements IPermissionService {
   readonly #baseUrl: string;
 
   readonly #accessToken: string;
@@ -133,10 +133,6 @@ export class PermissionService {
     return this.#cachedPermissions !== null;
   }
 
-  /**
-   * Populate the permissions cache
-   * @todo Implement retry strategy
-   */
   public reloadPermissionCache(): Promise<void> {
     this.#permissionsPreheatedSuccessfully = this.getPermissions(false)
       .then(() => {

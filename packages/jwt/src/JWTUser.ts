@@ -1,6 +1,5 @@
-import { ILogger } from "@alanszp/logger";
 import { BitmaskUtils } from "./BitmaskUtils";
-import { AxiosInstance, PermissionService } from "./PermissionService";
+import { IPermissionService } from "./PermissionService";
 import { PermissionDefinitionNotFound } from "./errors/PermissionNotFound";
 import { PermissionServiceNotInstantiated } from "./errors/PermissionServiceNotInstantiated";
 import { IJWTUser, JWTPayload, Permission } from "./types";
@@ -26,35 +25,19 @@ export class JWTUser implements IJWTUser {
    * This is used to make sure that the permission service is only instantiated once
    * and can be used by all instances of JWTUser
    */
-  static #permissionService: PermissionService | null = null;
+  static #permissionService: IPermissionService | null = null;
 
   /**
    * Instantiate the permission service for all instances of JWTUser
    */
-  static instantiatePermissionService(
-    logger: ILogger,
-    permissionServiceBaseUrl: string,
-    accessToken: string
-  ) {
-    logger.trace("auth.jwt_user.instantiate_permission_service");
-    JWTUser.#permissionService = new PermissionService(
-      logger,
-      permissionServiceBaseUrl,
-      accessToken
-    );
-
-    logger.trace("auth.jwt_user.preload_permissions");
-    JWTUser.PermissionService.reloadPermissionCache();
-  }
-
-  static async permissionServiceIsReady(): Promise<boolean> {
-    return JWTUser.PermissionService.isPermissionsCacheReady();
+  static instantiatePermissionService(service: IPermissionService): void {
+    JWTUser.#permissionService = service;
   }
 
   /**
    * @throws {PermissionServiceNotInstantiated}
    */
-  private static get PermissionService(): PermissionService {
+  private static get PermissionService(): IPermissionService {
     if (!JWTUser.#permissionService) {
       throw new PermissionServiceNotInstantiated();
     }
