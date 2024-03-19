@@ -7,3 +7,4 @@ export * from "./errors/NoPermissionError";
 export * from "./errors/PermissionNotFound";
 export * from "./errors/PermissionServiceNotInstantiated";
 export * from "./errors/PermissionServiceRequestError";
+export * from "./axiosPermissionsResolutionFactory";

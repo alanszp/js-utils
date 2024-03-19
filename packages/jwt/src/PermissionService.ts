@@ -1,8 +1,7 @@
 import { ILogger } from "@alanszp/logger";
-import { createAxios } from "@alanszp/axios-node";
 import { Permission } from "./types";
-import { PermissionServiceRequestError } from "./errors/PermissionServiceRequestError";
 import { ListResult } from "@alanszp/core";
+import { PermissionsResolutionFunction } from "./axiosPermissionsResolutionFactory";
 
 export interface IPermissionService {
   getPermissions(): Promise<Permission[]>;
@@ -11,11 +10,7 @@ export interface IPermissionService {
 const DEFAULT_PERMISSIONS_REFETCH_TIMEOUT = 1000 * 60 * 60; // 1hs
 
 export class PermissionService implements IPermissionService {
-  readonly #baseUrl: string;
-
-  readonly #accessToken: string;
-
-  readonly #axios: ReturnType<typeof createAxios>;
+  readonly #permissionsResolutionFn: PermissionsResolutionFunction;
 
   #cachedPermissions: Permission[] | null;
 
@@ -25,60 +20,15 @@ export class PermissionService implements IPermissionService {
 
   private readonly logger: ILogger;
 
-  constructor(logger: ILogger, baseUrl: string, accessToken: string) {
+  constructor(
+    logger: ILogger,
+    permissionsResolutionFn: PermissionsResolutionFunction
+  ) {
     this.logger = logger;
-    this.#axios = createAxios();
-    this.#baseUrl = baseUrl;
-    this.#accessToken = accessToken;
+    this.#permissionsResolutionFn = permissionsResolutionFn;
     this.#cachedPermissions = null;
     this.#observerInterval = null;
     this.#permissionsPreheatedSuccessfully = Promise.resolve();
-  }
-
-  private async makeRequest<T>(
-    method: "GET",
-    url: string,
-    params?: Record<string, unknown>,
-    retries: number = 5
-  ): Promise<T> {
-    try {
-      const request = await this.#axios.request<T>({
-        baseURL: this.#baseUrl,
-        url,
-        method,
-        params,
-        headers: {
-          authorization: `Bearer ${this.#accessToken}`,
-        },
-      });
-
-      return request.data;
-    } catch (error: unknown) {
-      if (retries > 0) {
-        this.logger.debug("auth.permission_service.make_request.retry", {
-          retriesLeft: retries,
-        });
-        const response = await this.makeRequest<T>(
-          method,
-          url,
-          params,
-          retries - 1
-        );
-        return response;
-      }
-      throw new PermissionServiceRequestError(error);
-    }
-  }
-
-  private async getPermissionsPage(
-    page: number = 1,
-    pageSize = 500
-  ): Promise<ListResult<Permission>> {
-    return this.makeRequest<ListResult<Permission>>(
-      "GET",
-      "/lara/v1/permissions",
-      { page, pageSize }
-    );
   }
 
   /**
@@ -122,7 +72,7 @@ export class PermissionService implements IPermissionService {
     }
 
     const permissions = await this.getAllPagesFromPaginatedRequest(
-      this.getPermissionsPage
+      this.#permissionsResolutionFn
     );
 
     this.#cachedPermissions = permissions;
