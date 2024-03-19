@@ -20,7 +20,6 @@
     "@babel/core": "^7.24.0",
     "@babel/preset-env": "^7.24.0",
     "@babel/preset-typescript": "^7.23.3",
-    "@types/bignum": "^0.0.33",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.17",
     "babel-jest": "^29.7.0",
@@ -33,7 +32,6 @@
     "@alanszp/core": "^12.0.3",
     "@alanszp/errors": "^12.0.3",
     "@alanszp/logger": "^12.0.3",
-    "bignum": "^0.13.1",
     "jose": "^5.2.2",
     "node-cache": "^5.1.2"
   }
