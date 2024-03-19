@@ -29,3 +29,11 @@ export interface VerifyOptions {
   issuer: string | string[];
   audience: string | string[];
 }
+
+export interface Permission {
+  code: string;
+  description: string;
+  position: number;
+  priority: number | null;
+  organizationReference: string;
+}

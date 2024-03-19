@@ -1,9 +1,9 @@
 import { NextFunction, Response } from "express";
 import { GenericRequest } from "../types/GenericRequest";
-import { render401Error } from "../helpers/renderErrorJson";
+import { render403Error } from "../helpers/renderErrorJson";
 
-function response401(res: Response): void {
-  res.status(401).json(render401Error(["permissions"]));
+function response403(res: Response): void {
+  res.status(403).json(render403Error());
 }
 
 export function hasRoles(
@@ -12,13 +12,13 @@ export function hasRoles(
   return (req: GenericRequest, res: Response, next: NextFunction) => {
     const { jwtUser } = req.context;
     if (!jwtUser) {
-      return response401(res);
+      return response403(res);
     }
 
     if (jwtUser.hasRoles(roles)) {
       return next();
     }
 
-    response401(res);
+    response403(res);
   };
 }

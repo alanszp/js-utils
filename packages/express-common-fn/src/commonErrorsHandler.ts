@@ -37,6 +37,9 @@ function render400Error(message: string): RenderableView {
   };
 }
 
+/**
+ * @deprecated Use internalServerError handler in ExpressApp
+ */
 export function commonErrorsHandler(loggerFn: () => ILogger) {
   return function handleCommonErrors(
     error: unknown,

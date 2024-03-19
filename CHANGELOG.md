@@ -1,5 +1,16 @@
 # Changelog
 
+## v13.0.0
+
+- Deprecated `@alanszp/express-commons-fn`: `commonErrorsHandler` in favor of the new errorRequestHandlerMiddleware.
+- Renamed `@alanszp/express`: `returnInternalServerError` to `errorRequestHandlerMiddleware`.
+- Modify `@alanszp/express`: Move logic from `commonErrorsHandler` into `errorRequestHandlerMiddleware`.
+- Added `@alanszp/express`: Middlewares to handle permissions checks (with retro-compatibility for old-role-codes)
+- Added `@alanszp/express`: Adds new helper for to craft a base log given a request `getRequestBaseLog`.
+- Added `@alanszp/jwt`: Adds new `BitmaskUtils` class to handle binary bitmask operations supporting big numbers.
+- Modify `@alanszp/jwt`: `JWTUser` class, adding methods to check for permissions
+- Added `@alanszp/jwt`: Created `PermissionService`, instantiated via a `JWTUser` statically. Caching permissions in memory every hour for now. Better caching strategy is pending.
+
 ## v12.0.3
 
 - Modify `@alanszp/*`: Removed from `package.json` the key `files` since it was preventing to remove `node_modules` when publishing the libs and where generating problems.
