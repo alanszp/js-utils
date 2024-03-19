@@ -30,14 +30,14 @@ export class JWTUser implements IJWTUser {
   /**
    * Instantiate the permission service for all instances of JWTUser
    */
-  static instantiatePermissionService(service: IPermissionService): void {
+  static setPermissionService(service: IPermissionService): void {
     JWTUser.#permissionService = service;
   }
 
   /**
    * @throws {PermissionServiceNotInstantiated}
    */
-  private static get PermissionService(): IPermissionService {
+  static getPermissionService(): IPermissionService {
     if (!JWTUser.#permissionService) {
       throw new PermissionServiceNotInstantiated();
     }
@@ -210,7 +210,7 @@ export class JWTUser implements IJWTUser {
   private async getPermissionDefinition(
     permissionCode: string
   ): Promise<Permission> {
-    const definitions = await JWTUser.PermissionService.getPermissions();
+    const definitions = await JWTUser.getPermissionService().getPermissions();
     const definition = definitions.find((def) => def.code === permissionCode);
     if (!definition) {
       throw new PermissionDefinitionNotFound(permissionCode);

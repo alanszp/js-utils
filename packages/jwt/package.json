@@ -32,7 +32,6 @@
     "@alanszp/core": "^12.0.3",
     "@alanszp/errors": "^12.0.3",
     "@alanszp/logger": "^12.0.3",
-    "jose": "^5.2.2",
-    "node-cache": "^5.1.2"
+    "jose": "^5.2.2"
   }
 }
