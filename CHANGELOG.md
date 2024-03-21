@@ -2,6 +2,7 @@
 
 ## v14.0.0
 - Upgrade bullmq to 5.x in `@alanszp/queues`
+- Upgrade ioredis to 5.3.2 `@alanszp/queues`: 5.3.2 or higher is required
 
 ## v13.0.0
 
