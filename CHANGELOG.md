@@ -1,5 +1,8 @@
 # Changelog
 
+## v14.0.0
+- Upgrade bullmq to 5.x in `@alanszp/queues`
+
 ## v13.0.0
 
 - Deprecated `@alanszp/express-commons-fn`: `commonErrorsHandler` in favor of the new errorRequestHandlerMiddleware.

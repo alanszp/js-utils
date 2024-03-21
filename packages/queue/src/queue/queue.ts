@@ -13,7 +13,6 @@ import {
 } from "../types";
 import { JobNotFoundError } from "../errors/JobNotFoundError";
 import { JobCannotBePromotedError } from "../errors/JobCannotBePromotedError";
-import { ResultTypes } from "ioredis/built/utils/RedisCommander";
 
 const BULL_PREFIX = "b";
 
