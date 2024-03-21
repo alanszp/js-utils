@@ -7,7 +7,8 @@ import { SharedContext } from "@alanszp/shared-context";
 export function createQueue<Data = JobData>(
   name: string,
   getContext: () => SharedContext,
-  queueOptions?: QueueOptions
+  queueOptions?: QueueOptions,
+  addDefaultOptions?: boolean
 ): Queue<Data> {
   const connection = ConnectionManager.getInstance().getConnection();
   const queue = new Queue<Data>(
@@ -15,7 +16,8 @@ export function createQueue<Data = JobData>(
     name,
     ConnectionManager.getInstance().getServiceName(),
     getContext,
-    queueOptions
+    queueOptions,
+    addDefaultOptions
   );
   QueueRepository.Instance.registerQueue(queue);
   return queue;

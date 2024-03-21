@@ -1,12 +1,15 @@
 // decoupling from bullmq
+import {
+  QueueOptions as RawQueueOptions,
+  WorkerOptions as RawWorkerOptions,
+} from "bullmq";
+
 export {
   ConnectionOptions,
   RedisOptions,
   Job,
   Worker as RawWorker,
-  WorkerOptions,
   Queue as RawQueue,
-  QueueOptions,
   JobState,
   JobType,
   JobsOptions,
@@ -36,3 +39,6 @@ export enum JobTypeEnum {
   REPEAT = "repeat",
   WAIT = "wait",
 }
+
+export type QueueOptions = Omit<RawQueueOptions, "connection">;
+export type WorkerOptions = Omit<RawWorkerOptions, "connection">;

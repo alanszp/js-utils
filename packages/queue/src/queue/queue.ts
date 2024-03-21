@@ -19,6 +19,42 @@ const BULL_PREFIX = "b";
 const DEFAULT_COMPLETED_JOB_MAX_AGE_IN_SECONDS = 60 * 60 * 24 * 30;
 const DEFAULT_COMPLETED_JOB_MAX_COUNT = 500;
 const DEFAULT_FAILED_JOB_MAX_COUNT = 1000;
+const DEFAULT_OPTIONS = {
+  defaultJobOptions: {
+    removeOnComplete: {
+      age: DEFAULT_COMPLETED_JOB_MAX_AGE_IN_SECONDS,
+      count: DEFAULT_COMPLETED_JOB_MAX_COUNT,
+    },
+    removeOnFail: {
+      count: DEFAULT_FAILED_JOB_MAX_COUNT,
+    },
+    attempts: 3,
+    backoff: {
+      type: "exponential",
+      delay: 3000,
+    },
+  },
+};
+
+function buildOptions(
+  connection: ConnectionOptions,
+  prefix: string,
+  queueOptions: QueueOptions = {},
+  addDefaultOptions: boolean = true
+) {
+  const defaultOptions = addDefaultOptions ? DEFAULT_OPTIONS : {};
+
+  return {
+    ...merge(
+      {
+        ...defaultOptions,
+        connection,
+      },
+      queueOptions
+    ),
+    ...{ prefix: `{${prefix}}:${BULL_PREFIX}` },
+  };
+}
 
 export class Queue<Data = JobData, ReturnValue = JobReturnValue> {
   private _queue: RawQueue;
@@ -32,35 +68,16 @@ export class Queue<Data = JobData, ReturnValue = JobReturnValue> {
     name: string,
     prefix: string,
     getSharedContext: () => SharedContext,
-    queueOptions?: QueueOptions
+    queueOptions?: QueueOptions,
+    addDefaultOptions?: boolean
   ) {
     this.name = name;
 
     this.getSharedContext = getSharedContext;
-
-    this._queue = new RawQueue<Data>(name, {
-      ...merge(
-        {
-          defaultJobOptions: {
-            removeOnComplete: {
-              age: DEFAULT_COMPLETED_JOB_MAX_AGE_IN_SECONDS,
-              count: DEFAULT_COMPLETED_JOB_MAX_COUNT,
-            },
-            removeOnFail: {
-              count: DEFAULT_FAILED_JOB_MAX_COUNT,
-            },
-            attempts: 3,
-            backoff: {
-              type: "exponential",
-              delay: 3000,
-            },
-          },
-          connection,
-        },
-        queueOptions || {}
-      ),
-      ...{ prefix: `{${prefix}}:${BULL_PREFIX}` },
-    });
+    this._queue = new RawQueue<Data>(
+      name,
+      buildOptions(connection, prefix, queueOptions, addDefaultOptions)
+    );
   }
 
   public getName(): string {
