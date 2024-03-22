@@ -97,9 +97,14 @@ export class Queue<Data = JobData, ReturnValue = JobReturnValue> {
   async publishRepeatableJob(
     job: Data,
     repeatOptions: RepeatOptions,
-    jobId: string
+    jobId: string,
+    opts?: JobsOptions
   ): Promise<Job<Data, ReturnValue>> {
-    return this.queue.add(this.name, job, { ...repeatOptions, jobId });
+    return this.queue.add(this.name, job, {
+      ...opts,
+      repeat: { ...repeatOptions },
+      jobId,
+    });
   }
 
   async removeRepeatableJobByKey(repeatJobKey: string): Promise<boolean> {
