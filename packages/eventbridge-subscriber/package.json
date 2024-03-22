@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/eventbridge-subscriber",
-  "version": "13.0.0",
+  "version": "14.0.0",
   "description": "Alan's basic eventbridge subscriber.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -22,7 +22,7 @@
     "typescript": "^4.3.4"
   },
   "dependencies": {
-    "@alanszp/validations": "^13.0.0"
+    "@alanszp/validations": "^14.0.0"
   },
   "peerDependencies": {
     "class-validator": "^0.14.0"
