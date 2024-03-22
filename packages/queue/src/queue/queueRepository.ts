@@ -1,7 +1,7 @@
-import { Queue } from "./queue";
+import { BaseQueue } from "./baseQueue";
 
 export class QueueRepository {
-  private _queues: Queue[];
+  private _queues: BaseQueue[];
 
   private static _instance: QueueRepository;
 
@@ -17,7 +17,7 @@ export class QueueRepository {
     return this._instance;
   }
 
-  public registerQueue(queue: Queue) {
+  public registerQueue(queue: BaseQueue) {
     this._queues.push(queue);
   }
 

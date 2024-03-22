@@ -29,8 +29,8 @@
     "@alanszp/shared-context": "^13.0.0",
     "@alanszp/validations": "^13.0.0",
     "@paralleldrive/cuid2": "^2.2.2",
-    "bullmq": "^2.1.2",
-    "ioredis": "^5.2.3",
+    "bullmq": "^5.4.4",
+    "ioredis": "^5.3.2",
     "lodash": "^4.17.21"
   }
 }

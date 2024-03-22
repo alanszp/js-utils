@@ -1,5 +1,11 @@
 # Changelog
 
+## v14.0.0
+- Upgrade bullmq to 5.x in `@alanszp/queues`
+- Upgrade ioredis to 5.3.2 `@alanszp/queues`: 5.3.2 or higher is required
+- Change `QueueOptions` & `WorkerOptions` types on `@alanszp/queues`: Connection is no longer a prop, because it's already required in the queue and worker constructor.
+- Add `RepeatableQueue` class `@alanszp/queues`: for repeatable jobs
+
 ## v13.0.0
 
 - Deprecated `@alanszp/express-commons-fn`: `commonErrorsHandler` in favor of the new errorRequestHandlerMiddleware.
