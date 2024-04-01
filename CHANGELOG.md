@@ -1,5 +1,9 @@
 # Changelog
 
+## v14.0.2
+
+- Fix `@alanszp/eventbridge-subscriber`: Fix `SubscribedEventInput` static method `fromEventPayload` interface.
+
 ## v14.0.1
 
 - Added `@alanszp/eventbridge-subscriber`: Added `SubscribedEventInput` as the new base class to use when handling Eventbridge Events.

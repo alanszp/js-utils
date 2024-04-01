@@ -6,6 +6,11 @@ import {
   isSubscribedEvent,
 } from "./types/SubscribedEvent";
 
+export type Class<T, Arguments extends unknown[] = any[]> = {
+  prototype: Pick<T, keyof T>;
+  new (...arguments_: Arguments): T;
+};
+
 export interface ISubscribedEventInput<
   T extends EventBaseData = EventBaseData
 > {
@@ -24,10 +29,16 @@ export class SubscribedEventInput<T extends EventBaseData = EventBaseData>
     this.event = event;
   }
 
-  static fromEventPayload<T extends EventBaseData = EventBaseData>(payload: {
-    event: SubscribedEvent<T>;
-  }) {
-    return new SubscribedEventInput(payload.event);
+  static fromEventPayload<
+    K extends SubscribedEventInput<P>,
+    P extends EventBaseData
+  >(
+    this: Class<K>,
+    payload: {
+      event: SubscribedEvent<P>;
+    }
+  ): K {
+    return new this(payload.event);
   }
 
   async validate(): Promise<void> {
