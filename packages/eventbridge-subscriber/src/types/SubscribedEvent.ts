@@ -1,4 +1,8 @@
-export interface SubscribedEvent<T> {
+import { isArray, isNotEmpty, isObject, isString } from "class-validator";
+
+export type EventBaseData = Record<string, unknown>;
+
+export interface SubscribedEvent<T extends EventBaseData = EventBaseData> {
   version: string;
   id: string;
   "detail-type": string;
@@ -10,8 +14,23 @@ export interface SubscribedEvent<T> {
   detail: T & { lid: string; lch: string };
 }
 
-export function isSubscribedEvent<T>(
-  object: unknown
-): object is SubscribedEvent<T> {
-  return;
+function isNonEmptyString(elem: unknown): elem is string {
+  return isString(elem) && isNotEmpty(elem);
+}
+
+export function isSubscribedEvent<T extends EventBaseData = EventBaseData>(
+  elem: unknown
+): elem is SubscribedEvent<T> {
+  if (!isObject(elem)) return false;
+  const object = elem as Record<string, unknown>;
+
+  return (
+    isNonEmptyString(object.id) &&
+    isNonEmptyString(object.source) &&
+    isNonEmptyString(object.time) &&
+    isNonEmptyString(object["detail-type"]) &&
+    isNonEmptyString(object.event) &&
+    isNonEmptyString(object.account) &&
+    isArray(object.resources)
+  );
 }

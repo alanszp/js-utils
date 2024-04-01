@@ -1,6 +1,7 @@
 import { BaseModel } from "@alanszp/validations";
 import { IsDate, IsNotEmpty, IsString } from "class-validator";
 
+/** @deprecated Use SubscribedEventInput instead. */
 export interface NotificationInputParams<T> {
   version: string;
   id: string;
@@ -13,6 +14,7 @@ export interface NotificationInputParams<T> {
   detail: T & { lid: string; lch: string };
 }
 
+/** @deprecated Use SubscribedEventInput instead. */
 export interface INotificationInput<T> {
   version: string;
   id: string;
@@ -21,7 +23,7 @@ export interface INotificationInput<T> {
   data: T;
 }
 
-/** @deprecated Use EventInput instead. */
+/** @deprecated Use SubscribedEventInput instead. */
 export class NotificationInput<
     T extends Record<string, unknown> = Record<string, unknown>
   >

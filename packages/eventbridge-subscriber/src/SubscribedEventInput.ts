@@ -1,14 +1,18 @@
 import { BaseModel, ModelValidationError } from "@alanszp/validations";
 import { IsDefined } from "class-validator";
-import { SubscribedEvent, isSubscribedEvent } from "./types/SubscribedEvent";
+import {
+  EventBaseData,
+  SubscribedEvent,
+  isSubscribedEvent,
+} from "./types/SubscribedEvent";
 
-export interface ISubscribedEventInput<T> {
+export interface ISubscribedEventInput<
+  T extends EventBaseData = EventBaseData
+> {
   event: SubscribedEvent<T>;
 }
 
-export class SubscribedEventInput<
-    T extends Record<string, unknown> = Record<string, unknown>
-  >
+export class SubscribedEventInput<T extends EventBaseData = EventBaseData>
   extends BaseModel
   implements ISubscribedEventInput<T>
 {
@@ -20,9 +24,9 @@ export class SubscribedEventInput<
     this.event = event;
   }
 
-  static fromEventPayload<
-    T extends Record<string, unknown> = Record<string, unknown>
-  >(payload: { event: SubscribedEvent<T> }) {
+  static fromEventPayload<T extends EventBaseData = EventBaseData>(payload: {
+    event: SubscribedEvent<T>;
+  }) {
     return new SubscribedEventInput(payload.event);
   }
 

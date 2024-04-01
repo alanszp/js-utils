@@ -1,6 +1,12 @@
 # Changelog
 
+## v14.0.1
+
+- Added `@alanszp/eventbridge-subscriber`: Added `SubscribedEventInput` as the new base class to use when handling Eventbridge Events.
+- Change `@alanszp/eventbridge-subscriber`: Marked `NotificationInput` to deprecate it in a near future.
+
 ## v14.0.0
+
 - Upgrade bullmq to 5.x in `@alanszp/queues`
 - Upgrade ioredis to 5.3.2 `@alanszp/queues`: 5.3.2 or higher is required
 - Change `QueueOptions` & `WorkerOptions` types on `@alanszp/queues`: Connection is no longer a prop, because it's already required in the queue and worker constructor.
