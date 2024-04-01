@@ -11,7 +11,7 @@ export interface NotificationInputParams<T> {
   time: string;
   region: string;
   resources: string[];
-  detail: T & { lid: string; lch: string };
+  detail: T;
 }
 
 /** @deprecated Use SubscribedEventInput instead. */
