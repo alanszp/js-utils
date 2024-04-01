@@ -10,7 +10,7 @@ export interface NotificationInputParams<T> {
   time: string;
   region: string;
   resources: string[];
-  detail: T;
+  detail: T & { lid: string; lch: string };
 }
 
 export interface INotificationInput<T> {
@@ -21,6 +21,7 @@ export interface INotificationInput<T> {
   data: T;
 }
 
+/** @deprecated Use EventInput instead. */
 export class NotificationInput<
     T extends Record<string, unknown> = Record<string, unknown>
   >
