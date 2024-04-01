@@ -1,5 +1,9 @@
 # Changelog
 
+## v14.0.3
+
+- Fix `@alanszp/eventbridge-subscriber`: Fix `isSubscribedEvent` validation.
+
 ## v14.0.2
 
 - Fix `@alanszp/eventbridge-subscriber`: Fix `SubscribedEventInput` static method `fromEventPayload` interface.

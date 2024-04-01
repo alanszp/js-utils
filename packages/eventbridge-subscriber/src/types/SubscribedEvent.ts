@@ -26,11 +26,11 @@ export function isSubscribedEvent<T extends EventBaseData = EventBaseData>(
 
   return (
     isNonEmptyString(object.id) &&
-    isNonEmptyString(object.source) &&
-    isNonEmptyString(object.time) &&
     isNonEmptyString(object["detail-type"]) &&
-    isNonEmptyString(object.event) &&
+    isNonEmptyString(object.source) &&
     isNonEmptyString(object.account) &&
+    isNonEmptyString(object.time) &&
+    isNonEmptyString(object.region) &&
     isArray(object.resources)
   );
 }
