@@ -2,7 +2,7 @@
 
 ## v14.1.0
 
-- TSOA implementation in `@alanszp/express`
+- Add `@alanszp/express`: implemnt package TSOA to generate docs & json schema validations
 
 ## v14.0.4
 
