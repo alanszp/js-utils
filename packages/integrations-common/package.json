@@ -33,6 +33,6 @@
     "@alanszp/typeorm": "^14.0.4",
     "class-validator": "^0.14.1",
     "lodash": "^4.17.21",
-    "typeorm": "^0.2.34"
+    "typeorm": "^0.3.0"
   }
 }
