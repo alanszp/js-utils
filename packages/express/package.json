@@ -43,6 +43,7 @@
     "@babel/core": "^7.23.9",
     "@paralleldrive/cuid2": "^2.2.2",
     "body-parser": "^1.20.2",
+    "express": "4.19.2",
     "lodash": "^4.17.21",
     "tsoa": "^6.2.0"
   }
