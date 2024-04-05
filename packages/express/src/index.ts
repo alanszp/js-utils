@@ -1,4 +1,5 @@
 export * from "./types/AuthMethod";
+export * from "./types/docs/examples";
 export * from "./middlewares/auditLog";
 export * from "./middlewares/accessLogger";
 export * from "./middlewares/authedForOrg";
@@ -10,3 +11,5 @@ export * from "./middlewares/jsonBodyParser";
 export * from "./middlewares/hasRoles";
 export * from "./middlewares/hasPermissions";
 export * from "./helpers/getRequestBaseLog";
+export * from "./controllers/BaseController";
+export * from "./errors/AuthMethodFailureError";
