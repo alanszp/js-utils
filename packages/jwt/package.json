@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/jwt",
-  "version": "14.0.0",
+  "version": "14.0.4",
   "description": "Alan's jwt validator & signer.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -28,10 +28,10 @@
     "typescript": "^4.3.4"
   },
   "dependencies": {
-    "@alanszp/axios-node": "^14.0.0",
+    "@alanszp/axios-node": "^14.0.4",
     "@alanszp/core": "^14.0.0",
     "@alanszp/errors": "^14.0.0",
-    "@alanszp/logger": "^14.0.0",
+    "@alanszp/logger": "^14.0.4",
     "jose": "^5.2.2"
   }
 }

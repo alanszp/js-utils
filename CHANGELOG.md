@@ -4,6 +4,12 @@
 
 - TSOA implementation for express
 
+## v14.0.4
+
+- Add `@alanszp/logger`: Add to `ILogger` the method `event` to log events in the app.
+- Add `@alanszp/logger`: Add restriction to console logger to log at least INFO logs. Error will be thrown when configure console as WARN or ERROR logger.
+- Add `@alanszp/audit`: Add optional param to `createAuditLogger` to turn off audit logs. Useful for testing!
+
 ## v14.0.3
 
 - Fix `@alanszp/eventbridge-subscriber`: Fix `isSubscribedEvent` validation.

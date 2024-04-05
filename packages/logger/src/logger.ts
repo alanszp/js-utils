@@ -1,6 +1,7 @@
 import * as BunyanLogger from "bunyan";
 import { Context, ILogger, LogLevel } from "./interfaces";
 import { serialize } from "./serializer";
+import { LogType } from "./interfaces";
 
 export class Logger implements ILogger {
   public baseLogger: BunyanLogger;
@@ -32,6 +33,20 @@ export class Logger implements ILogger {
 
   public error(code: string, context?: Context) {
     this.log(LogLevel.ERROR, code, context);
+  }
+
+  public event(
+    eventName: string,
+    organizationReference: string,
+    employeeReference: string,
+    context?: Context
+  ): void {
+    this.log(LogLevel.INFO, eventName, {
+      ...context,
+      org: organizationReference,
+      employee: employeeReference,
+      log_type: LogType.EVENT,
+    });
   }
 
   public child(context?: Context): Logger {

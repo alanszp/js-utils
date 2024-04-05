@@ -29,6 +29,15 @@ export class MockLogger implements ILogger {
     return;
   }
 
+  public event(
+    eventName: string,
+    organizationReference: string,
+    employeeReference: string,
+    context?: Context
+  ) {
+    return;
+  }
+
   public child(context?: Context) {
     return this;
   }
