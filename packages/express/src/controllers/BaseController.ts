@@ -38,7 +38,7 @@ export class BaseController extends Controller {
     Input,
     CommandReturnType,
     ViewReturnType
-  >): Promise<ViewReturnType> {
+  >): Promise<ViewReturnType | CommandReturnType> {
     const { path, method, user } = request;
     const baseLog = `${snakeCase(path)}.${snakeCase(method)}`;
     const logger = getLogger();
@@ -58,6 +58,6 @@ export class BaseController extends Controller {
           typeof viewResponse.toView === "function" &&
           viewResponse.toView.arguments === 0
         ? viewResponse.toView()
-        : (viewResponse as ViewReturnType);
+        : viewResponse;
   }
 }
