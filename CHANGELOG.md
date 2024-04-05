@@ -2,7 +2,7 @@
 
 ## v14.1.0
 
-- TSOA implementation for express
+- TSOA implementation in `@alanszp/express`
 
 ## v14.0.4
 
