@@ -11,5 +11,5 @@ export * from "./middlewares/jsonBodyParser";
 export * from "./middlewares/hasRoles";
 export * from "./middlewares/hasPermissions";
 export * from "./helpers/getRequestBaseLog";
-export * from "./controllers/BaseController";
+export * from "./endpoints/BaseApi";
 export * from "./errors/AuthMethodFailureError";

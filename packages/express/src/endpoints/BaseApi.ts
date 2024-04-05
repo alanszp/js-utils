@@ -7,7 +7,7 @@ import { ILogger } from "@alanszp/logger";
 
 export type AuthRequest = Request & { user: JWTUser };
 
-export type BuildAuthControllerOptions<
+export type BuildAuthEndpointOptions<
   Input extends BaseModel,
   CommandReturnType,
   ViewReturnType,
@@ -22,8 +22,8 @@ export type BuildAuthControllerOptions<
   getLogger: () => ILogger;
 };
 
-export class BaseController extends Controller {
-  protected async buildAuthController<
+export class BaseApi extends Controller {
+  protected async buildAuthEndpoint<
     Input extends BaseModel,
     CommandReturnType,
     ViewReturnType,
@@ -34,7 +34,7 @@ export class BaseController extends Controller {
     returnCode = 200,
     view,
     getLogger,
-  }: BuildAuthControllerOptions<
+  }: BuildAuthEndpointOptions<
     Input,
     CommandReturnType,
     ViewReturnType

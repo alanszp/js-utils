@@ -137,7 +137,7 @@ export function createAuthContext<Options extends AuthOptions>(
   };
 }
 
-async function authProvidersMiddleware<Options extends AuthOptions>(
+export async function authProvidersMiddleware<Options extends AuthOptions>(
   req: GenericRequest,
   options: Options,
   authMethods: AuthMethods[],
