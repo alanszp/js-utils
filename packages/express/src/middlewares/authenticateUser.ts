@@ -5,7 +5,7 @@ import { GenericRequest } from "../types/GenericRequest";
 import { ILogger } from "@alanszp/logger";
 import { compact, isEmpty, omit } from "lodash";
 import { AuthenticationMethodError } from "../errors/AuthMethodFailureError";
-import { render401Error } from "../../dist/helpers/renderErrorJson";
+import { render401Error } from "../helpers/renderErrorJson";
 
 function parseAuthorizationHeader(
   authorization: string | undefined,
