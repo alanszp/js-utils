@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/split",
-  "version": "14.0.0",
+  "version": "14.0.4",
   "description": "Alan's split client",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -19,7 +19,7 @@
     "@alanszp/logger": "*"
   },
   "devDependencies": {
-    "@alanszp/logger": "^14.0.0",
+    "@alanszp/logger": "^14.0.4",
     "@types/lodash": "^4.14.170",
     "@types/node": "^20.11.17",
     "ts-node": "^10.0.0",
@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "@alanszp/core": "^14.0.0",
-    "@alanszp/shared-context": "^14.0.0",
-    "@alanszp/typeorm": "^14.0.0",
+    "@alanszp/shared-context": "^14.0.4",
+    "@alanszp/typeorm": "^14.0.4",
     "@splitsoftware/splitio": "^10.25.1",
     "lodash": "^4.17.21"
   }
