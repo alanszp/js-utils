@@ -4,7 +4,8 @@ import { getRequestLogger } from "../helpers/getRequestLogger";
 import { GenericRequest } from "../types/GenericRequest";
 import { ILogger } from "@alanszp/logger";
 import { compact, isEmpty, omit } from "lodash";
-import { UnauthorizedError } from "@alanszp/errors";
+import { AuthenticationMethodError } from "../errors/AuthMethodFailureError";
+import { render401Error } from "../../dist/helpers/renderErrorJson";
 
 function parseAuthorizationHeader(
   authorization: string | undefined,
@@ -120,8 +121,18 @@ export function createAuthContext<Options extends AuthOptions>(
       res: Response,
       next: NextFunction,
     ): Promise<void> {
-      await authProvidersMiddleware(req, options, authMethods);
-      next();
+      try {
+        await authProvidersMiddleware(req, options, authMethods);
+        next();
+      } catch (error: unknown) {
+        if (error instanceof AuthenticationMethodError) {
+          res
+            .status(error.httpCode())
+            .json(render401Error(error.requiredChecks));
+          return;
+        }
+        res.status(401).json(render401Error(authMethods));
+      }
     };
   };
 }
@@ -150,7 +161,7 @@ async function authProvidersMiddleware<Options extends AuthOptions>(
     const successfulAuthAttempts = compact(authAttempts);
 
     if (isEmpty(successfulAuthAttempts)) {
-      throw new UnauthorizedError([
+      throw new AuthenticationMethodError([
         authAttempts.includes(null)
           ? `Token invalid for methods ${authMethods}`
           : `Token not set for methods ${authMethods}`,
@@ -170,6 +181,6 @@ async function authProvidersMiddleware<Options extends AuthOptions>(
       methods: AuthMethods,
       error,
     });
-    throw new UnauthorizedError(authMethods);
+    throw error;
   }
 }
