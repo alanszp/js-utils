@@ -4,6 +4,12 @@ export interface ILogger {
   info(code: string, context?: Context): void;
   warn(code: string, context?: Context): void;
   error(code: string, context?: Context): void;
+  event(
+    eventName: string,
+    organizationReference: string,
+    employeeReference: string,
+    context?: Context
+  ): void;
   child(context?: Context): ILogger;
 }
 
@@ -15,6 +21,7 @@ export enum LogType {
   APP = "app",
   ACCESS = "access",
   AUDIT = "audit",
+  EVENT = "event",
 }
 
 export enum LogLevel {

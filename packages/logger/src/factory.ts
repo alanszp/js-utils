@@ -6,11 +6,22 @@ import {
   LoggerConfig,
   SlackConfig,
 } from "./config";
-import { ILogger, LogLevel } from "./interfaces";
+import { ILogger } from "./interfaces";
 import { Logger } from "./logger";
 import { SlackStream } from "./slackBunyan";
+import { LogLevel } from "./interfaces";
+
+const minimumConsoleLogger = new Set([
+  LogLevel.INFO,
+  LogLevel.DEBUG,
+  LogLevel.TRACE,
+]);
 
 function consoleStreamFactory(config: ConsoleLoggerConfig): Stream {
+  if (!minimumConsoleLogger.has(config.level)) {
+    throw new Error("Configure console logger with level INFO, DEBUG or TRACE");
+  }
+
   return {
     level: config.level,
     stream: process.stdout,
