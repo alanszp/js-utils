@@ -4,7 +4,6 @@ import { getRequestLogger } from "../helpers/getRequestLogger";
 import { GenericRequest } from "../types/GenericRequest";
 import { ILogger } from "@alanszp/logger";
 import { compact, isEmpty, omit } from "lodash";
-import { render401Error } from "../helpers/renderErrorJson";
 import { UnauthorizedError } from "@alanszp/errors";
 
 function parseAuthorizationHeader(
@@ -127,8 +126,8 @@ export function createAuthContext<Options extends AuthOptions>(
   };
 }
 
-function authProvidersMiddleware<Options extends AuthOptions>(
-  req: Request,
+async function authProvidersMiddleware<Options extends AuthOptions>(
+  req: GenericRequest,
   options: Options,
   authMethods: AuthMethods[],
 ): Promise<JWTUser> {
@@ -173,22 +172,4 @@ function authProvidersMiddleware<Options extends AuthOptions>(
     });
     throw new UnauthorizedError(authMethods);
   }
-}
-
-export function expressAuthentication(
-  req: Request,
-  securityName: AuthMethods,
-): Promise<JWTUser> {
-  return authProvidersMiddleware(
-    req,
-    {
-      jwtVerifyOptions: { publicKey },
-      validApiKeys: compact([
-        config.get("api_key.valid"),
-        config.get("api_key.secondary"),
-      ]),
-      types: [AuthMethods.JWT, AuthMethods.API_KEY],
-    },
-    [securityName],
-  );
 }

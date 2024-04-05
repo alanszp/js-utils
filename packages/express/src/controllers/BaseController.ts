@@ -3,7 +3,7 @@ import { BaseModel } from "@alanszp/validations";
 import { Controller } from "tsoa";
 import { Request } from "express";
 import { snakeCase } from "lodash";
-import { getLogger } from "@/getLogger";
+import { ILogger } from "@alanszp/logger";
 
 export type AuthRequest = Request & { user: JWTUser };
 
@@ -19,6 +19,7 @@ export type BuildAuthControllerOptions<
   ) => Promise<CommandReturnType & { toView?: () => ViewReturnType }>;
   returnCode?: number;
   view?: (commandReturn: CommandReturnType) => ViewReturnType;
+  getLogger: () => ILogger;
 };
 
 export class BaseController extends Controller {
@@ -32,6 +33,7 @@ export class BaseController extends Controller {
     command,
     returnCode = 200,
     view,
+    getLogger,
   }: BuildAuthControllerOptions<
     Input,
     CommandReturnType,
