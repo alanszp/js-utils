@@ -1,5 +1,9 @@
 # Changelog
 
+## v14.1.0
+
+- TSOA implementation for express
+
 ## v14.0.3
 
 - Fix `@alanszp/eventbridge-subscriber`: Fix `isSubscribedEvent` validation.
