@@ -1,10 +1,27 @@
 # Changelog
 
-## v14.0.2
+## v14.0.5
 
 - Fix `axiosPermissionsResolutionFactory` calling logger without reference. Now logger is required in params
 
+## v14.0.4
+
+- Add `@alanszp/logger`: Add to `ILogger` the method `event` to log events in the app.
+- Add `@alanszp/logger`: Add restriction to console logger to log at least INFO logs. Error will be thrown when configure console as WARN or ERROR logger.
+- Add `@alanszp/audit`: Add optional param to `createAuditLogger` to turn off audit logs. Useful for testing!
+
+## v14.0.3
+
+- Fix `@alanszp/eventbridge-subscriber`: Fix `isSubscribedEvent` validation.
+
+## v14.0.2
+
+- Fix `@alanszp/eventbridge-subscriber`: Fix `SubscribedEventInput` static method `fromEventPayload` interface.
+
 ## v14.0.1
+
+- Added `@alanszp/eventbridge-subscriber`: Added `SubscribedEventInput` as the new base class to use when handling Eventbridge Events.
+- Change `@alanszp/eventbridge-subscriber`: Marked `NotificationInput` to deprecate it in a near future.
 
 ## v14.0.0
 
