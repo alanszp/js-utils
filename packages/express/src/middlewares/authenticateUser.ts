@@ -73,7 +73,7 @@ const middlewareGetterByAuthType: Record<
       });
       return jwtUser;
     } catch (error: unknown) {
-      logger.info("auth.authWithJwt.invalidJwt", { jwt, error });
+      logger.info("auth.authWithJwt.invalidJwt", { error });
       return null;
     }
   },
@@ -187,7 +187,10 @@ export async function tsoaAuthWithMethods<Options extends AuthOptions>(
       });
       throw error;
     }
-    logger.error("auth.authenticate_with_methods.error", { error });
+    logger.error("auth.authenticate_with_methods.error", {
+      error,
+      authMethods,
+    });
     throw new AuthenticationMethodError(authMethods);
   }
 }
