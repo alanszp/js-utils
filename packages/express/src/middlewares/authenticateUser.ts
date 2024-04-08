@@ -182,7 +182,7 @@ export async function tsoaAuthWithMethods<Options extends AuthOptions>(
   } catch (error: unknown) {
     if (error instanceof AuthenticationMethodError) {
       logger.info("auth.authenticate_with_methods.authentication_user_fail", {
-        methods: AuthMethods,
+        methods: authMethods,
         error,
       });
       throw error;
