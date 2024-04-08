@@ -4,10 +4,11 @@ import { getRequestLogger } from "../helpers/getRequestLogger";
 import { GenericRequest } from "../types/GenericRequest";
 import { ILogger } from "@alanszp/logger";
 import { compact, isEmpty, omit } from "lodash";
+import { AuthenticationMethodError } from "../errors/AuthMethodFailureError";
 import { render401Error } from "../helpers/renderErrorJson";
 
 function parseAuthorizationHeader(
-  authorization: string | undefined
+  authorization: string | undefined,
 ): string | undefined {
   if (!authorization) return undefined;
   const [bearer, jwt, ...other] = authorization.split(" ");
@@ -51,20 +52,20 @@ const middlewareGetterByAuthType: Record<
   (
     tokenOrJwt: string | null | undefined,
     options: AuthOptions,
-    logger: ILogger
+    logger: ILogger,
   ) => Promise<JWTUser | null | undefined>
 > = {
   [AuthMethods.JWT]: async (
     jwt: string | null | undefined,
     options: Exclude<AuthOptions, ApiKeyOptions>,
-    logger: ILogger
+    logger: ILogger,
   ) => {
     try {
       if (!jwt) return undefined;
       const jwtUser = await verifyJWT(
         options.jwtVerifyOptions.publicKey,
         jwt,
-        omit(options.jwtVerifyOptions, "publicKey")
+        omit(options.jwtVerifyOptions, "publicKey"),
       );
       logger.debug("auth.authWithJwt.authed", {
         user: jwtUser.id,
@@ -72,14 +73,14 @@ const middlewareGetterByAuthType: Record<
       });
       return jwtUser;
     } catch (error: unknown) {
-      logger.info("auth.authWithJwt.invalidJwt", { jwt, error });
+      logger.info("auth.authWithJwt.invalidJwt", { error });
       return null;
     }
   },
   [AuthMethods.API_KEY]: async (
     token: string | null | undefined,
     options: Exclude<AuthOptions, JWTOptions>,
-    logger: ILogger
+    logger: ILogger,
   ): Promise<JWTUser | null | undefined> => {
     try {
       if (!token) return undefined;
@@ -97,7 +98,7 @@ const middlewareGetterByAuthType: Record<
             segmentReference: null,
             // This will be changed in the near future to grab all permissions.
             permissions: "MA==", // 0 in base64
-          })
+          }),
         );
       } else {
         return null;
@@ -110,62 +111,86 @@ const middlewareGetterByAuthType: Record<
 };
 
 export function createAuthContext<Options extends AuthOptions>(
-  options: Options
+  options: Options,
 ) {
   return function getMiddlewareForMethods(
-    authMethods: Options["types"][number][]
+    authMethods: Options["types"][number][],
   ) {
     return async function authWithGivenMethods(
       req: GenericRequest,
       res: Response,
-      next: NextFunction
+      next: NextFunction,
     ): Promise<void> {
-      const logger = getRequestLogger(req);
-      const cookies = (req.cookies as Record<string, string | undefined>) || {};
-      const jwt =
-        cookies.jwt || parseAuthorizationHeader(req.headers.authorization);
-
       try {
-        const authAttempts = await Promise.all(
-          authMethods.map((method) =>
-            middlewareGetterByAuthType[method](
-              method === AuthMethods.JWT ? jwt : req.headers.authorization,
-              options,
-              logger
-            )
-          )
-        );
-
-        const successfulAuthAttempts = compact(authAttempts);
-
-        if (isEmpty(successfulAuthAttempts)) {
-          res
-            .status(401)
-            .json(
-              render401Error([
-                authAttempts.includes(null)
-                  ? `Token invalid for methods ${authMethods}`
-                  : `Token not set for methods ${authMethods}`,
-              ])
-            );
-          return;
-        }
-
-        const jwtUser: JWTUser = successfulAuthAttempts[0];
-        req.context.jwtUser = jwtUser;
-        req.context.authenticated.push(
-          jwtUser.employeeReference !== "0" ? "jwt" : "api_key"
-        );
+        await tsoaAuthProvider(req, options, authMethods);
         next();
       } catch (error: unknown) {
-        logger.info("auth.authenticateUser.error", {
-          jwt,
-          token: req.headers.authorization,
-          methods: AuthMethods,
-          error,
-        });
+        if (error instanceof AuthenticationMethodError) {
+          res
+            .status(error.httpCode())
+            .json(render401Error(error.requiredChecks));
+          return;
+        }
         res.status(401).json(render401Error(authMethods));
       }
     };
   };
+}
+
+/**
+ * Attempt to authenticate a user using the authentication methods sent by parameter
+ * Used in authenticationModule for TSOA
+ * https://tsoa-community.github.io/docs/authentication.html
+ */
+export async function tsoaAuthProvider<Options extends AuthOptions>(
+  req: GenericRequest,
+  options: Options,
+  authMethods: AuthMethods[],
+): Promise<JWTUser> {
+  const logger = getRequestLogger(req);
+  const cookies = (req.cookies as Record<string, string | undefined>) || {};
+  const jwt =
+    cookies.jwt || parseAuthorizationHeader(req.headers.authorization);
+
+  try {
+    const authAttempts = await Promise.all(
+      authMethods.map((method) =>
+        middlewareGetterByAuthType[method](
+          method === AuthMethods.JWT ? jwt : req.headers.authorization,
+          options,
+          logger,
+        ),
+      ),
+    );
+
+    const successfulAuthAttempts = compact(authAttempts);
+
+    if (isEmpty(successfulAuthAttempts)) {
+      throw new AuthenticationMethodError([
+        authAttempts.includes(null)
+          ? `Token invalid for methods ${authMethods}`
+          : `Token not set for methods ${authMethods}`,
+      ]);
+    }
+
+    const jwtUser: JWTUser = successfulAuthAttempts[0];
+    req.context.jwtUser = jwtUser;
+    req.context.authenticated.push(
+      jwtUser.employeeReference !== "0" ? "jwt" : "api_key",
+    );
+    return jwtUser;
+  } catch (error: unknown) {
+    if (error instanceof AuthenticationMethodError) {
+      logger.info("auth.authenticate_with_methods.authentication_user_fail", {
+        methods: authMethods,
+        error,
+      });
+      throw error;
+    }
+    logger.error("auth.authenticate_with_methods.error", {
+      error,
+      authMethods,
+    });
+    throw new AuthenticationMethodError(authMethods);
+  }
 }

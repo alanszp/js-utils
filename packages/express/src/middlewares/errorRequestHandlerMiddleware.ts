@@ -4,6 +4,8 @@ import {
   InternalServerError,
   RenderableError,
 } from "@alanszp/errors";
+import { appIdentifier } from "@alanszp/core";
+import { ValidateError } from "tsoa";
 import { GenericRequest } from "../types/GenericRequest";
 import { ILogger } from "@alanszp/logger";
 import { getRequestBaseLog } from "../helpers/getRequestBaseLog";
@@ -11,16 +13,28 @@ import { EntityNotFoundError, QueryFailedError } from "typeorm";
 import { render400Error, render404Error } from "../helpers/renderErrorJson";
 
 export type ErrorRequestHandlerMiddleware = (
-  getLogger: () => ILogger
+  getLogger: () => ILogger,
 ) => ErrorRequestHandler;
 
 export const errorRequestHandlerMiddleware: ErrorRequestHandlerMiddleware =
   (getLogger: () => ILogger) =>
-  (error: unknown, req: GenericRequest, res: Response, _next: NextFunction) => {
+  (error: unknown, req: GenericRequest, res: Response, next: NextFunction) => {
     const logger = getLogger();
     const baseLog = getRequestBaseLog(req);
 
     try {
+      if (error instanceof ValidateError) {
+        const { body } = error.fields;
+        return res.status(400).json({
+          code: "json_schema_error",
+          message: "Error to validate JSON Schema",
+          context: {
+            errors: body?.message,
+          },
+          origin: appIdentifier(),
+        });
+      }
+
       if (error instanceof RenderableError) {
         const statusCode =
           error instanceof HttpRenderableError ? error.httpCode() : 500;
@@ -67,14 +81,14 @@ export const errorRequestHandlerMiddleware: ErrorRequestHandlerMiddleware =
       res.status(500).json(new InternalServerError(error).toView());
       logger.error(
         `${baseLog}.error.return_internal_server_error.error_to_client`,
-        { error }
+        { error },
       );
     } catch (errorOfError: unknown) {
       try {
         // Try one last time to log the error
         logger.error(
           `${baseLog}.error.return_internal_server_error.error_rendering_error_to_client`,
-          { error: errorOfError }
+          { error: errorOfError },
         );
       } catch (_error: unknown) {}
 
