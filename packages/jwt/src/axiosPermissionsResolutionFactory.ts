@@ -2,6 +2,7 @@ import { createAxios } from "@alanszp/axios-node";
 import { Permission } from "./types";
 import { PermissionServiceRequestError } from "./errors/PermissionServiceRequestError";
 import { ListResult } from "@alanszp/core";
+import { ILogger } from "@alanszp/logger";
 
 export type PermissionsResolutionFunction = (
   page: number,
@@ -9,6 +10,7 @@ export type PermissionsResolutionFunction = (
 ) => Promise<ListResult<Permission>>;
 
 async function makeRequest<T>(
+  logger: ILogger,
   axios: ReturnType<typeof createAxios>,
   baseURL: string,
   accessToken: string,
@@ -31,10 +33,11 @@ async function makeRequest<T>(
     return request.data;
   } catch (error: unknown) {
     if (retries > 0) {
-      this.logger.debug("auth.permission_service.make_request.retry", {
+      logger.debug("auth.permission_service.make_request.retry", {
         retriesLeft: retries,
       });
       const response = await makeRequest<T>(
+        logger,
         axios,
         baseURL,
         accessToken,
@@ -51,7 +54,8 @@ async function makeRequest<T>(
 
 export function axiosPermissionsResolutionFactory(
   baseUrl: string,
-  accessToken: string
+  accessToken: string,
+  logger: ILogger
 ): () => PermissionsResolutionFunction {
   const axios = createAxios();
   return function axiosPermissionsResolution() {
@@ -60,6 +64,7 @@ export function axiosPermissionsResolutionFactory(
       pageSize = 500
     ): Promise<ListResult<Permission>> {
       return makeRequest<ListResult<Permission>>(
+        logger,
         axios,
         baseUrl,
         accessToken,
