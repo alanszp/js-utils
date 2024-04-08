@@ -1,12 +1,16 @@
 # Changelog
 
+## v14.1.1
+
+- Fix `@alanszp/jwt`: Fix hardcoded organization for `axiosPermissionsResolutionFactory`
+
 ## v14.1.0
 
 - Add `@alanszp/express`: implemnt package TSOA to generate docs & json schema validations
 
 ## v14.0.5
 
-- Fix `axiosPermissionsResolutionFactory` calling logger without reference. Now logger is required in params
+- Fix `@alanszp/jwt`: Fix `axiosPermissionsResolutionFactory` calling logger without reference. Now logger is required in params
 
 ## v14.0.4
 
