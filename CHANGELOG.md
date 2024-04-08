@@ -2,7 +2,7 @@
 
 ## v14.0.2
 
-- Fix `axiosPermissionsResolutionFactory` calling logger without reference. Now logger is required in params (as optional to maintain retro-compatibility)
+- Fix `axiosPermissionsResolutionFactory` calling logger without reference. Now logger is required in params
 
 ## v14.0.1
 
