@@ -122,7 +122,7 @@ export function createAuthContext<Options extends AuthOptions>(
       next: NextFunction,
     ): Promise<void> {
       try {
-        await tsoaAuthWithMethods(req, options, authMethods);
+        await tsoaAuthProvider(req, options, authMethods);
         next();
       } catch (error: unknown) {
         if (error instanceof AuthenticationMethodError) {
@@ -142,7 +142,7 @@ export function createAuthContext<Options extends AuthOptions>(
  * Used in authenticationModule for TSOA
  * https://tsoa-community.github.io/docs/authentication.html
  */
-export async function tsoaAuthWithMethods<Options extends AuthOptions>(
+export async function tsoaAuthProvider<Options extends AuthOptions>(
   req: GenericRequest,
   options: Options,
   authMethods: AuthMethods[],
