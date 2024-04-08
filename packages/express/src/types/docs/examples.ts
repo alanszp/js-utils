@@ -7,12 +7,7 @@ import { RenderableView } from "@alanszp/errors";
 export const InternalServerErrorExample: RenderableView = {
   code: "internal_server_error",
   message: "Internal Server Error",
-  context: {
-    error: {
-      name: "Non200ResponseError",
-      message: "Non 200 Response Error",
-    },
-  },
+  context: {},
   origin: "example-service:dev",
 };
 
