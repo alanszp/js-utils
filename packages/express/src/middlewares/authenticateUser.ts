@@ -122,7 +122,7 @@ export function createAuthContext<Options extends AuthOptions>(
       next: NextFunction,
     ): Promise<void> {
       try {
-        await authProvidersMiddleware(req, options, authMethods);
+        await tsoaAuthWithMethods(req, options, authMethods);
         next();
       } catch (error: unknown) {
         if (error instanceof AuthenticationMethodError) {
@@ -137,7 +137,12 @@ export function createAuthContext<Options extends AuthOptions>(
   };
 }
 
-export async function authProvidersMiddleware<Options extends AuthOptions>(
+/**
+ * Attempt to authenticate a user using the authentication methods sent by parameter
+ * Used in authenticationModule for TSOA
+ * https://tsoa-community.github.io/docs/authentication.html
+ */
+export async function tsoaAuthWithMethods<Options extends AuthOptions>(
   req: GenericRequest,
   options: Options,
   authMethods: AuthMethods[],
@@ -175,12 +180,14 @@ export async function authProvidersMiddleware<Options extends AuthOptions>(
     );
     return jwtUser;
   } catch (error: unknown) {
-    logger.info("auth.authenticateUser.error", {
-      jwt,
-      token: req.headers.authorization,
-      methods: AuthMethods,
-      error,
-    });
-    throw error;
+    if (error instanceof AuthenticationMethodError) {
+      logger.info("auth.authenticate_with_methods.authentication_user_fail", {
+        methods: AuthMethods,
+        error,
+      });
+      throw error;
+    }
+    logger.error("auth.authenticate_with_methods.error", { error });
+    throw new AuthenticationMethodError(authMethods);
   }
 }
