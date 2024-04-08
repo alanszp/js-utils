@@ -10,7 +10,7 @@ export type PermissionsResolutionFunction = (
 ) => Promise<ListResult<Permission>>;
 
 async function makeRequest<T>(
-  logger: ILogger,
+  logger: ILogger | undefined,
   axios: ReturnType<typeof createAxios>,
   baseURL: string,
   accessToken: string,
@@ -33,7 +33,7 @@ async function makeRequest<T>(
     return request.data;
   } catch (error: unknown) {
     if (retries > 0) {
-      logger.debug("auth.permission_service.make_request.retry", {
+      logger?.debug("auth.permission_service.make_request.retry", {
         retriesLeft: retries,
       });
       const response = await makeRequest<T>(
@@ -53,9 +53,9 @@ async function makeRequest<T>(
 }
 
 export function axiosPermissionsResolutionFactory(
-  logger: ILogger,
   baseUrl: string,
-  accessToken: string
+  accessToken: string,
+  logger: ILogger | undefined = undefined
 ): () => PermissionsResolutionFunction {
   const axios = createAxios();
   return function axiosPermissionsResolution() {
