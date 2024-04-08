@@ -4,6 +4,10 @@
 
 - Add `@alanszp/express`: implemnt package TSOA to generate docs & json schema validations
 
+## v14.0.5
+
+- Fix `axiosPermissionsResolutionFactory` calling logger without reference. Now logger is required in params
+
 ## v14.0.4
 
 - Add `@alanszp/logger`: Add to `ILogger` the method `event` to log events in the app.
