@@ -53,6 +53,7 @@ async function makeRequest<T>(
 }
 
 export function axiosPermissionsResolutionFactory(
+  organizationReference: string,
   baseUrl: string,
   accessToken: string,
   logger: ILogger
@@ -69,7 +70,7 @@ export function axiosPermissionsResolutionFactory(
         baseUrl,
         accessToken,
         "GET",
-        "/lara/v1/permissions",
+        `${organizationReference}/v1/permissions`,
         { page, pageSize }
       );
     };
