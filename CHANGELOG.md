@@ -1,5 +1,9 @@
 # Changelog
 
+## v14.1.2
+
+- Fix `@alanszp/jwt`: Fix missing assignment of `originalOrganizationReference`
+
 ## v14.1.1
 
 - Fix `@alanszp/jwt`: Fix hardcoded organization for `axiosPermissionsResolutionFactory`
