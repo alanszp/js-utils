@@ -55,6 +55,7 @@ export class JWTUser implements IJWTUser {
     this.id = id;
     this.employeeReference = employeeReference;
     this.organizationReference = organizationReference;
+    this.originalOrganizationReference = organizationReference;
     this.roles = roles;
     this.permissions = permissions;
     this.segmentReference = segmentReference;
