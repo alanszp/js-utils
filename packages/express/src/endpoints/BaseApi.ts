@@ -11,8 +11,7 @@ function isViewable<T>(object: unknown): object is Viewable<T> {
   return (
     typeof object === "object" &&
     object !== null &&
-    typeof (object as Viewable<T>).toView === "function" &&
-    (object as Viewable<T>).toView.length === 0 // Check if toView method has 0 arguments
+    typeof (object as Viewable<T>).toView === "function"
   );
 }
 
