@@ -23,7 +23,9 @@ export type BuildAuthEndpointOptions<
   Input extends BaseModel,
   CommandReturnType,
   ViewReturnType,
-  ViewFunction extends ((crt: CommandReturnType) => ViewReturnType) | undefined
+  ViewFunction extends
+    | ((crt: CommandReturnType, input: Input) => ViewReturnType)
+    | undefined
 > = {
   request: AuthRequest;
   inputConstructor: (jwtUser: JWTUser) => Input;
@@ -48,7 +50,7 @@ export class BaseApi extends Controller {
     CommandReturnType,
     ViewReturnType,
     ViewFunction extends
-      | ((crt: CommandReturnType) => ViewReturnType)
+      | ((crt: CommandReturnType, input: Input) => ViewReturnType)
       | undefined
   >({
     request,
@@ -80,7 +82,7 @@ export class BaseApi extends Controller {
 
     // If a view function is provided, use it to transform the command response
     if (view) {
-      return view(commandResponse) as InferReturnType<
+      return view(commandResponse, input) as InferReturnType<
         ViewFunction,
         CommandReturnType,
         ViewReturnType
