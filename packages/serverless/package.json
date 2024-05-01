@@ -17,6 +17,7 @@
   },
   "peerDependencies": {
     "@alanszp/audit": "*",
+    "@alanszp/axios-node": "*",
     "@alanszp/logger": "*",
     "@alanszp/split": "*"
   },
@@ -24,6 +25,7 @@
     "@alanszp/audit": "^14.0.4",
     "@alanszp/logger": "^14.0.4",
     "@alanszp/split": "^14.0.4",
+    "@alanszp/axios-node": "^14.0.4",
     "@types/lodash": "^4.14.170",
     "@types/node": "^20.11.17",
     "ts-node": "^10.0.0",
