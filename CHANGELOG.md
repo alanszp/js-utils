@@ -1,5 +1,11 @@
 # Changelog
 
+## v14.2.0
+
+- Upgrade `lerna`: Upgrade `tar` to `v6.2.1` dep of `lerna` to avoid vulnerability in the dep.
+- Fix `@alanszp/express`: Fix `buildAuthEndpoint` view TS types.
+- Fix `@alanszp/express`: Fix `errorRequestHandlerMiddleware` JSON schema serialization when multiple errors found & improve rendering.
+
 ## v14.1.2
 
 - Fix `@alanszp/jwt`: Fix missing assignment of `originalOrganizationReference`
