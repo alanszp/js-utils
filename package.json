@@ -14,6 +14,9 @@
       "**/business-days-date-fns/**"
     ]
   },
+  "resolutions": {
+    "lerna/**/tar": "^6.1.11"
+  },
   "scripts": {
     "build": "lerna run build",
     "bump-version": "lerna version",
