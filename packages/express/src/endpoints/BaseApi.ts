@@ -7,16 +7,16 @@ import { ILogger } from "@alanszp/logger";
 
 export type AuthRequest = Request & { user: JWTUser };
 
+interface Viewable<T> {
+  toView: () => T;
+}
+
 function isViewable<T>(object: unknown): object is Viewable<T> {
   return (
     typeof object === "object" &&
     object !== null &&
     typeof (object as Viewable<T>).toView === "function"
   );
-}
-
-interface Viewable<T> {
-  toView: () => T;
 }
 
 export type BuildAuthEndpointOptions<
