@@ -11,9 +11,10 @@ import { ILogger } from "@alanszp/logger";
 import { getRequestBaseLog } from "../helpers/getRequestBaseLog";
 import { EntityNotFoundError, QueryFailedError } from "typeorm";
 import { render400Error, render404Error } from "../helpers/renderErrorJson";
+import { mapValues } from "lodash";
 
 export type ErrorRequestHandlerMiddleware = (
-  getLogger: () => ILogger,
+  getLogger: () => ILogger
 ) => ErrorRequestHandler;
 
 export const errorRequestHandlerMiddleware: ErrorRequestHandlerMiddleware =
@@ -24,12 +25,29 @@ export const errorRequestHandlerMiddleware: ErrorRequestHandlerMiddleware =
 
     try {
       if (error instanceof ValidateError) {
-        const { body } = error.fields;
+        const errors = mapValues(error.fields, ({ message: rawMessage }) => {
+          // TSOA Error message format: "Something went wrong. Issues: A JSON with the errors."
+          if (rawMessage.includes(" Issues: ")) {
+            const [message, issues] = rawMessage.split(" Issues: ");
+            try {
+              // Try to parse issues as JSON
+              return {
+                message,
+                issues: JSON.parse(issues),
+              };
+            } catch (error) {
+              // Send unparsable issues as string
+              return { message: rawMessage, issues };
+            }
+          }
+
+          return { message: rawMessage };
+        });
         return res.status(400).json({
           code: "json_schema_error",
           message: "Error to validate JSON Schema",
           context: {
-            errors: body?.message,
+            errors,
           },
           origin: appIdentifier(),
         });
@@ -81,14 +99,14 @@ export const errorRequestHandlerMiddleware: ErrorRequestHandlerMiddleware =
       res.status(500).json(new InternalServerError(error).toView());
       logger.error(
         `${baseLog}.error.return_internal_server_error.error_to_client`,
-        { error },
+        { error }
       );
     } catch (errorOfError: unknown) {
       try {
         // Try one last time to log the error
         logger.error(
           `${baseLog}.error.return_internal_server_error.error_rendering_error_to_client`,
-          { error: errorOfError },
+          { error: errorOfError }
         );
       } catch (_error: unknown) {}
 
