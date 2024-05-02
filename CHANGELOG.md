@@ -1,5 +1,8 @@
 # Changelog
 
+## v15.0.0
+- Change `@alanszp/jwt`: add `originalOrganizationReference`, `originalId` and `originalEmployeeReference` properties in JWTUser
+
 ## v14.2.0
 
 - Upgrade `lerna`: Upgrade `tar` to `v6.2.1` dep of `lerna` to avoid vulnerability in the dep.
