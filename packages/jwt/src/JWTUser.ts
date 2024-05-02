@@ -14,6 +14,10 @@ export class JWTUser implements IJWTUser {
 
   originalOrganizationReference: string | null;
 
+  originalId: string | null;
+
+  originalEmployeeReference: string | null;
+
   roles: string[];
 
   permissions: string;
@@ -51,14 +55,19 @@ export class JWTUser implements IJWTUser {
     roles,
     permissions,
     segmentReference,
+    originalOrganizationReference,
+    originalId,
+    originalEmployeeReference,
   }: IJWTUser) {
     this.id = id;
     this.employeeReference = employeeReference;
     this.organizationReference = organizationReference;
-    this.originalOrganizationReference = organizationReference;
     this.roles = roles;
     this.permissions = permissions;
     this.segmentReference = segmentReference;
+    this.originalOrganizationReference = originalOrganizationReference ?? null;
+    this.originalId = originalId ?? null;
+    this.originalEmployeeReference = originalEmployeeReference ?? null;
   }
 
   static fromPayload(payload: JWTPayload): JWTUser {
@@ -69,6 +78,9 @@ export class JWTUser implements IJWTUser {
       roles: payload.rls,
       permissions: payload.prms,
       segmentReference: payload.seg || null,
+      originalOrganizationReference: payload.oorg,
+      originalId: payload.osub,
+      originalEmployeeReference: payload.oref,
     });
   }
 
@@ -80,6 +92,9 @@ export class JWTUser implements IJWTUser {
       rls: this.roles,
       prms: this.permissions,
       seg: this.segmentReference,
+      oorg: this.originalOrganizationReference,
+      osub: this.originalId,
+      oref: this.originalEmployeeReference,
     };
   }
 
