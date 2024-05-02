@@ -9,7 +9,6 @@ export interface JWTPayload extends LibPayload {
   oorg: string | null;
   osub: string | null;
   oref: string | null;
-  exp?: number;
   // segmentReference
   seg: string | null;
 }
