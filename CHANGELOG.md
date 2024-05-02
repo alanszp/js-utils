@@ -1,7 +1,7 @@
 # Changelog
 
-## v15.0.0
-- Change `@alanszp/jwt`: add `originalOrganizationReference`, `originalId` and `originalEmployeeReference` properties in JWTUser
+## v14.3.0
+- Add `@alanszp/jwt`: add `originalOrganizationReference`, `originalId` and `originalEmployeeReference` properties in JWTUser
 
 ## v14.2.0
 
