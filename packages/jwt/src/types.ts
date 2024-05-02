@@ -9,6 +9,7 @@ export interface JWTPayload extends LibPayload {
   oorg: string | null;
   osub: string | null;
   oref: string | null;
+  exp?: number;
   // segmentReference
   seg: string | null;
 }
@@ -23,6 +24,7 @@ export interface IJWTUser {
   originalOrganizationReference?: string | null;
   originalId?: string | null;
   originalEmployeeReference?: string | null;
+  expirationTime?: number;
 }
 
 export interface SignOptions {

@@ -24,6 +24,8 @@ export class JWTUser implements IJWTUser {
 
   segmentReference: string | null;
 
+  expirationTime?: number;
+
   /**
    * Static reference to the permission service
    * This is used to make sure that the permission service is only instantiated once
@@ -58,6 +60,7 @@ export class JWTUser implements IJWTUser {
     originalOrganizationReference,
     originalId,
     originalEmployeeReference,
+    expirationTime,
   }: IJWTUser) {
     this.id = id;
     this.employeeReference = employeeReference;
@@ -68,6 +71,7 @@ export class JWTUser implements IJWTUser {
     this.originalOrganizationReference = originalOrganizationReference ?? null;
     this.originalId = originalId ?? null;
     this.originalEmployeeReference = originalEmployeeReference ?? null;
+    this.expirationTime = expirationTime;
   }
 
   static fromPayload(payload: JWTPayload): JWTUser {
@@ -81,6 +85,7 @@ export class JWTUser implements IJWTUser {
       originalOrganizationReference: payload.oorg,
       originalId: payload.osub,
       originalEmployeeReference: payload.oref,
+      expirationTime: payload.exp,
     });
   }
 
