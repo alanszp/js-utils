@@ -1,5 +1,8 @@
 # Changelog
 
+## v14.4.0
+- Add `@alanszp/jwt`: add `expirationTime` property in JWTUser
+
 ## v14.3.0
 - Add `@alanszp/jwt`: add `originalOrganizationReference`, `originalId` and `originalEmployeeReference` properties in JWTUser
 
