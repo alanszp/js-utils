@@ -23,6 +23,7 @@ export interface IJWTUser {
   originalOrganizationReference?: string | null;
   originalId?: string | null;
   originalEmployeeReference?: string | null;
+  expirationTime?: number;
 }
 
 export interface SignOptions {
