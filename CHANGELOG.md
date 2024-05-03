@@ -1,5 +1,9 @@
 # Changelog
 
+## v14.4.1
+- Fix `@alanszp/jwt`: JWTUser defaults in constructor
+- Add `@alanszp/jwt`: JWTUser.isImpersonating method 
+
 ## v14.4.0
 - Add `@alanszp/jwt`: add `expirationTime` property in JWTUser
 
