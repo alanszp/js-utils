@@ -68,9 +68,11 @@ export class JWTUser implements IJWTUser {
     this.roles = roles;
     this.permissions = permissions;
     this.segmentReference = segmentReference;
-    this.originalOrganizationReference = originalOrganizationReference ?? null;
-    this.originalId = originalId ?? null;
-    this.originalEmployeeReference = originalEmployeeReference ?? null;
+    this.originalOrganizationReference =
+      originalOrganizationReference ?? organizationReference;
+    this.originalId = originalId ?? id;
+    this.originalEmployeeReference =
+      originalEmployeeReference ?? employeeReference;
     this.expirationTime = expirationTime;
   }
 
@@ -237,5 +239,12 @@ export class JWTUser implements IJWTUser {
       throw new PermissionDefinitionNotFound(permissionCode);
     }
     return definition;
+  }
+
+  public isImpersonating(): boolean {
+    return (
+      this.organizationReference !== this.originalEmployeeReference ||
+      this.id !== this.originalId
+    );
   }
 }
