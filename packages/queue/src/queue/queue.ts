@@ -5,6 +5,7 @@ import {
   ConnectionOptions,
   JobData,
   JobReturnValue,
+  JobTypeEnum,
   QueueOptions,
 } from "../types";
 import { BaseQueue } from "./baseQueue";
@@ -73,5 +74,31 @@ export class Queue<
       opts,
     }));
     return this.queue.addBulk(jobs);
+  }
+
+  /**
+   * This method is used to debounce a job.
+   * It will check if there are any jobs waiting to be processed, if there are it
+   * will not schedule the job and let finish the current scheduled one.
+   *
+   * This type of publishing will have a max of 1 job waiting to be processed.
+   *
+   * @param debounceMs Time in MS to debounce the job
+   * @param job Job data
+   * @param opts Job options
+   * @returns Returns undefined if the job was already scheduled, else returns the job published
+   */
+  async debouncePublishJob(
+    debounceMs: number,
+    job: Data,
+    opts?: JobsOptions
+  ): Promise<Job<Data, ReturnValue> | undefined> {
+    const countWaiting = await this.getJobCountByStatus([JobTypeEnum.DELAYED]);
+    if (countWaiting !== 0) return;
+
+    await this.publishJob(job, {
+      ...opts,
+      delay: debounceMs,
+    });
   }
 }
