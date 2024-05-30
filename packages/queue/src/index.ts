@@ -5,7 +5,7 @@ export * from "./queue/baseQueue";
 export * from "./queue/MockBaseQueue";
 export * from "./queue/MockQueue";
 export * from "./queue/MockRepeatableQueue";
-export * from "./queue/QueueRepository";
+export * from "./queue/QueueManager";
 export * from "./connectionManager";
 export * from "./shutdownQueue";
 export * from "./types";
