@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/express",
-  "version": "14.2.0",
+  "version": "15.0.0",
   "description": "Alan's express utils and middlewares.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -38,10 +38,10 @@
     "typescript": "^4.3.4"
   },
   "dependencies": {
-    "@alanszp/audit": "^14.0.4",
-    "@alanszp/jwt": "^14.1.2",
-    "@alanszp/logger": "^14.0.4",
-    "@alanszp/shared-context": "^14.0.4",
+    "@alanszp/audit": "^15.0.0",
+    "@alanszp/jwt": "^15.0.0",
+    "@alanszp/logger": "^15.0.0",
+    "@alanszp/shared-context": "^15.0.0",
     "@babel/core": "^7.23.9",
     "@paralleldrive/cuid2": "^2.2.2",
     "body-parser": "^1.20.2",

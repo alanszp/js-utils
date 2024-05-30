@@ -14,11 +14,17 @@ export class JWTUser implements IJWTUser {
 
   originalOrganizationReference: string | null;
 
+  originalId: string | null;
+
+  originalEmployeeReference: string | null;
+
   roles: string[];
 
   permissions: string;
 
   segmentReference: string | null;
+
+  expirationTime?: number;
 
   /**
    * Static reference to the permission service
@@ -51,14 +57,23 @@ export class JWTUser implements IJWTUser {
     roles,
     permissions,
     segmentReference,
+    originalOrganizationReference,
+    originalId,
+    originalEmployeeReference,
+    expirationTime,
   }: IJWTUser) {
     this.id = id;
     this.employeeReference = employeeReference;
     this.organizationReference = organizationReference;
-    this.originalOrganizationReference = organizationReference;
     this.roles = roles;
     this.permissions = permissions;
     this.segmentReference = segmentReference;
+    this.originalOrganizationReference =
+      originalOrganizationReference ?? organizationReference;
+    this.originalId = originalId ?? id;
+    this.originalEmployeeReference =
+      originalEmployeeReference ?? employeeReference;
+    this.expirationTime = expirationTime;
   }
 
   static fromPayload(payload: JWTPayload): JWTUser {
@@ -69,6 +84,10 @@ export class JWTUser implements IJWTUser {
       roles: payload.rls,
       permissions: payload.prms,
       segmentReference: payload.seg || null,
+      originalOrganizationReference: payload.oorg,
+      originalId: payload.osub,
+      originalEmployeeReference: payload.oref,
+      expirationTime: payload.exp,
     });
   }
 
@@ -80,6 +99,9 @@ export class JWTUser implements IJWTUser {
       rls: this.roles,
       prms: this.permissions,
       seg: this.segmentReference,
+      oorg: this.originalOrganizationReference,
+      osub: this.originalId,
+      oref: this.originalEmployeeReference,
     };
   }
 
@@ -217,5 +239,12 @@ export class JWTUser implements IJWTUser {
       throw new PermissionDefinitionNotFound(permissionCode);
     }
     return definition;
+  }
+
+  public isImpersonating(): boolean {
+    return (
+      this.organizationReference !== this.originalEmployeeReference ||
+      this.id !== this.originalId
+    );
   }
 }

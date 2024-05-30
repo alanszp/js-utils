@@ -1,5 +1,30 @@
 # Changelog
 
+## v15.0.0
+
+- Add `@alanszp/queue`: Add mocks for queues
+- Add `@alanszp/queue`: Add `debouncePublishJob` method to `Queue`.
+- Add `@alanszp/queue`: Export some clases that were internal and where needed like `RepeatableQueue` and `BaseQueue`.
+- Add `@alanszp/serverless`: Add `initializeQueuesMiddleware`
+
+### Breaking Changes
+
+- Add `@alanszp/queue`: Add `QueueManager` to centralize queue creation and connection logic, making a refactor of internal components. It can instantiate simple Queues or RepeatableQueues
+- Change `@alanszp/queue`: Change `shutdownQueue` firm so it can receive all `QueueManager`s created.
+
+## v14.4.1
+
+- Fix `@alanszp/jwt`: JWTUser defaults in constructor
+- Add `@alanszp/jwt`: JWTUser.isImpersonating method
+
+## v14.4.0
+
+- Add `@alanszp/jwt`: add `expirationTime` property in JWTUser
+
+## v14.3.0
+
+- Add `@alanszp/jwt`: add `originalOrganizationReference`, `originalId` and `originalEmployeeReference` properties in JWTUser
+
 ## v14.2.0
 
 - Upgrade `lerna`: Upgrade `tar` to `v6.2.1` dep of `lerna` to avoid vulnerability in the dep.
