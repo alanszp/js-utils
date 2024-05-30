@@ -3,7 +3,7 @@ import { QueueRepository } from "./queueRepository";
 import { ConnectionManager } from "../connectionManager";
 import { JobData, QueueOptions } from "../types";
 import { SharedContext } from "@alanszp/shared-context";
-import { RepeatableQueue } from "./repetableQueue";
+import { RepeatableQueue } from "./repeatableQueue";
 
 export function createQueue<Data = JobData>(
   name: string,
