@@ -1,7 +1,7 @@
 import { createAxios } from "@alanszp/axios-node";
 import { ILogger } from "@alanszp/logger";
 
-export function initializeSecretMiddleware(
+export function initializeSecretsMiddleware(
   getLogger: () => ILogger,
   reloadConfig: () => void
 ) {
