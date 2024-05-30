@@ -4,7 +4,7 @@ import { RedisOptions } from "ioredis";
 import { ConnectionManager } from "../connectionManager";
 import { BaseQueue } from "./baseQueue";
 
-export class QueueManager<
+export class QueueRepository<
   EnumKey extends string | number | symbol,
   EnumValue extends string,
   QueueType extends BaseQueue
