@@ -54,6 +54,12 @@ export class QueueManager<
     return connectionReady;
   }
 
+  disconnectAll(): Promise<void[]> {
+    return Promise.all(
+      [...this.instancedQueues.values()].map((q) => q.close())
+    );
+  }
+
   get(queueName: EnumValue): QueueType {
     const q = this.instancedQueues.get(queueName);
     if (!q) throw new Error("Queue not initialized");

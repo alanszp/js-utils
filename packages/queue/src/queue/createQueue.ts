@@ -1,5 +1,4 @@
 import { Queue } from "./queue";
-import { QueueRepository } from "./queueRepository";
 import { ConnectionManager } from "../connectionManager";
 import { JobData, QueueOptions } from "../types";
 import { SharedContext } from "@alanszp/shared-context";
@@ -18,7 +17,6 @@ export function createQueue<Data = JobData>(
     getContext,
     queueOptions
   );
-  QueueRepository.Instance.registerQueue(queue);
   return queue;
 }
 
@@ -35,6 +33,5 @@ export function createRepeatableQueue<Data = JobData>(
     getContext,
     queueOptions
   );
-  QueueRepository.Instance.registerQueue(queue);
   return queue;
 }

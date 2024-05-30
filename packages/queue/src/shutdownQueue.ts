@@ -1,11 +1,16 @@
-import { QueueRepository } from "./queue/queueRepository";
 import { ConnectionManager } from "./connectionManager";
+import { QueueManager } from "./queue/QueueManager";
+import { BaseQueue } from "./queue/baseQueue";
 import { WorkerRepository } from "./worker/workerRepository";
 
-export async function shutdownQueue(): Promise<void> {
+export async function shutdownQueue<
+  EnumKey extends string | number | symbol,
+  EnumValue extends string,
+  QueueType extends BaseQueue
+>(queueManagers: QueueManager<EnumKey, EnumValue, QueueType>[]): Promise<void> {
   await Promise.all([
     ...WorkerRepository.Instance.getCloseConnections(),
-    ...QueueRepository.Instance.getCloseConnections(),
+    ...queueManagers.map((q) => q.disconnectAll()),
   ]);
 
   ConnectionManager.getInstance().close();
