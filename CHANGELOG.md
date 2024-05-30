@@ -1,5 +1,11 @@
 # Changelog
 
+## v15.0.1
+
+- Add `@alanszp/serverless`: Add `initializeSecretsMiddleware` to fetch env vars dynamically and add them to env.
+- Add `@alanszp/serverless`: Add export of the middleware `initializeQueuesMiddleware`
+- Add `@alanszp/serverless`: Add export of the middleware `withAuditLogMiddleware`
+
 ## v15.0.0
 
 - Add `@alanszp/queue`: Add mocks for queues
