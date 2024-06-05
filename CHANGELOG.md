@@ -2,7 +2,8 @@
 
 ## v15.0.2
 
-- Change `@alanszp/serverless`: Send config as fn to be read just in the moment that it will be used and not before.
+- Change `@alanszp/queue`: Can send to `QueueManager` the configs as a fn just in the moment that it will be used and not before.
+- Change `@alanszp/serverless`: Can send to `initializeDBMiddleware` the configs as a fn just in the moment that it will be used and not before.
 
 ## v15.0.1
 

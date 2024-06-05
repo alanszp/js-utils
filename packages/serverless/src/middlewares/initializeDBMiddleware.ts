@@ -10,12 +10,16 @@ function hasConnection(name: string | undefined): boolean {
 }
 
 export function initializeDBMiddleware<TEvent, TResult>(
-  connectionOptions: ConnectionOptions
+  connectionOptions: ConnectionOptions | (() => ConnectionOptions)
 ): MiddlewareObj<TEvent, TResult> {
   return {
     before: async (): Promise<void> => {
-      if (!hasConnection(connectionOptions.name)) {
-        await createConnection(connectionOptions);
+      const opts =
+        typeof connectionOptions === "function"
+          ? connectionOptions()
+          : connectionOptions;
+      if (!hasConnection(opts.name)) {
+        await createConnection(opts);
       }
     },
   };
