@@ -1,5 +1,9 @@
 # Changelog
 
+## v15.0.2
+
+- Change `@alanszp/serverless`: Send config as fn to be read just in the moment that it will be used and not before.
+
 ## v15.0.1
 
 - Add `@alanszp/serverless`: Add `initializeSecretsMiddleware` to fetch env vars dynamically and add them to env.

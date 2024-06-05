@@ -14,8 +14,8 @@ export class QueueManager<
   private queueNames: EnumValue[];
 
   constructor(
-    private serviceNameAsPrefix: string,
-    private redisConfig: RedisOptions,
+    private serviceNameAsPrefix: () => string,
+    private redisConfig: () => RedisOptions,
     private getLogger: () => ILogger,
     private getContext: () => SharedContext,
     private queueCreator: (
@@ -31,8 +31,8 @@ export class QueueManager<
   connectAll(): Promise<void> {
     const connManager = ConnectionManager.getInstance();
     connManager.setConfiguration(
-      this.redisConfig,
-      this.serviceNameAsPrefix,
+      this.redisConfig(),
+      this.serviceNameAsPrefix(),
       this.getLogger
     );
 
