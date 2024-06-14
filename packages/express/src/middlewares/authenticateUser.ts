@@ -8,7 +8,7 @@ import { AuthenticationMethodError } from "../errors/AuthMethodFailureError";
 import { render401Error } from "../helpers/renderErrorJson";
 
 function parseAuthorizationHeader(
-  authorization: string | undefined,
+  authorization: string | undefined
 ): string | undefined {
   if (!authorization) return undefined;
   const [bearer, jwt, ...other] = authorization.split(" ");
@@ -52,20 +52,20 @@ const middlewareGetterByAuthType: Record<
   (
     tokenOrJwt: string | null | undefined,
     options: AuthOptions,
-    logger: ILogger,
+    logger: ILogger
   ) => Promise<JWTUser | null | undefined>
 > = {
   [AuthMethods.JWT]: async (
     jwt: string | null | undefined,
     options: Exclude<AuthOptions, ApiKeyOptions>,
-    logger: ILogger,
+    logger: ILogger
   ) => {
     try {
       if (!jwt) return undefined;
       const jwtUser = await verifyJWT(
         options.jwtVerifyOptions.publicKey,
         jwt,
-        omit(options.jwtVerifyOptions, "publicKey"),
+        omit(options.jwtVerifyOptions, "publicKey")
       );
       logger.debug("auth.authWithJwt.authed", {
         user: jwtUser.id,
@@ -80,7 +80,7 @@ const middlewareGetterByAuthType: Record<
   [AuthMethods.API_KEY]: async (
     token: string | null | undefined,
     options: Exclude<AuthOptions, JWTOptions>,
-    logger: ILogger,
+    logger: ILogger
   ): Promise<JWTUser | null | undefined> => {
     try {
       if (!token) return undefined;
@@ -95,10 +95,11 @@ const middlewareGetterByAuthType: Record<
             employeeReference: "0",
             organizationReference: "lara",
             roles: [],
+            roleReferences: [],
             segmentReference: null,
             // This will be changed in the near future to grab all permissions.
             permissions: "MA==", // 0 in base64
-          }),
+          })
         );
       } else {
         return null;
@@ -111,15 +112,15 @@ const middlewareGetterByAuthType: Record<
 };
 
 export function createAuthContext<Options extends AuthOptions>(
-  options: Options,
+  options: Options
 ) {
   return function getMiddlewareForMethods(
-    authMethods: Options["types"][number][],
+    authMethods: Options["types"][number][]
   ) {
     return async function authWithGivenMethods(
       req: GenericRequest,
       res: Response,
-      next: NextFunction,
+      next: NextFunction
     ): Promise<void> {
       try {
         await tsoaAuthProvider(req, options, authMethods);
@@ -145,7 +146,7 @@ export function createAuthContext<Options extends AuthOptions>(
 export async function tsoaAuthProvider<Options extends AuthOptions>(
   req: GenericRequest,
   options: Options,
-  authMethods: AuthMethods[],
+  authMethods: AuthMethods[]
 ): Promise<JWTUser> {
   const logger = getRequestLogger(req);
   const cookies = (req.cookies as Record<string, string | undefined>) || {};
@@ -158,9 +159,9 @@ export async function tsoaAuthProvider<Options extends AuthOptions>(
         middlewareGetterByAuthType[method](
           method === AuthMethods.JWT ? jwt : req.headers.authorization,
           options,
-          logger,
-        ),
-      ),
+          logger
+        )
+      )
     );
 
     const successfulAuthAttempts = compact(authAttempts);
@@ -176,7 +177,7 @@ export async function tsoaAuthProvider<Options extends AuthOptions>(
     const jwtUser: JWTUser = successfulAuthAttempts[0];
     req.context.jwtUser = jwtUser;
     req.context.authenticated.push(
-      jwtUser.employeeReference !== "0" ? "jwt" : "api_key",
+      jwtUser.employeeReference !== "0" ? "jwt" : "api_key"
     );
     return jwtUser;
   } catch (error: unknown) {
