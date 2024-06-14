@@ -18,7 +18,15 @@ export class JWTUser implements IJWTUser {
 
   originalEmployeeReference: string | null;
 
+  /**
+   * Old role codes to maintain backwards compatibility
+   */
   roles: string[];
+
+  /**
+   * Role ids
+   */
+  roleReferences: string[];
 
   permissions: string;
 
@@ -55,6 +63,7 @@ export class JWTUser implements IJWTUser {
     employeeReference,
     organizationReference,
     roles,
+    roleReferences,
     permissions,
     segmentReference,
     originalOrganizationReference,
@@ -65,6 +74,7 @@ export class JWTUser implements IJWTUser {
     this.id = id;
     this.employeeReference = employeeReference;
     this.organizationReference = organizationReference;
+    this.roleReferences = roleReferences;
     this.roles = roles;
     this.permissions = permissions;
     this.segmentReference = segmentReference;
@@ -82,6 +92,7 @@ export class JWTUser implements IJWTUser {
       employeeReference: payload.ref,
       organizationReference: payload.org,
       roles: payload.rls,
+      roleReferences: payload.rl,
       permissions: payload.prms,
       segmentReference: payload.seg || null,
       originalOrganizationReference: payload.oorg,
@@ -97,6 +108,7 @@ export class JWTUser implements IJWTUser {
       ref: this.employeeReference,
       org: this.organizationReference,
       rls: this.roles,
+      rl: this.roleReferences,
       prms: this.permissions,
       seg: this.segmentReference,
       oorg: this.originalOrganizationReference,
@@ -123,6 +135,15 @@ export class JWTUser implements IJWTUser {
       return this.hasRole(validateRoles);
     }
     return validateRoles.some((role) => this.hasRole(role));
+  }
+
+  /**
+   * Get current role reference
+   * (only the first role is returned for now, as we are not using multiple roles yet)
+   * @returns role reference
+   */
+  public getRoleReference(): string {
+    return this.roleReferences[0];
   }
 
   /**

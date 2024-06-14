@@ -4,7 +4,10 @@ export interface JWTPayload extends LibPayload {
   sub: string;
   ref: string | null;
   org: string;
+  // old role codes
   rls: string[];
+  // role ids
+  rl: string[];
   prms: string;
   oorg: string | null;
   osub: string | null;
@@ -17,6 +20,7 @@ export interface IJWTUser {
   id: string;
   employeeReference: string | null;
   organizationReference: string;
+  roleReferences: string[];
   roles: string[];
   permissions: string;
   segmentReference: string | null;

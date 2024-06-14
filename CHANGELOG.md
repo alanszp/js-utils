@@ -1,5 +1,9 @@
 # Changelog
 
+## v15.0.3
+
+- Change `@alanszp/jwt`: Add role reference to jwt
+
 ## v15.0.2
 
 - Change `@alanszp/queue`: Can send to `QueueManager` the configs as a fn just in the moment that it will be used and not before.
