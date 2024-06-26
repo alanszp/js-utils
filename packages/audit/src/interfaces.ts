@@ -1,9 +1,10 @@
 export interface AuditBody {
   // Who
   actorRef: string; // Real user ID
-  impersonatedRef?: string; // Impersonated user ID. If no impersonating, it will be undefined
-  orgRef: string; // Org that was accessed
-  originalOrgRef: string; // Original org from the real user. If no impersonating, it will be the same as orgRef
+  orgRef: string; // Original org from the real user.
+
+  impersonatedActorRef?: string; // Impersonated user ID. If no impersonating, it will be undefined
+  impersonatedOrgRef?: string; // Org that was accessed. If no impersonating, it will be the same as orgRef
 
   // Where (it can be an array since the request can jump between nodes, and http keeps record of their IPs)
   ip: string | string[];

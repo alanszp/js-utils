@@ -2,13 +2,10 @@ import { NextFunction, Response } from "express";
 import { GenericRequest } from "../types/GenericRequest";
 import { hasRoles } from "./hasRoles";
 import { render401Error } from "../helpers/renderErrorJson";
-import { JWTUser } from "@alanszp/jwt";
 
 function response401(res: Response): void {
   res.status(401).json(render401Error(["jwt"]));
 }
-
-function checkForServiceAccount(jwtUser: JWTUser) {}
 
 /**
  * Check if the jwtUser has a single permission

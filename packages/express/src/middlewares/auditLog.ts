@@ -27,12 +27,16 @@ export function auditLog(action: string, bodyModifier?: AuditBodyModifier) {
 
         const jwtUser = req.context.jwtUser;
         if (jwtUser) {
-          partialBody.orgRef = jwtUser.organizationReference;
-          partialBody.originalOrgRef =
+          partialBody.orgRef =
             jwtUser.originalOrganizationReference ??
             jwtUser.organizationReference;
+          partialBody.impersonatedOrgRef = jwtUser.isImpersonating()
+            ? jwtUser.organizationReference
+            : undefined;
+          jwtUser.originalOrganizationReference ??
+            jwtUser.organizationReference;
           partialBody.actorRef = jwtUser.originalId ?? jwtUser.id;
-          partialBody.impersonatedRef = jwtUser.isImpersonating()
+          partialBody.impersonatedActorRef = jwtUser.isImpersonating()
             ? jwtUser.id
             : undefined;
         }
