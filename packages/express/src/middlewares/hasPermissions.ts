@@ -2,9 +2,20 @@ import { NextFunction, Response } from "express";
 import { GenericRequest } from "../types/GenericRequest";
 import { hasRoles } from "./hasRoles";
 import { render401Error } from "../helpers/renderErrorJson";
+import { JWTUser } from "@alanszp/jwt";
 
 function response401(res: Response): void {
   res.status(401).json(render401Error(["jwt"]));
+}
+
+// To check if it's not impersonating and is Lara Service Account.
+// TODO: Remove when we have service accounts.
+function checkForServiceAccount(jwtUser: JWTUser) {
+  return (
+    !jwtUser.isImpersonating() &&
+    jwtUser.originalEmployeeReference === "0" &&
+    jwtUser.originalOrganizationReference === "lara"
+  );
 }
 
 /**
@@ -20,12 +31,7 @@ export function hasPermission(permission: string) {
         return response401(res);
       }
 
-      // To check if it's not impersonating and is Lara Service Account.
-      // TODO: Remove when we have service accounts.
-      if (
-        jwtUser.employeeReference === "0" &&
-        jwtUser.originalOrganizationReference === "lara"
-      ) {
+      if (checkForServiceAccount(jwtUser)) {
         return hasRoles(["admin"])(req, res, next);
       }
 
@@ -49,13 +55,7 @@ export function hasSomePermission(permissions: string[]) {
       if (!jwtUser) {
         return response401(res);
       }
-
-      // To check if it's not impersonating and is Lara Service Account.
-      // TODO: Remove when we have service accounts.
-      if (
-        jwtUser.employeeReference === "0" &&
-        jwtUser.originalOrganizationReference === "lara"
-      ) {
+      if (checkForServiceAccount(jwtUser)) {
         return hasRoles(["admin"])(req, res, next);
       }
 
@@ -80,12 +80,7 @@ export function hasEveryPermission(permissions: string[]) {
         return response401(res);
       }
 
-      // To check if it's not impersonating and is Lara Service Account.
-      // TODO: Remove when we have service accounts.
-      if (
-        jwtUser.employeeReference === "0" &&
-        jwtUser.originalOrganizationReference === "lara"
-      ) {
+      if (checkForServiceAccount(jwtUser)) {
         return hasRoles(["admin"])(req, res, next);
       }
 

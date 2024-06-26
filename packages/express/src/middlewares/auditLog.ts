@@ -25,9 +25,16 @@ export function auditLog(action: string, bodyModifier?: AuditBodyModifier) {
           ? await Promise.resolve(bodyModifier(req, res))
           : ({} as Partial<AuditBody>);
 
-        if (req.context.jwtUser) {
-          partialBody.orgRef = req.context.jwtUser.organizationReference;
-          partialBody.actorRef = req.context.jwtUser.id;
+        const jwtUser = req.context.jwtUser;
+        if (jwtUser) {
+          partialBody.orgRef = jwtUser.organizationReference;
+          partialBody.originalOrgRef =
+            jwtUser.originalOrganizationReference ??
+            jwtUser.organizationReference;
+          partialBody.actorRef = jwtUser.originalId ?? jwtUser.id;
+          partialBody.impersonatedRef = jwtUser.isImpersonating()
+            ? jwtUser.id
+            : undefined;
         }
 
         partialBody.ip = getIp(req) || "no-ip";

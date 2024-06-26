@@ -11,11 +11,14 @@ export function withAuditLogMiddleware<TEvent, TResult>(
   return {
     after: (_): void => {
       const audit = sharedContext.getAudit();
+      const originalOrgRef =
+        customAuditValues?.originalOrgRef ?? customAuditValues?.orgRef;
 
       audit &&
         audit.log({
           succeed: true,
           actorRef: AUTOMATIC_ACTION_ACTOR_REF,
+          originalOrgRef,
           ...customAuditValues,
         });
     },
