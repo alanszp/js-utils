@@ -8,15 +8,7 @@ function response401(res: Response): void {
   res.status(401).json(render401Error(["jwt"]));
 }
 
-// To check if it's not impersonating and is Lara Service Account.
-// TODO: Remove when we have service accounts.
-function checkForServiceAccount(jwtUser: JWTUser) {
-  return (
-    !jwtUser.isImpersonating() &&
-    jwtUser.originalEmployeeReference === "0" &&
-    jwtUser.originalOrganizationReference === "lara"
-  );
-}
+function checkForServiceAccount(jwtUser: JWTUser) {}
 
 /**
  * Check if the jwtUser has a single permission
@@ -31,7 +23,8 @@ export function hasPermission(permission: string) {
         return response401(res);
       }
 
-      if (checkForServiceAccount(jwtUser)) {
+      // TODO: Remove when we have service accounts, SA will have it's own permissions so this will not be needed.
+      if (jwtUser.isServiceAccount()) {
         return hasRoles(["admin"])(req, res, next);
       }
 
@@ -55,7 +48,9 @@ export function hasSomePermission(permissions: string[]) {
       if (!jwtUser) {
         return response401(res);
       }
-      if (checkForServiceAccount(jwtUser)) {
+
+      // TODO: Remove when we have service accounts, SA will have it's own permissions so this will not be needed.
+      if (jwtUser.isServiceAccount()) {
         return hasRoles(["admin"])(req, res, next);
       }
 
@@ -80,7 +75,8 @@ export function hasEveryPermission(permissions: string[]) {
         return response401(res);
       }
 
-      if (checkForServiceAccount(jwtUser)) {
+      // TODO: Remove when we have service accounts, SA will have it's own permissions so this will not be needed.
+      if (jwtUser.isServiceAccount()) {
         return hasRoles(["admin"])(req, res, next);
       }
 
