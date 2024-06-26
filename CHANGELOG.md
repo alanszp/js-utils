@@ -6,6 +6,8 @@
 - Change `@alanszp/express`: Add changes to `auditMiddleware` to support audit changes.
 - Change `@alanszp/serverless`: Add changes to `withAuditLogMiddleware` to support audit changes.
 - Change `@alanszp/jwt`: Add defaults in `JWTUser` for originalFields. If not given by the jwt, will use the actual ones.
+- Change `@alanszp/jwt`: Fix `isImpersonating` logic.
+- Add `@alanszp/jwt`: Add `isServiceAccount` method to `JWTUser`.
 - Change `@alanszp/express`: Add changes to `hasPermission`, `hasSomePermission` and `hasEveryPermission` to support services account logs and remove old optional param of `oldRoleCodes` that bring an unexpected behavior.
 - Upgrade `braces` for security vulnerabilities
 
