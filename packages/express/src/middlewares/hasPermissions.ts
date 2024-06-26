@@ -26,7 +26,7 @@ export function hasPermission(permission: string) {
         jwtUser.employeeReference === "0" &&
         jwtUser.originalOrganizationReference === "lara"
       ) {
-        return next();
+        return hasRoles(["admin"])(req, res, next);
       }
 
       await jwtUser.validatePermission(permission);
