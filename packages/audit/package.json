@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/audit",
-  "version": "15.0.0",
+  "version": "15.0.4",
   "description": "Alan's audit util.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
