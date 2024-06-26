@@ -95,9 +95,9 @@ export class JWTUser implements IJWTUser {
       roleReferences: payload.rl,
       permissions: payload.prms,
       segmentReference: payload.seg || null,
-      originalOrganizationReference: payload.oorg,
-      originalId: payload.osub,
-      originalEmployeeReference: payload.oref,
+      originalOrganizationReference: payload.oorg ?? payload.org,
+      originalId: payload.osub ?? payload.sub,
+      originalEmployeeReference: payload.oref ?? payload.ref,
       expirationTime: payload.exp,
     });
   }
