@@ -1,5 +1,14 @@
 # Changelog
 
+## v15.0.4
+
+- Change `@alanszp/audit`: Add new keys for better understanding if access was impersonated.
+- Change `@alanszp/express`: Add changes to `auditMiddleware` to support audit changes.
+- Change `@alanszp/serverless`: Add changes to `withAuditLogMiddleware` to support audit changes.
+- Change `@alanszp/jwt`: Add defaults in `JWTUser` for originalFields. If not given by the jwt, will use the actual ones.
+- Change `@alanszp/express`: Add changes to `hasPermission`, `hasSomePermission` and `hasEveryPermission` to support services account logs and remove old optional param of `oldRoleCodes` that bring an unexpected behavior.
+- Upgrade `braces` for security vulnerabilities
+
 ## v15.0.3
 
 - Change `@alanszp/jwt`: Add role reference to jwt
