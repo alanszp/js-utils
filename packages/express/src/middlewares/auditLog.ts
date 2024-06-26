@@ -33,8 +33,6 @@ export function auditLog(action: string, bodyModifier?: AuditBodyModifier) {
           partialBody.impersonatedOrgRef = jwtUser.isImpersonating()
             ? jwtUser.organizationReference
             : undefined;
-          jwtUser.originalOrganizationReference ??
-            jwtUser.organizationReference;
           partialBody.actorRef = jwtUser.originalId ?? jwtUser.id;
           partialBody.impersonatedActorRef = jwtUser.isImpersonating()
             ? jwtUser.id
