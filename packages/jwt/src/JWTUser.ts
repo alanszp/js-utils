@@ -95,9 +95,9 @@ export class JWTUser implements IJWTUser {
       roleReferences: payload.rl,
       permissions: payload.prms,
       segmentReference: payload.seg || null,
-      originalOrganizationReference: payload.oorg,
-      originalId: payload.osub,
-      originalEmployeeReference: payload.oref,
+      originalOrganizationReference: payload.oorg ?? payload.org,
+      originalId: payload.osub ?? payload.sub,
+      originalEmployeeReference: payload.oref ?? payload.ref,
       expirationTime: payload.exp,
     });
   }
@@ -263,9 +263,16 @@ export class JWTUser implements IJWTUser {
   }
 
   public isImpersonating(): boolean {
+    return this.id !== this.originalId;
+  }
+
+  // To check if it's not impersonating and is Lara Service Account. This should be change to check the
+  // JWT type instead.
+  public isServiceAccount(): boolean {
     return (
-      this.organizationReference !== this.originalEmployeeReference ||
-      this.id !== this.originalId
+      !this.isImpersonating() &&
+      this.originalEmployeeReference === "0" &&
+      this.originalOrganizationReference === "lara"
     );
   }
 }

@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import { GenericRequest } from "../types/GenericRequest";
 import { hasRoles } from "./hasRoles";
-import { render401Error, render403Error } from "../helpers/renderErrorJson";
+import { render401Error } from "../helpers/renderErrorJson";
 
 function response401(res: Response): void {
   res.status(401).json(render401Error(["jwt"]));
@@ -12,10 +12,7 @@ function response401(res: Response): void {
  * If not, check if the jwtUser has the required roles (to maintain backwards compatibility)
  * When neither permissions nor roles requirements are met, throw a NoPermissionError
  */
-export function hasPermission(
-  permission: string,
-  oldRoleCodes?: string | string[]
-) {
+export function hasPermission(permission: string) {
   return async (req: GenericRequest, res: Response, next: NextFunction) => {
     try {
       const { jwtUser } = req.context;
@@ -23,12 +20,14 @@ export function hasPermission(
         return response401(res);
       }
 
+      // TODO: Remove when we have service accounts, SA will have it's own permissions so this will not be needed.
+      if (jwtUser.isServiceAccount()) {
+        return hasRoles(["admin"])(req, res, next);
+      }
+
       await jwtUser.validatePermission(permission);
       next();
     } catch (error: unknown) {
-      if (oldRoleCodes) {
-        return hasRoles(oldRoleCodes)(req, res, next);
-      }
       next(error);
     }
   };
@@ -39,10 +38,7 @@ export function hasPermission(
  * If not, check if the jwtUser has the required roles (to maintain backwards compatibility)
  * When neither permissions nor roles requirements are met, throw a NoPermissionError
  */
-export function hasSomePermission(
-  permissions: string[],
-  oldRoleCodes?: string | string[]
-) {
+export function hasSomePermission(permissions: string[]) {
   return async (req: GenericRequest, res: Response, next: NextFunction) => {
     try {
       const { jwtUser } = req.context;
@@ -50,12 +46,14 @@ export function hasSomePermission(
         return response401(res);
       }
 
+      // TODO: Remove when we have service accounts, SA will have it's own permissions so this will not be needed.
+      if (jwtUser.isServiceAccount()) {
+        return hasRoles(["admin"])(req, res, next);
+      }
+
       await jwtUser.validateSomePermission(permissions);
       next();
     } catch (error: unknown) {
-      if (oldRoleCodes) {
-        return hasRoles(oldRoleCodes)(req, res, next);
-      }
       next(error);
     }
   };
@@ -66,10 +64,7 @@ export function hasSomePermission(
  * If not, check if the jwtUser has the required roles (to maintain backwards compatibility)
  * When neither permissions nor roles requirements are met, throw a NoPermissionError
  */
-export function hasEveryPermission(
-  permissions: string[],
-  oldRoleCodes?: string | string[]
-) {
+export function hasEveryPermission(permissions: string[]) {
   return async (req: GenericRequest, res: Response, next: NextFunction) => {
     try {
       const { jwtUser } = req.context;
@@ -77,12 +72,14 @@ export function hasEveryPermission(
         return response401(res);
       }
 
+      // TODO: Remove when we have service accounts, SA will have it's own permissions so this will not be needed.
+      if (jwtUser.isServiceAccount()) {
+        return hasRoles(["admin"])(req, res, next);
+      }
+
       await jwtUser.validateEveryPermission(permissions);
       next();
     } catch (error: unknown) {
-      if (oldRoleCodes) {
-        return hasRoles(oldRoleCodes)(req, res, next);
-      }
       next(error);
     }
   };
