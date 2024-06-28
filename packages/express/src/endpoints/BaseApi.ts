@@ -28,7 +28,7 @@ export type BuildAuthEndpointOptions<
     | undefined
 > = {
   request: AuthRequest;
-  inputConstructor: (jwtUser: JWTUser) => Input;
+  inputConstructor: (jwtUser: JWTUser) => Promise<Input> | Input;
   command: (
     input: Input
   ) => Promise<CommandReturnType & Partial<Viewable<ViewReturnType>>>;
@@ -71,7 +71,7 @@ export class BaseApi extends Controller {
     const baseLog = `${snakeCase(path)}.${snakeCase(method)}`;
     const logger = getLogger();
 
-    const input = inputConstructor(user);
+    const input = await inputConstructor(user);
 
     logger.info(`${baseLog}.controller.starting`, { input });
 
