@@ -10,6 +10,7 @@ export * from "./middlewares/returnNotFound";
 export * from "./middlewares/jsonBodyParser";
 export * from "./middlewares/hasRoles";
 export * from "./middlewares/hasPermissions";
+export * from "./middlewares/configureNewRelic";
 export * from "./helpers/getRequestBaseLog";
 export * from "./endpoints/BaseApi";
 export * from "./errors/AuthMethodFailureError";
