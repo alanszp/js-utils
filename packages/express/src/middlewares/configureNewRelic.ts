@@ -7,12 +7,6 @@ export function configureNewRelic(
   _res: Response,
   next: NextFunction
 ): void {
-  console.log(
-    "test",
-    req.context.lifecycleChain,
-    req.context.lifecycleId,
-    req.context.contextId
-  );
   newrelic.addCustomAttributes({
     lch: req.context.lifecycleChain,
     lid: req.context.lifecycleId,
