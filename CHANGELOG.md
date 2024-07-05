@@ -8,10 +8,6 @@
 
 - Change `@alanszp/express`: Support promises on inputConstructor in the buildAuthEndpoint method
 
-## v15.0.5
-
-- Change `@alanszp/express`: Support promises on inputConstructor in the buildAuthEndpoint method
-
 ## v15.0.4
 
 - Change `@alanszp/audit`: Add new keys for better understanding if access was impersonated.

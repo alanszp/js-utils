@@ -6,6 +6,7 @@ import { appIdentifier } from "@alanszp/core";
 import { GenericRequest } from "../types/GenericRequest";
 import { SharedContext } from "@alanszp/shared-context";
 import { compact } from "lodash";
+import newrelic from "newrelic";
 
 export function createContext(
   sharedContext: SharedContext,
@@ -35,6 +36,13 @@ export function createContext(
         req.context.contextId = context.contextId;
         req.context.log = context.logger;
         req.context.audit = context.audit;
+
+        newrelic.addCustomAttributes({
+          lch: context.lifecycleChain,
+          lid: context.lifecycleId,
+          cid: context.contextId,
+        });
+
         next();
       },
       {
