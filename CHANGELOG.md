@@ -1,5 +1,10 @@
 # Changelog
 
+## v15.1.0
+
+- Change `@alanszp/express`: Include NewRelic custom attributes `lch`, `lid` and `cid` in `createContext` middleware
+- Change `@alanszp/queue`: Include NewRelic custom attributes `lch`, `lid` and `cid` in `withContext` wrapper
+
 ## v15.0.5
 
 - Change `@alanszp/express`: Support promises on inputConstructor in the buildAuthEndpoint method
