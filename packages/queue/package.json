@@ -16,6 +16,7 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "devDependencies": {
+    "@types/newrelic": "^9.14.4",
     "@types/node": "^20.11.17",
     "class-validator": "^0.14.1",
     "ts-node": "^10.0.0",
@@ -31,6 +32,7 @@
     "@paralleldrive/cuid2": "^2.2.2",
     "bullmq": "^5.4.4",
     "ioredis": "^5.3.2",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "newrelic": "^11.18.0"
   }
 }

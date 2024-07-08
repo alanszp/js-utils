@@ -2,7 +2,8 @@
 
 ## v15.1.0
 
-- Change `@alanszp/express`: Add the `configureNewRelic` middleware to include the custom attributes `lch`, `lid` and `cid` in NewRelic
+- Change `@alanszp/express`: Include NewRelic custom attributes `lch`, `lid` and `cid` in `createContext` middleware
+- Change `@alanszp/queue`: Include NewRelic custom attributes `lch`, `lid` and `cid` in `withContext` wrapper
 
 ## v15.0.5
 
