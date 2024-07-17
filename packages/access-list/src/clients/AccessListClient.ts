@@ -1,5 +1,9 @@
 import { NoPermissionError } from "../errors/NoPermissionError";
-import { hasAccessToSomeEmployees } from "../repositories/accessListRepository";
+import {
+  getFullAccessList,
+  hasAccessToSomeEmployees,
+  whichEmployeesHasAccessTo,
+} from "../repositories/accessListRepository";
 import { JWTUser } from "@alanszp/jwt";
 import { ModelValidationError } from "@alanszp/validations";
 import { castArray } from "lodash";
@@ -27,28 +31,72 @@ export class AccessListClient {
     this.addFormerEmployees = addFormerEmployees ?? false;
   }
 
+  /**
+   * If the user has no segment, it means that it has access to all employees.
+   */
   public hasAccessToAll(): boolean {
     return this.segmentReference === null;
   }
 
+  /**
+   * If the user has a segment, it needs to validate access.
+   */
   public needsToValidateAccess(): boolean {
     return !this.hasAccessToAll();
   }
 
+  /**
+   * Returns a boolean if the user has access any of the given employees.
+   *
+   * @returns A string[] if it has access to some employees. If it has no access it will return an empty array.
+   */
   public async hasAccessToSomeEmployees(
     employeeReference: string[]
   ): Promise<boolean> {
     if (this.hasAccessToAll() || this.segmentReference === null) return true;
 
-    const hasAccess = await hasAccessToSomeEmployees(
+    return hasAccessToSomeEmployees(
       this.segmentReference,
       castArray(employeeReference),
       this.shouldAddFormerEmployees()
     );
-
-    return hasAccess;
   }
 
+  /**
+   * Returns the filtered list of the given employees that this user has access to.
+   *
+   * @returns A string[] if it has access to some employees. If it has no access it will return an empty array.
+   */
+  public async whichEmployeesHasAccess(
+    employeeReference: string[]
+  ): Promise<string[]> {
+    if (this.hasAccessToAll() || this.segmentReference === null)
+      return employeeReference;
+
+    return whichEmployeesHasAccessTo(
+      this.segmentReference,
+      castArray(employeeReference),
+      this.shouldAddFormerEmployees()
+    );
+  }
+
+  /**
+   * Returns the full access list of employees.
+   *
+   * @returns true if user has access to all employees. A string[] if it has access to some employees.
+   */
+  public async getFullAccessList(): Promise<string[] | true> {
+    if (this.hasAccessToAll() || this.segmentReference === null) return true;
+
+    return getFullAccessList(
+      this.segmentReference,
+      this.shouldAddFormerEmployees()
+    );
+  }
+
+  /**
+   * Returns a boolean if the user has access to that employee.
+   */
   public async hasAccessTo(employeeReference: string): Promise<boolean> {
     return this.hasAccessToSomeEmployees(castArray(employeeReference));
   }
@@ -58,6 +106,8 @@ export class AccessListClient {
   }
 
   /**
+   * Like #hasAccessTo but instead of returning a boolean it will throw a NoPermissionError if the user has no access.
+   *
    * @param employeeReference Employee reference to validate access to
    * @throws {NoPermissionError} if user has no access to employee
    */

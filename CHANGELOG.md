@@ -3,6 +3,8 @@
 ## v16.0.0
 
 - Change `@alanszp/access-list`: Change of logic on how we detect an admin on access list
+- Add `@alanszp/access-list`: Add method `whichEmployeesHasAccess` and `getFullAccessList` to `AccessListClient`
+- Change `@alanszp/access-list`: Add documentation
 
 ## v15.1.0
 
