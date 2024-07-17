@@ -4,14 +4,6 @@ import { JWTUser } from "@alanszp/jwt";
 import { ModelValidationError } from "@alanszp/validations";
 import { castArray } from "lodash";
 
-export enum RoleCode {
-  ADMIN = "admin",
-  HRBP = "hrbp",
-  MANAGER = "manager",
-  INTEGRATIONS = "integrations",
-  VIEWER = "viewer",
-}
-
 export class AccessListClient {
   protected organizationReference: string;
 
@@ -27,7 +19,7 @@ export class AccessListClient {
       segmentReference,
       organizationReference,
     }: Pick<JWTUser, "roles" | "segmentReference" | "organizationReference">,
-    addFormerEmployees?: boolean,
+    addFormerEmployees?: boolean
   ) {
     this.organizationReference = organizationReference;
     this.roles = roles;
@@ -36,11 +28,7 @@ export class AccessListClient {
   }
 
   public hasAccessToAll(): boolean {
-    return this.isAdmin();
-  }
-
-  public isAdmin(): boolean {
-    return this.roles.includes(RoleCode.ADMIN);
+    return this.segmentReference === null;
   }
 
   public needsToValidateAccess(): boolean {
@@ -48,16 +36,14 @@ export class AccessListClient {
   }
 
   public async hasAccessToSomeEmployees(
-    employeeReference: string[],
+    employeeReference: string[]
   ): Promise<boolean> {
-    if (this.hasAccessToAll()) return true;
-
-    if (!this.segmentReference) return false;
+    if (this.hasAccessToAll() || this.segmentReference === null) return true;
 
     const hasAccess = await hasAccessToSomeEmployees(
       this.segmentReference,
       castArray(employeeReference),
-      this.shouldAddFormerEmployees(),
+      this.shouldAddFormerEmployees()
     );
 
     return hasAccess;

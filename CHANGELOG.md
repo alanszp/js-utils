@@ -1,5 +1,9 @@
 # Changelog
 
+## v16.0.0
+
+- Change `@alanszp/access-list`: Change of logic on how we detect an admin on access list
+
 ## v15.1.0
 
 - Change `@alanszp/express`: Include NewRelic custom attributes `lch`, `lid` and `cid` in `createContext` middleware
