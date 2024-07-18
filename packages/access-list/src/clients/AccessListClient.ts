@@ -8,18 +8,6 @@ import { JWTUser } from "@alanszp/jwt";
 import { ModelValidationError } from "@alanszp/validations";
 import { castArray } from "lodash";
 
-type RequiredNotNull<T> = {
-  [P in keyof T]: NonNullable<T[P]>;
-};
-
-type RequiredNull<T> = {
-  [P in keyof T]: null;
-};
-
-type Ensure<T, K extends keyof T> = T & RequiredNotNull<Pick<T, K>>;
-
-type EnsureNull<T, K extends keyof T> = T & RequiredNull<Pick<T, K>>;
-
 export class AccessListClient {
   public organizationReference: string;
 
@@ -65,13 +53,14 @@ export class AccessListClient {
   public async hasAccessToSomeEmployees(
     employeeReference: string[]
   ): Promise<boolean> {
-    if (this.needsToValidateAccess()) {
-      return hasAccessToSomeEmployees(
-        this.segmentReference,
-        castArray(employeeReference),
-        this.shouldAddFormerEmployees()
-      );
-    }
+    if (this.hasAccessToAll())
+      if (this.needsToValidateAccess()) {
+        return hasAccessToSomeEmployees(
+          this.segmentReference,
+          castArray(employeeReference),
+          this.shouldAddFormerEmployees()
+        );
+      }
 
     return true;
   }
