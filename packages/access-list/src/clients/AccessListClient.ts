@@ -8,14 +8,26 @@ import { JWTUser } from "@alanszp/jwt";
 import { ModelValidationError } from "@alanszp/validations";
 import { castArray } from "lodash";
 
+type RequiredNotNull<T> = {
+  [P in keyof T]: NonNullable<T[P]>;
+};
+
+type RequiredNull<T> = {
+  [P in keyof T]: null;
+};
+
+type Ensure<T, K extends keyof T> = T & RequiredNotNull<Pick<T, K>>;
+
+type EnsureNull<T, K extends keyof T> = T & RequiredNull<Pick<T, K>>;
+
 export class AccessListClient {
-  protected organizationReference: string;
+  public organizationReference: string;
+
+  public segmentReference: string | null;
+
+  public addFormerEmployees: boolean;
 
   protected roles: string[];
-
-  protected segmentReference: string | null;
-
-  protected addFormerEmployees: boolean;
 
   constructor(
     {
@@ -34,14 +46,14 @@ export class AccessListClient {
   /**
    * If the user has no segment, it means that it has access to all employees.
    */
-  public hasAccessToAll(): boolean {
+  public hasAccessToAll(): this is EnsureNull<this, "segmentReference"> {
     return this.segmentReference === null;
   }
 
   /**
    * If the user has a segment, it needs to validate access.
    */
-  public needsToValidateAccess(): boolean {
+  public needsToValidateAccess(): this is Ensure<this, "segmentReference"> {
     return !this.hasAccessToAll();
   }
 
@@ -53,13 +65,15 @@ export class AccessListClient {
   public async hasAccessToSomeEmployees(
     employeeReference: string[]
   ): Promise<boolean> {
-    if (this.hasAccessToAll() || this.segmentReference === null) return true;
+    if (this.needsToValidateAccess()) {
+      return hasAccessToSomeEmployees(
+        this.segmentReference,
+        castArray(employeeReference),
+        this.shouldAddFormerEmployees()
+      );
+    }
 
-    return hasAccessToSomeEmployees(
-      this.segmentReference,
-      castArray(employeeReference),
-      this.shouldAddFormerEmployees()
-    );
+    return true;
   }
 
   /**
@@ -70,14 +84,15 @@ export class AccessListClient {
   public async whichEmployeesHasAccess(
     employeeReference: string[]
   ): Promise<string[]> {
-    if (this.hasAccessToAll() || this.segmentReference === null)
-      return employeeReference;
+    if (this.needsToValidateAccess()) {
+      return whichEmployeesHasAccessTo(
+        this.segmentReference,
+        castArray(employeeReference),
+        this.shouldAddFormerEmployees()
+      );
+    }
 
-    return whichEmployeesHasAccessTo(
-      this.segmentReference,
-      castArray(employeeReference),
-      this.shouldAddFormerEmployees()
-    );
+    return employeeReference;
   }
 
   /**
@@ -86,12 +101,14 @@ export class AccessListClient {
    * @returns true if user has access to all employees. A string[] if it has access to some employees.
    */
   public async getFullAccessList(): Promise<string[] | true> {
-    if (this.hasAccessToAll() || this.segmentReference === null) return true;
+    if (this.needsToValidateAccess()) {
+      return getFullAccessList(
+        this.segmentReference,
+        this.shouldAddFormerEmployees()
+      );
+    }
 
-    return getFullAccessList(
-      this.segmentReference,
-      this.shouldAddFormerEmployees()
-    );
+    return true;
   }
 
   /**
@@ -131,10 +148,6 @@ export class AccessListClient {
       });
     }
 
-    return this.segmentReference;
-  }
-
-  public getSegmentReference(): string | null {
     return this.segmentReference;
   }
 }
