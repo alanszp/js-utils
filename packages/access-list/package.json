@@ -26,6 +26,7 @@
     "class-validator": "^0.14.0"
   },
   "dependencies": {
+    "@alanszp/core": "^15.0.0",
     "@alanszp/jwt": "^15.0.4",
     "@alanszp/validations": "^15.0.0"
   }

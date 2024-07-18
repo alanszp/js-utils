@@ -1,5 +1,13 @@
 # Changelog
 
+## v16.0.0
+
+- Add `@alanszp/core`: Add generic typescript types.
+- Change `@alanszp/access-list`: Change of logic on how we detect an admin on access list
+- Add `@alanszp/access-list`: Add method `whichEmployeesHasAccess` and `getFullAccessList` to `AccessListClient`
+- Change `@alanszp/access-list`: Add documentation
+- Removes `@alanszp/access-list`: Removes from `AccessListClient` the method `getSegmentReference` in favour of using the prop `segmentReference`
+
 ## v15.1.0
 
 - Change `@alanszp/express`: Include NewRelic custom attributes `lch`, `lid` and `cid` in `createContext` middleware
