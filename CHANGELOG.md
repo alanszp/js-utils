@@ -1,6 +1,10 @@
 # Changelog
 
-## v16.0.0
+## v16.0.1
+
+- Fix `@alanszp/access-list`: A bug was introduced on v16.0.0 on method `AccessListClient.hasAccessToSomeEmployees`. This version fix it.
+
+## v16.0.0 - Do not use this version!
 
 - Add `@alanszp/core`: Add generic typescript types.
 - Change `@alanszp/access-list`: Change of logic on how we detect an admin on access list

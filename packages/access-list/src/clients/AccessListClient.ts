@@ -54,14 +54,13 @@ export class AccessListClient {
   public async hasAccessToSomeEmployees(
     employeeReference: string[]
   ): Promise<boolean> {
-    if (this.hasAccessToAll())
-      if (this.needsToValidateAccess()) {
-        return hasAccessToSomeEmployees(
-          this.segmentReference,
-          castArray(employeeReference),
-          this.shouldAddFormerEmployees()
-        );
-      }
+    if (this.needsToValidateAccess()) {
+      return hasAccessToSomeEmployees(
+        this.segmentReference,
+        castArray(employeeReference),
+        this.shouldAddFormerEmployees()
+      );
+    }
 
     return true;
   }
