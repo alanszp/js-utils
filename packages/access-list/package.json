@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/access-list",
-  "version": "16.0.0",
+  "version": "16.0.1",
   "description": "Alan's validation utils.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
