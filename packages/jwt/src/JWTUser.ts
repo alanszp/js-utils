@@ -93,7 +93,7 @@ export class JWTUser implements IJWTUser {
    * @description Do not include the Bearer prefix
    */
   public setRawToken(token: string): void {
-    this.rawToken = token;
+    this.#rawToken = token;
   }
 
   /**
@@ -102,7 +102,7 @@ export class JWTUser implements IJWTUser {
    * @description This method applies the Bearer prefix to the token, if you need the raw token use the property `rawToken`
    */
   public getRawTokenAsBearer(): string | undefined {
-    return this.rawToken ? `Bearer ${this.rawToken}` : undefined;
+    return this.#rawToken ? `Bearer ${this.#rawToken}` : undefined;
   }
 
   static fromPayload(payload: JWTPayload): JWTUser {
