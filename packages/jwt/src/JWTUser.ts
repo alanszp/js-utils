@@ -34,6 +34,8 @@ export class JWTUser implements IJWTUser {
 
   expirationTime?: number;
 
+  rawToken?: string;
+
   /**
    * Static reference to the permission service
    * This is used to make sure that the permission service is only instantiated once
@@ -84,6 +86,18 @@ export class JWTUser implements IJWTUser {
     this.originalEmployeeReference =
       originalEmployeeReference ?? employeeReference;
     this.expirationTime = expirationTime;
+  }
+
+  public setRawToken(token: string): void {
+    this.rawToken = token;
+  }
+
+  /**
+   * JWT Token from the original request
+   * Useful for chaining requests and passing the token along
+   */
+  public getRawToken(): string | undefined {
+    return this.rawToken;
   }
 
   static fromPayload(payload: JWTPayload): JWTUser {
