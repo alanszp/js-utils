@@ -34,7 +34,7 @@ export class JWTUser implements IJWTUser {
 
   expirationTime?: number;
 
-  rawToken?: string;
+  #rawToken?: string;
 
   /**
    * Static reference to the permission service
