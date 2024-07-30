@@ -34,6 +34,8 @@ export class JWTUser implements IJWTUser {
 
   expirationTime?: number;
 
+  #rawToken?: string;
+
   /**
    * Static reference to the permission service
    * This is used to make sure that the permission service is only instantiated once
@@ -84,6 +86,23 @@ export class JWTUser implements IJWTUser {
     this.originalEmployeeReference =
       originalEmployeeReference ?? employeeReference;
     this.expirationTime = expirationTime;
+  }
+
+  /**
+   * Set the raw token from the original request
+   * @description Do not include the Bearer prefix
+   */
+  public setRawToken(token: string): void {
+    this.#rawToken = token;
+  }
+
+  /**
+   * JWT Token from the original request
+   * Useful for chaining requests and passing the token along
+   * @description This method applies the Bearer prefix to the token, if you need the raw token use the property `rawToken`
+   */
+  public getRawTokenAsBearer(): string | undefined {
+    return this.#rawToken ? `Bearer ${this.#rawToken}` : undefined;
   }
 
   static fromPayload(payload: JWTPayload): JWTUser {

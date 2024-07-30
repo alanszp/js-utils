@@ -1,5 +1,9 @@
 # Changelog
 
+## v16.0.2
+
+- Add `@alanszp/jwt`: Getter and Setter for raw token inside JWTUser class
+
 ## v16.0.1
 
 - Fix `@alanszp/access-list`: A bug was introduced on v16.0.0 on method `AccessListClient.hasAccessToSomeEmployees`. This version fix it.
