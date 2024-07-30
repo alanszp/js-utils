@@ -88,6 +88,10 @@ export class JWTUser implements IJWTUser {
     this.expirationTime = expirationTime;
   }
 
+  /**
+   * Set the raw token from the original request
+   * @description Do not include the Bearer prefix
+   */
   public setRawToken(token: string): void {
     this.rawToken = token;
   }
@@ -95,9 +99,10 @@ export class JWTUser implements IJWTUser {
   /**
    * JWT Token from the original request
    * Useful for chaining requests and passing the token along
+   * @description This method applies the Bearer prefix to the token, if you need the raw token use the property `rawToken`
    */
-  public getRawToken(): string | undefined {
-    return this.rawToken;
+  public getRawTokenAsBearer(): string | undefined {
+    return this.rawToken ? `Bearer ${this.rawToken}` : undefined;
   }
 
   static fromPayload(payload: JWTPayload): JWTUser {
