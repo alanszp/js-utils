@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/express-common-fn",
-  "version": "16.0.2",
+  "version": "16.0.3",
   "description": "Alan's express function to handle common errors and format uniformly.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@alanszp/core": "^16.0.0",
-    "@alanszp/express": "^16.0.2",
+    "@alanszp/express": "^16.0.3",
     "@alanszp/logger": "^16.0.0",
     "@alanszp/validations": "^16.0.0"
   },
