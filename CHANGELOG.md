@@ -1,5 +1,9 @@
 # Changelog
 
+## v16.0.3
+
+- Add `@alanszp/jwt`: New methods to create permission strings easier. Principally `PermissionsService.getPermission` and `BitmaskUtils.encodePermissionsToBase64`
+
 ## v16.0.2
 
 - Add `@alanszp/jwt`: Getter and Setter for raw token inside JWTUser class
