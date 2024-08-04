@@ -60,6 +60,22 @@ export class JWTUser implements IJWTUser {
     return JWTUser.#permissionService;
   }
 
+  /**
+   * @throws {PermissionDefinitionNotFound}
+   * @throws {PermissionServiceNotInstantiated}
+   */
+  static async getPermissionDefinition(
+    permissionCode: string
+  ): Promise<Permission> {
+    const definition = await JWTUser.getPermissionService().getPermission(
+      permissionCode
+    );
+    if (!definition) {
+      throw new PermissionDefinitionNotFound(permissionCode);
+    }
+    return definition;
+  }
+
   constructor({
     id,
     employeeReference,
@@ -173,7 +189,7 @@ export class JWTUser implements IJWTUser {
    * @throws {PermissionServiceNotInstantiated}
    */
   public async hasPermission(permissionCode: string): Promise<boolean> {
-    const definition = await this.getPermissionDefinition(permissionCode);
+    const definition = await JWTUser.getPermissionDefinition(permissionCode);
     const checkBitmask = BitmaskUtils.encodeFromPosition(definition.position);
     const permissionsBitmask = BitmaskUtils.decodeFromBase64(this.permissions);
     return BitmaskUtils.checkBitmask(permissionsBitmask, checkBitmask);
@@ -264,21 +280,6 @@ export class JWTUser implements IJWTUser {
     if (!hasSomePermission) {
       throw new NoPermissionError(permissionCodes);
     }
-  }
-
-  /**
-   * @throws {PermissionDefinitionNotFound}
-   * @throws {PermissionServiceNotInstantiated}
-   */
-  private async getPermissionDefinition(
-    permissionCode: string
-  ): Promise<Permission> {
-    const definitions = await JWTUser.getPermissionService().getPermissions();
-    const definition = definitions.find((def) => def.code === permissionCode);
-    if (!definition) {
-      throw new PermissionDefinitionNotFound(permissionCode);
-    }
-    return definition;
   }
 
   public isImpersonating(): boolean {
