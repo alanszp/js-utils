@@ -1,5 +1,12 @@
 # Changelog
 
+## v16.1.0
+
+- Add `@alanszp/express`: `JwtCookiesKeys` enum to define common keys for JWT cookies
+- Add `@alanszp/express`: `createAuthContext`/`tsoaAuthProvider` a way to override define cookies priority to get JWT token.
+- Add `@alanszp/express`: Now it really parse the cookies from header using `cookie` lib. Before was using an empty object, so we really never used the req.cookies.jwt token.
+- Add `@alanszp/express`: Export `parseCookie` form `cookie` lib.
+
 ## v16.0.3
 
 - Add `@alanszp/jwt`: New methods to create permission strings easier. Principally `PermissionsService.getPermission` and `BitmaskUtils.encodePermissionsToBase64`
