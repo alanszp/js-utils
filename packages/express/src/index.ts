@@ -13,3 +13,4 @@ export * from "./middlewares/hasPermissions";
 export * from "./helpers/getRequestBaseLog";
 export * from "./endpoints/BaseApi";
 export * from "./errors/AuthMethodFailureError";
+export { parse as parseCookie } from "cookie";
