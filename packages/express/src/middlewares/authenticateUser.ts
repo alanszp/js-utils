@@ -78,11 +78,11 @@ const middlewareGetterByAuthType: Record<
 
       const jwtFromCookies = reduce(
         cookiesKeys,
-        (acc, key) => acc ?? cookies[key],
+        (acc, key) => acc || cookies[key], // cookie if empty it may be ""
         null
       );
       const jwt =
-        jwtFromCookies ?? parseAuthorizationHeader(req.headers.authorization);
+        jwtFromCookies || parseAuthorizationHeader(req.headers.authorization);
 
       if (!jwt) return undefined;
       const jwtUser = await verifyJWT(

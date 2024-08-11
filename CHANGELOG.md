@@ -1,5 +1,9 @@
 # Changelog
 
+## v16.1.1
+
+- Fix `@alanszp/express`: `createAuthContext`/`tsoaAuthProvider` If a cookie comes with empty string, it now take it as it's not defined. Fixes impersonation flow with cookies.
+
 ## v16.1.0
 
 - Add `@alanszp/express`: `JwtCookiesKeys` enum to define common keys for JWT cookies
