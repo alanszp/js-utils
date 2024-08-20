@@ -2,7 +2,7 @@
 
 ## v16.1.2
 
-- Fix `@alanszp/worker`: `processFailed` now logs an error instead of a warning.
+- Fix `@alanszp/queue`: `Worker.processFailed` now logs an error instead of a warning.
 
 ## v16.1.1
 
