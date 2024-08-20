@@ -101,7 +101,7 @@ abstract class Worker<Data = JobData, ReturnValue = unknown> {
     job: Job<Data, ReturnValue>,
     error: Error
   ): Promise<void> {
-    this.getLogger().warn("worker.job.failed", {
+    this.getLogger().error("worker.job.failed", {
       queue: this.queueFullName,
       job,
       error,

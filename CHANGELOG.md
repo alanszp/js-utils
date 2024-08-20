@@ -1,5 +1,9 @@
 # Changelog
 
+## v16.1.2
+
+- Fix `@alanszp/worker`: `processFailed` now logs an error instead of a warning.
+
 ## v16.1.1
 
 - Fix `@alanszp/express`: `createAuthContext`/`tsoaAuthProvider` If a cookie comes with empty string, it now take it as it's not defined. Fixes impersonation flow with cookies.
