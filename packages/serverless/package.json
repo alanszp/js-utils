@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/serverless",
-  "version": "16.0.0",
+  "version": "16.1.2",
   "description": "Alan's serverless utils and middlewares.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -26,7 +26,7 @@
     "@alanszp/audit": "^16.0.0",
     "@alanszp/axios-node": "^16.0.0",
     "@alanszp/logger": "^16.0.0",
-    "@alanszp/queue": "^16.0.0",
+    "@alanszp/queue": "^16.1.2",
     "@alanszp/split": "^16.0.0",
     "@types/lodash": "^4.14.170",
     "@types/node": "^20.11.17",
