@@ -1,5 +1,9 @@
 # Changelog
 
+## v16.1.3
+
+- Fix `@alanszp/express`: Fix types for `BaseApi.buildAuthEndpoint`. Now it recognizes view and command and infers endpoint response correctly.
+
 ## v16.1.2
 
 - Fix `@alanszp/queue`: `Worker.processFailed` now logs an error instead of a warning.
