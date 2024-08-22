@@ -1,5 +1,5 @@
 import { ILogger } from "@alanszp/logger";
-import Redis, { RedisOptions } from "ioredis";
+import IORedis, { Redis, RedisOptions } from "ioredis";
 
 export class ConnectionManager {
   private static instance: ConnectionManager;
@@ -25,7 +25,7 @@ export class ConnectionManager {
       throw new Error("Redis configuration required");
     }
 
-    const redis = new Redis(this.redisConfiguration);
+    const redis = new IORedis(this.redisConfiguration);
     redis.setMaxListeners(20);
     redis.on("connect", () => this.getLogger().info("redis.connected"));
     redis.on("ready", () => this.getLogger().info("redis.ready"));

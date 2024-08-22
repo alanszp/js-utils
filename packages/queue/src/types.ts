@@ -6,7 +6,6 @@ import {
 
 export {
   ConnectionOptions,
-  RedisOptions,
   Job,
   Worker as RawWorker,
   Queue as RawQueue,
@@ -14,6 +13,8 @@ export {
   JobType,
   JobsOptions,
 } from "bullmq";
+
+export { RedisOptions } from "ioredis";
 
 export type JobData = unknown;
 
