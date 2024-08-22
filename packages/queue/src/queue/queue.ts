@@ -87,6 +87,8 @@ export class Queue<
    * @param job Job data
    * @param opts Job options
    * @returns Returns undefined if the job was already scheduled, else returns the job published
+   *
+   * @deprecated Use publishJob option `debounce` which is more reliable
    */
   async debouncePublishJob(
     debounceMs: number,

@@ -1,5 +1,13 @@
 # Changelog
 
+## v16.1.4
+
+- Add `@alanszp/queues`: Upgrade `bullmq` version to `v5.12.9` to be able to use debounced publishing. Also upgraded `ioredis` to the latest version. Reference: https://docs.bullmq.io/guide/jobs/debouncing
+
+### Future notice
+
+- Change `@alanszp/queues`: Upgrade `Queue.debouncePublishJob` was marked as deprecated. Use new option instead.
+
 ## v16.1.3
 
 - Fix `@alanszp/express`: Fix types for `BaseApi.buildAuthEndpoint`. Now it recognizes view and command and infers endpoint response correctly.
