@@ -4,6 +4,7 @@
 
 - Add package `@alanszp/relative-date`: Converts dates from formats like: -1d to '2024-09-01'.
 - Add package `@alanszp/nunjucks-utils`: Creates many useful filters for `nunjucks` lib & exposes an auto-register method.
+- Bump micromatch from 4.0.4 to 4.0.8 to avoid CVE-2024-4067.
 
 ## v16.1.4
 
