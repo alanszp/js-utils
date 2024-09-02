@@ -1,5 +1,9 @@
 # Changelog
 
+## v16.2.1
+
+- Add `@alanszp/nunjucks-utils`: Add missing filter to auto-register fn.
+
 ## v16.2.0
 
 - Add package `@alanszp/relative-date`: Converts dates from formats like: -1d to '2024-09-01'.

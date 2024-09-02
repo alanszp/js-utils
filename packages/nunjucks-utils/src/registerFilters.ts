@@ -12,6 +12,7 @@ import {
   relativeDateRangeToFixed,
   relativeDateRangeToFixedArray,
   relativeDateToFixed,
+  renderMoodEmoji,
   safePercentage,
 } from "./filters";
 
@@ -28,6 +29,7 @@ export function registerFilters(nj: Environment): Environment {
   nj.addFilter("filterBy", partial(filterBy, nj));
   nj.addFilter("rejectBy", partial(rejectBy, nj));
   nj.addFilter("safePercentage", safePercentage);
+  nj.addFilter("renderMoodEmoji", renderMoodEmoji);
   nj.addFilter("calculateProperty", partial(calculateProperty, nj));
   nj.addFilter("get", get);
   nj.addFilter("map", map);
