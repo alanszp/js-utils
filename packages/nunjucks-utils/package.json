@@ -17,12 +17,12 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "peerDependencies": {
-    "nunjucks": "^3.2.4",
-    "@alanszp/errors": ">=16.0.0"
+    "@alanszp/errors": ">=16.0.0",
+    "nunjucks": "^3.2.4"
   },
   "dependencies": {
-    "lodash": "^4.17.21",
-    "@alanszp/relative-date": "^16.2.0"
+    "@alanszp/relative-date": "^16.2.0",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@babel/core": "^7.23.9",
