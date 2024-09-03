@@ -1,5 +1,9 @@
 # Changelog
 
+## v16.2.2
+
+- Add `@alanszp/nunjucks-utils`: Fix implementation of formatString and add text for old js versions.
+
 ## v16.2.1
 
 - Add `@alanszp/nunjucks-utils`: Add missing filter to auto-register fn.
