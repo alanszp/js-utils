@@ -1,3 +1,5 @@
+import { Permission } from "./types";
+
 /**
  * Bitmask utility class
  * - Use to handle binary numbers
@@ -59,5 +61,29 @@ export class BitmaskUtils {
    */
   public static encodeToBase64(bitmask: bigint): string {
     return Buffer.from(bitmask.toString()).toString("base64");
+  }
+
+  /**
+   * Similar to #encodeFromPosition but takes a Permission object and encodes it to
+   * a binary number, based on the Permission.position property.
+   */
+  public static encodePermission(permission: Permission): bigint {
+    return BitmaskUtils.encodeFromPosition(permission.position);
+  }
+
+  /**
+   * Converts an array of Permissions to a binary number. Will combine all the permissions
+   * bitmasks into one.
+   */
+  public static encodePermissions(permissions: Permission[]): bigint {
+    const bitmasks = permissions.map((p) => BitmaskUtils.encodePermission(p));
+    return BitmaskUtils.combineBitmasks(bitmasks);
+  }
+
+  /**
+   * Converts an array of Permissions to an encoded string ready to use in JWTUser.permission
+   */
+  public static encodePermissionsToBase64(permissions: Permission[]): string {
+    return BitmaskUtils.encodeToBase64(this.encodePermissions(permissions));
   }
 }

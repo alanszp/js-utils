@@ -4,6 +4,7 @@ import { Job, JobData } from "bullmq";
 import { WorkerContext } from "../worker/worker";
 import { JobReturnValue } from "../types";
 import { compact } from "lodash";
+import newrelic from "newrelic";
 
 export function withContext<T = JobData, ReturnValue = JobReturnValue>(
   queueName: string,
@@ -13,7 +14,13 @@ export function withContext<T = JobData, ReturnValue = JobReturnValue>(
   return (job) => {
     const { lid, lch } = job.data as { lid?: string; lch?: string };
     return workerContext.sharedContext.run(
-      async () => {
+      async (context) => {
+        newrelic.addCustomAttributes({
+          lch: context.lifecycleChain,
+          lid: context.lifecycleId,
+          cid: context.contextId,
+        });
+
         return executor(job);
       },
       {

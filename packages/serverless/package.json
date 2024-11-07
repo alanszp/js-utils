@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/serverless",
-  "version": "15.0.2",
+  "version": "16.1.4",
   "description": "Alan's serverless utils and middlewares.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -23,11 +23,11 @@
     "@alanszp/split": "*"
   },
   "devDependencies": {
-    "@alanszp/audit": "^15.0.0",
-    "@alanszp/axios-node": "^15.0.0",
-    "@alanszp/logger": "^15.0.0",
-    "@alanszp/queue": "^15.0.2",
-    "@alanszp/split": "^15.0.0",
+    "@alanszp/audit": "^16.0.0",
+    "@alanszp/axios-node": "^16.0.0",
+    "@alanszp/logger": "^16.0.0",
+    "@alanszp/queue": "^16.1.4",
+    "@alanszp/split": "^16.0.0",
     "@types/lodash": "^4.14.170",
     "@types/node": "^20.11.17",
     "ts-node": "^10.0.0",
@@ -35,9 +35,9 @@
     "typescript": "^4.3.4"
   },
   "dependencies": {
-    "@alanszp/core": "^15.0.0",
-    "@alanszp/shared-context": "^15.0.0",
-    "@alanszp/typeorm": "^15.0.0",
+    "@alanszp/core": "^16.0.0",
+    "@alanszp/shared-context": "^16.0.0",
+    "@alanszp/typeorm": "^16.0.0",
     "@middy/core": "^3.0.3",
     "@middy/util": "^3.0.3",
     "@paralleldrive/cuid2": "^2.2.2",

@@ -77,5 +77,9 @@ export async function verifyJWT(
 
   const payload = verify.payload as JWTPayload;
 
-  return JWTUser.fromPayload(payload);
+  const user = JWTUser.fromPayload(payload);
+
+  user.setRawToken(token);
+
+  return user;
 }

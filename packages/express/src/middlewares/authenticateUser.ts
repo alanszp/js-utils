@@ -1,9 +1,10 @@
 import { JWTUser, verifyJWT, VerifyOptions } from "@alanszp/jwt";
 import { NextFunction, Response } from "express";
+import { parse as parseCookie } from "cookie";
 import { getRequestLogger } from "../helpers/getRequestLogger";
 import { GenericRequest } from "../types/GenericRequest";
 import { ILogger } from "@alanszp/logger";
-import { compact, isEmpty, omit } from "lodash";
+import { compact, isEmpty, omit, reduce } from "lodash";
 import { AuthenticationMethodError } from "../errors/AuthMethodFailureError";
 import { render401Error } from "../helpers/renderErrorJson";
 
@@ -23,6 +24,12 @@ export enum AuthMethods {
   API_KEY = "API_KEY",
 }
 
+export enum JwtCookiesKeys {
+  USER_ACCESS = "jwt",
+  IMPERSONATED_ACCESS = "impersonatedJwt",
+  PARTIAL_LOGIN_ACCESS = "partialAccessJwt",
+}
+
 export interface JWTVerifyOptions extends Partial<VerifyOptions> {
   publicKey: string;
 }
@@ -30,6 +37,7 @@ export interface JWTVerifyOptions extends Partial<VerifyOptions> {
 export interface JWTOptions {
   jwtVerifyOptions: JWTVerifyOptions;
   types: [AuthMethods.JWT];
+  cookiesKeys?: string[];
 }
 
 export interface ApiKeyOptions {
@@ -39,6 +47,7 @@ export interface ApiKeyOptions {
 
 export interface BothMethodsOptions {
   jwtVerifyOptions: JWTVerifyOptions;
+  cookiesKeys?: string[];
   validApiKeys: string[];
   types:
     | [AuthMethods.JWT, AuthMethods.API_KEY]
@@ -50,17 +59,31 @@ export type AuthOptions = JWTOptions | ApiKeyOptions | BothMethodsOptions;
 const middlewareGetterByAuthType: Record<
   AuthMethods,
   (
-    tokenOrJwt: string | null | undefined,
+    tokenOrJwt: GenericRequest,
     options: AuthOptions,
     logger: ILogger
   ) => Promise<JWTUser | null | undefined>
 > = {
   [AuthMethods.JWT]: async (
-    jwt: string | null | undefined,
+    req: GenericRequest,
     options: Exclude<AuthOptions, ApiKeyOptions>,
     logger: ILogger
   ) => {
     try {
+      const cookiesKeys = options.cookiesKeys || [
+        JwtCookiesKeys.IMPERSONATED_ACCESS,
+        JwtCookiesKeys.USER_ACCESS,
+      ];
+      const cookies = parseCookie(req.headers?.cookie ?? "");
+
+      const jwtFromCookies = reduce(
+        cookiesKeys,
+        (acc, key) => acc || cookies[key], // cookie if empty it may be ""
+        null
+      );
+      const jwt =
+        jwtFromCookies || parseAuthorizationHeader(req.headers.authorization);
+
       if (!jwt) return undefined;
       const jwtUser = await verifyJWT(
         options.jwtVerifyOptions.publicKey,
@@ -78,10 +101,11 @@ const middlewareGetterByAuthType: Record<
     }
   },
   [AuthMethods.API_KEY]: async (
-    token: string | null | undefined,
+    req: GenericRequest,
     options: Exclude<AuthOptions, JWTOptions>,
     logger: ILogger
   ): Promise<JWTUser | null | undefined> => {
+    const token = req.headers?.authorization;
     try {
       if (!token) return undefined;
       if (options.validApiKeys.includes(token)) {
@@ -149,18 +173,11 @@ export async function tsoaAuthProvider<Options extends AuthOptions>(
   authMethods: AuthMethods[]
 ): Promise<JWTUser> {
   const logger = getRequestLogger(req);
-  const cookies = (req.cookies as Record<string, string | undefined>) || {};
-  const jwt =
-    cookies.jwt || parseAuthorizationHeader(req.headers.authorization);
 
   try {
     const authAttempts = await Promise.all(
       authMethods.map((method) =>
-        middlewareGetterByAuthType[method](
-          method === AuthMethods.JWT ? jwt : req.headers.authorization,
-          options,
-          logger
-        )
+        middlewareGetterByAuthType[method](req, options, logger)
       )
     );
 

@@ -102,3 +102,6 @@ dist
 
 # SO files
 .DS_Store
+
+# VSCode
+.vscode/

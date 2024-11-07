@@ -1,5 +1,91 @@
 # Changelog
 
+## v16.3.0
+
+- Add `@alanszp/nunjucks-utils`: Add `formatTable` for supporting markdown tables
+- Add `@alanszp/nunjucks-utils`: Add `groupBy`
+
+## v16.2.2
+
+- Add `@alanszp/nunjucks-utils`: Fix implementation of formatString and add text for old js versions.
+
+## v16.2.1
+
+- Add `@alanszp/nunjucks-utils`: Add missing filter to auto-register fn.
+
+## v16.2.0
+
+- Add package `@alanszp/relative-date`: Converts dates from formats like: -1d to '2024-09-01'.
+- Add package `@alanszp/nunjucks-utils`: Creates many useful filters for `nunjucks` lib & exposes an auto-register method.
+- Bump micromatch from 4.0.4 to 4.0.8 to avoid CVE-2024-4067.
+
+## v16.1.4
+
+- Add `@alanszp/queues`: Upgrade `bullmq` version to `v5.12.9` to be able to use debounced publishing. Also upgraded `ioredis` to the latest version. Reference: https://docs.bullmq.io/guide/jobs/debouncing
+
+### Future notice
+
+- Change `@alanszp/queues`: Upgrade `Queue.debouncePublishJob` was marked as deprecated. Use new option instead.
+
+## v16.1.3
+
+- Fix `@alanszp/express`: Fix types for `BaseApi.buildAuthEndpoint`. Now it recognizes view and command and infers endpoint response correctly.
+
+## v16.1.2
+
+- Fix `@alanszp/queue`: `Worker.processFailed` now logs an error instead of a warning.
+
+## v16.1.1
+
+- Fix `@alanszp/express`: `createAuthContext`/`tsoaAuthProvider` If a cookie comes with empty string, it now take it as it's not defined. Fixes impersonation flow with cookies.
+
+## v16.1.0
+
+- Add `@alanszp/express`: `JwtCookiesKeys` enum to define common keys for JWT cookies
+- Add `@alanszp/express`: `createAuthContext`/`tsoaAuthProvider` a way to override define cookies priority to get JWT token.
+- Add `@alanszp/express`: Now it really parse the cookies from header using `cookie` lib. Before was using an empty object, so we really never used the req.cookies.jwt token.
+- Add `@alanszp/express`: Export `parseCookie` form `cookie` lib.
+
+## v16.0.3
+
+- Add `@alanszp/jwt`: New methods to create permission strings easier. Principally `PermissionsService.getPermission` and `BitmaskUtils.encodePermissionsToBase64`
+
+## v16.0.2
+
+- Add `@alanszp/jwt`: Getter and Setter for raw token inside JWTUser class
+
+## v16.0.1
+
+- Fix `@alanszp/access-list`: A bug was introduced on v16.0.0 on method `AccessListClient.hasAccessToSomeEmployees`. This version fix it.
+
+## v16.0.0 - Do not use this version!
+
+- Add `@alanszp/core`: Add generic typescript types.
+- Change `@alanszp/access-list`: Change of logic on how we detect an admin on access list
+- Add `@alanszp/access-list`: Add method `whichEmployeesHasAccess` and `getFullAccessList` to `AccessListClient`
+- Change `@alanszp/access-list`: Add documentation
+- Removes `@alanszp/access-list`: Removes from `AccessListClient` the method `getSegmentReference` in favour of using the prop `segmentReference`
+
+## v15.1.0
+
+- Change `@alanszp/express`: Include NewRelic custom attributes `lch`, `lid` and `cid` in `createContext` middleware
+- Change `@alanszp/queue`: Include NewRelic custom attributes `lch`, `lid` and `cid` in `withContext` wrapper
+
+## v15.0.5
+
+- Change `@alanszp/express`: Support promises on inputConstructor in the buildAuthEndpoint method
+
+## v15.0.4
+
+- Change `@alanszp/audit`: Add new keys for better understanding if access was impersonated.
+- Change `@alanszp/express`: Add changes to `auditMiddleware` to support audit changes.
+- Change `@alanszp/serverless`: Add changes to `withAuditLogMiddleware` to support audit changes.
+- Change `@alanszp/jwt`: Add defaults in `JWTUser` for originalFields. If not given by the jwt, will use the actual ones.
+- Change `@alanszp/jwt`: Fix `isImpersonating` logic.
+- Add `@alanszp/jwt`: Add `isServiceAccount` method to `JWTUser`.
+- Change `@alanszp/express`: Add changes to `hasPermission`, `hasSomePermission` and `hasEveryPermission` to support services account logs and remove old optional param of `oldRoleCodes` that bring an unexpected behavior.
+- Upgrade `braces` for security vulnerabilities
+
 ## v15.0.3
 
 - Change `@alanszp/jwt`: Add role reference to jwt

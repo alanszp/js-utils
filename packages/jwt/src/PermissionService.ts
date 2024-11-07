@@ -5,6 +5,8 @@ import { PermissionsResolutionFunction } from "./axiosPermissionsResolutionFacto
 
 export interface IPermissionService {
   getPermissions(): Promise<Permission[]>;
+
+  getPermission(code: string): Promise<Permission | undefined>;
 }
 
 const DEFAULT_PERMISSIONS_REFETCH_TIMEOUT = 1000 * 60 * 60; // 1hs
@@ -13,6 +15,8 @@ export class PermissionService implements IPermissionService {
   readonly #permissionsResolutionFn: PermissionsResolutionFunction;
 
   #cachedPermissions: Permission[] | null;
+
+  #cachedPermissionMap: Map<string, Permission> | null;
 
   #observerInterval: NodeJS.Timeout | null;
 
@@ -28,6 +32,7 @@ export class PermissionService implements IPermissionService {
     this.#permissionsResolutionFn = permissionsResolutionFn;
     this.#cachedPermissions = null;
     this.#observerInterval = null;
+    this.#cachedPermissionMap = null;
     this.#permissionsPreheatedSuccessfully = Promise.resolve();
   }
 
@@ -76,8 +81,21 @@ export class PermissionService implements IPermissionService {
     );
 
     this.#cachedPermissions = permissions;
+    const newMap = new Map();
+    permissions.forEach((permission) => {
+      newMap.set(permission.code, permission);
+    });
+    this.#cachedPermissionMap = newMap;
 
     return permissions;
+  }
+
+  public async getPermission(code: string): Promise<Permission | undefined> {
+    if (!this.#cachedPermissionMap) {
+      await this.getPermissions(false);
+    }
+
+    return this.#cachedPermissionMap?.get(code);
   }
 
   public async isPermissionsCacheReady(): Promise<boolean> {

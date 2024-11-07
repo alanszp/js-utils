@@ -19,39 +19,43 @@ function isViewable<T>(object: unknown): object is Viewable<T> {
   );
 }
 
+type DefaultViewFnReturn<CommandReturnType> =
+  CommandReturnType extends Viewable<infer ViewReturnType>
+    ? ViewReturnType
+    : CommandReturnType;
+
+type InferReturnType<
+  ViewFunction extends
+    | ((crt: CommandReturnType, input: unknown) => unknown)
+    | undefined,
+  CommandReturnType
+> = ViewFunction extends (crt: CommandReturnType, input: unknown) => unknown
+  ? ReturnType<ViewFunction>
+  : DefaultViewFnReturn<CommandReturnType>;
+
 export type BuildAuthEndpointOptions<
   Input extends BaseModel,
   CommandReturnType,
-  ViewReturnType,
   ViewFunction extends
-    | ((crt: CommandReturnType, input: Input) => ViewReturnType)
+    | ((crt: CommandReturnType, input: Input) => unknown)
     | undefined
 > = {
   request: AuthRequest;
-  inputConstructor: (jwtUser: JWTUser) => Input;
-  command: (
-    input: Input
-  ) => Promise<CommandReturnType & Partial<Viewable<ViewReturnType>>>;
+  inputConstructor: (jwtUser: JWTUser) => Promise<Input> | Input;
+  command: (input: Input) => Promise<CommandReturnType>;
   returnCode?: number;
   view?: ViewFunction;
   getLogger: () => ILogger;
 };
 
-type InferReturnType<ViewFunction, CommandReturnType, ViewReturnType> =
-  ViewFunction extends undefined // If no view function is provided
-    ? CommandReturnType extends Viewable<ViewReturnType> // If the command response has a toView method
-      ? ViewReturnType // Return the view return type
-      : CommandReturnType // Otherwise, it doesn't have a toView method, return the command return type
-    : ViewReturnType; // Otherwise, it has a view function, return the view return type
-
 export class BaseApi extends Controller {
   protected async buildAuthEndpoint<
     Input extends BaseModel,
     CommandReturnType,
-    ViewReturnType,
     ViewFunction extends
-      | ((crt: CommandReturnType, input: Input) => ViewReturnType)
-      | undefined
+      | ((crt: CommandReturnType, input: Input) => unknown)
+      | undefined,
+    EndpointReturnType extends InferReturnType<ViewFunction, CommandReturnType>
   >({
     request,
     inputConstructor,
@@ -62,16 +66,13 @@ export class BaseApi extends Controller {
   }: BuildAuthEndpointOptions<
     Input,
     CommandReturnType,
-    ViewReturnType,
     ViewFunction
-  >): Promise<
-    InferReturnType<ViewFunction, CommandReturnType, ViewReturnType>
-  > {
+  >): Promise<EndpointReturnType> {
     const { path, method, user } = request;
     const baseLog = `${snakeCase(path)}.${snakeCase(method)}`;
     const logger = getLogger();
 
-    const input = inputConstructor(user);
+    const input = await inputConstructor(user);
 
     logger.info(`${baseLog}.controller.starting`, { input });
 
@@ -82,27 +83,15 @@ export class BaseApi extends Controller {
 
     // If a view function is provided, use it to transform the command response
     if (view) {
-      return view(commandResponse, input) as InferReturnType<
-        ViewFunction,
-        CommandReturnType,
-        ViewReturnType
-      >;
+      return view(commandResponse, input) as EndpointReturnType;
     }
 
     // If the command response is viewable, use it to transform the command response
-    if (isViewable<ViewReturnType>(commandResponse)) {
-      return commandResponse.toView() as InferReturnType<
-        ViewFunction,
-        CommandReturnType,
-        ViewReturnType
-      >;
+    if (isViewable<EndpointReturnType>(commandResponse)) {
+      return commandResponse.toView();
     }
 
     // Otherwise, return the command response as is
-    return commandResponse as InferReturnType<
-      ViewFunction,
-      CommandReturnType,
-      ViewReturnType
-    >;
+    return commandResponse as EndpointReturnType;
   }
 }

@@ -34,6 +34,8 @@ export class JWTUser implements IJWTUser {
 
   expirationTime?: number;
 
+  #rawToken?: string;
+
   /**
    * Static reference to the permission service
    * This is used to make sure that the permission service is only instantiated once
@@ -56,6 +58,22 @@ export class JWTUser implements IJWTUser {
       throw new PermissionServiceNotInstantiated();
     }
     return JWTUser.#permissionService;
+  }
+
+  /**
+   * @throws {PermissionDefinitionNotFound}
+   * @throws {PermissionServiceNotInstantiated}
+   */
+  static async getPermissionDefinition(
+    permissionCode: string
+  ): Promise<Permission> {
+    const definition = await JWTUser.getPermissionService().getPermission(
+      permissionCode
+    );
+    if (!definition) {
+      throw new PermissionDefinitionNotFound(permissionCode);
+    }
+    return definition;
   }
 
   constructor({
@@ -86,6 +104,23 @@ export class JWTUser implements IJWTUser {
     this.expirationTime = expirationTime;
   }
 
+  /**
+   * Set the raw token from the original request
+   * @description Do not include the Bearer prefix
+   */
+  public setRawToken(token: string): void {
+    this.#rawToken = token;
+  }
+
+  /**
+   * JWT Token from the original request
+   * Useful for chaining requests and passing the token along
+   * @description This method applies the Bearer prefix to the token, if you need the raw token use the property `rawToken`
+   */
+  public getRawTokenAsBearer(): string | undefined {
+    return this.#rawToken ? `Bearer ${this.#rawToken}` : undefined;
+  }
+
   static fromPayload(payload: JWTPayload): JWTUser {
     return new JWTUser({
       id: payload.sub,
@@ -95,9 +130,9 @@ export class JWTUser implements IJWTUser {
       roleReferences: payload.rl,
       permissions: payload.prms,
       segmentReference: payload.seg || null,
-      originalOrganizationReference: payload.oorg,
-      originalId: payload.osub,
-      originalEmployeeReference: payload.oref,
+      originalOrganizationReference: payload.oorg ?? payload.org,
+      originalId: payload.osub ?? payload.sub,
+      originalEmployeeReference: payload.oref ?? payload.ref,
       expirationTime: payload.exp,
     });
   }
@@ -154,7 +189,7 @@ export class JWTUser implements IJWTUser {
    * @throws {PermissionServiceNotInstantiated}
    */
   public async hasPermission(permissionCode: string): Promise<boolean> {
-    const definition = await this.getPermissionDefinition(permissionCode);
+    const definition = await JWTUser.getPermissionDefinition(permissionCode);
     const checkBitmask = BitmaskUtils.encodeFromPosition(definition.position);
     const permissionsBitmask = BitmaskUtils.decodeFromBase64(this.permissions);
     return BitmaskUtils.checkBitmask(permissionsBitmask, checkBitmask);
@@ -247,25 +282,17 @@ export class JWTUser implements IJWTUser {
     }
   }
 
-  /**
-   * @throws {PermissionDefinitionNotFound}
-   * @throws {PermissionServiceNotInstantiated}
-   */
-  private async getPermissionDefinition(
-    permissionCode: string
-  ): Promise<Permission> {
-    const definitions = await JWTUser.getPermissionService().getPermissions();
-    const definition = definitions.find((def) => def.code === permissionCode);
-    if (!definition) {
-      throw new PermissionDefinitionNotFound(permissionCode);
-    }
-    return definition;
+  public isImpersonating(): boolean {
+    return this.id !== this.originalId;
   }
 
-  public isImpersonating(): boolean {
+  // To check if it's not impersonating and is Lara Service Account. This should be change to check the
+  // JWT type instead.
+  public isServiceAccount(): boolean {
     return (
-      this.organizationReference !== this.originalEmployeeReference ||
-      this.id !== this.originalId
+      !this.isImpersonating() &&
+      this.originalEmployeeReference === "0" &&
+      this.originalOrganizationReference === "lara"
     );
   }
 }

@@ -11,7 +11,7 @@ import { AccessListClient } from "..";
 export async function hasAccessToSomeEmployees(
   segmentReference: string,
   employeeReference: string[],
-  addFormerEmployees: boolean,
+  addFormerEmployees: boolean
 ): Promise<boolean> {
   const query = `SELECT bool_or(true) as granted
     FROM segments_employee_relation_with_attrition ser
@@ -24,6 +24,54 @@ export async function hasAccessToSomeEmployees(
   ])) as { granted?: boolean }[];
 
   return response[0]?.granted ?? false;
+}
+
+/**
+ * Check which employees the segment has access from a given list
+ * @param segmentReference the segment which wants to know if it has access to the employee
+ * @param employeeReference list of employees
+ * @param addFormerEmployees consider left employees
+ * @returns true if segment reference can access to any of the employees on the list
+ */
+export async function whichEmployeesHasAccessTo(
+  segmentReference: string,
+  employeeReference: string[],
+  addFormerEmployees: boolean
+): Promise<string[]> {
+  const query = `SELECT ser.employee_id as employee_id
+    FROM segments_employee_relation_with_attrition ser
+    WHERE ser.segment_id = $2 AND ser.employee_id::text = ANY($1)
+    ${addFormerEmployees ? "" : " AND left_organization_at IS NULL"};`;
+
+  const response = (await getManager().query(query, [
+    employeeReference,
+    segmentReference,
+  ])) as { employee_id: string }[];
+
+  return response.map((e) => e.employee_id);
+}
+
+/**
+ * Get the full access list of employees from a segment
+ * @param segmentReference the segment which wants to know if it has access to the employee
+ * @param employeeReference list of employees
+ * @param addFormerEmployees consider left employees
+ * @returns true if segment reference can access to any of the employees on the list
+ */
+export async function getFullAccessList(
+  segmentReference: string,
+  addFormerEmployees: boolean
+): Promise<string[]> {
+  const query = `SELECT ser.employee_id as employee_id
+    FROM segments_employee_relation_with_attrition ser
+    WHERE ser.segment_id = $1
+    ${addFormerEmployees ? "" : " AND left_organization_at IS NULL"};`;
+
+  const response = (await getManager().query(query, [segmentReference])) as {
+    employee_id: string;
+  }[];
+
+  return response.map((e) => e.employee_id);
 }
 
 /**
@@ -40,7 +88,7 @@ export function addFiltersToSelectQuery<T>(
   fullEmployeeReferenceFieldName: string,
   segmentParamAlias = "segmentId",
   subTableAlias?: string,
-  segmentReference?: string,
+  segmentReference?: string
 ): SelectQueryBuilder<T> {
   if (accessList.hasAccessToAll() && !segmentReference) return queryBuilder;
 
@@ -66,7 +114,7 @@ export function addFiltersToSelectQuery<T>(
     `${subTable}.employee_id::text = ${fullEmployeeReferenceFieldName}`,
     {
       [segmentParamAlias]: segmentReferenceParam,
-    },
+    }
   );
 }
 
@@ -74,11 +122,11 @@ export function getSQLJoinFilters(
   accessList: AccessListClient,
   fullEmployeeReferenceFieldName: string,
   segmentReferenceIndex: string,
-  subTableAlias?: string,
+  subTableAlias?: string
 ): string {
   if (!segmentReferenceIndex.includes("$")) {
     throw new Error(
-      "getSQLJoinFilters#segmentReferenceIndex param should be an index",
+      "getSQLJoinFilters#segmentReferenceIndex param should be an index"
     );
   }
   const subTable = subTableAlias ?? "ser";
