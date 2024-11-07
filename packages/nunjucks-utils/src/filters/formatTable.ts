@@ -8,7 +8,7 @@ export function formatTable(
   if (
     !Array.isArray(headers) ||
     !Array.isArray(rows) ||
-    !rows.every((r) => Array.isArray(r)) ||
+    rows.some((r) => !Array.isArray(r)) ||
     headers.length === 0 ||
     rows.length === 0 ||
     rows.some((r) => r.length > headers.length)
