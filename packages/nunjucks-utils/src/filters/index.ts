@@ -9,3 +9,4 @@ export * from "./rejectBy";
 export * from "./relativeDateToFixed";
 export * from "./renderMoodEmoji";
 export * from "./safePercentage";
+export * from "./formatTable";

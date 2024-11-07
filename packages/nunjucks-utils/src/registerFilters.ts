@@ -1,5 +1,5 @@
 import { Environment } from "nunjucks";
-import { map, orderBy, take, uniqBy, get, partial } from "lodash";
+import { map, orderBy, take, uniqBy, get, partial, groupBy } from "lodash";
 import {
   calculateProperty,
   filterBy,
@@ -8,6 +8,7 @@ import {
   formatNumber,
   formatObject,
   formatString,
+  formatTable,
   rejectBy,
   relativeDateRangeToFixed,
   relativeDateRangeToFixedArray,
@@ -36,6 +37,8 @@ export function registerFilters(nj: Environment): Environment {
   nj.addFilter("take", take);
   nj.addFilter("orderBy", orderBy);
   nj.addFilter("uniqBy", uniqBy);
+  nj.addFilter("groupBy", groupBy);
+  nj.addFilter("formatTable", formatTable);
 
   return nj;
 }
