@@ -78,8 +78,8 @@ export class SlackStream {
       const stringifyLog = stringify(serialize(log));
       const logToMarkdown =
         "```" +
-        (stringifyLog.length > 1700
-          ? stringifyLog.substring(0, 1700) + "..."
+        (stringifyLog.length > 1800
+          ? stringifyLog.substring(0, 1800) + "..."
           : stringifyLog) +
         "```";
 
