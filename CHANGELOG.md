@@ -1,5 +1,10 @@
 # Changelog
 
+## v16.3.0
+
+- Add `@alanszp/nunjucks-utils`: Add `formatTable` for supporting markdown tables
+- Add `@alanszp/nunjucks-utils`: Add `groupBy`
+
 ## v16.2.2
 
 - Add `@alanszp/nunjucks-utils`: Fix implementation of formatString and add text for old js versions.
