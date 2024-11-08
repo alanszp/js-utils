@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/errors",
-  "version": "16.3.1",
+  "version": "16.0.0",
   "description": "Alan's basic errors classes.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -19,7 +19,7 @@
     "@alanszp/errors": ">=12.0.0"
   },
   "devDependencies": {
-    "@alanszp/core": "^16.3.1",
+    "@alanszp/core": "^16.0.0",
     "@types/node": "^20.11.17",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.4"

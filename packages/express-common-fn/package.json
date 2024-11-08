@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/express-common-fn",
-  "version": "16.3.1",
+  "version": "16.1.3",
   "description": "Alan's express function to handle common errors and format uniformly.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -16,10 +16,10 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "dependencies": {
-    "@alanszp/core": "^16.3.1",
-    "@alanszp/express": "^16.3.1",
-    "@alanszp/logger": "^16.3.1",
-    "@alanszp/validations": "^16.3.1"
+    "@alanszp/core": "^16.0.0",
+    "@alanszp/express": "^16.1.3",
+    "@alanszp/logger": "^16.0.0",
+    "@alanszp/validations": "^16.0.0"
   },
   "peerDependencies": {
     "@alanszp/errors": ">=12.0.0",

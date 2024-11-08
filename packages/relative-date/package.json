@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/relative-date",
-  "version": "16.3.1",
+  "version": "16.2.0",
   "description": "Relative date utils.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
