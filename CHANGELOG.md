@@ -1,5 +1,9 @@
 # Changelog
 
+## v16.3.1
+
+- Fix `@alanszp/logger`: Fix message limit in slack stream (2001 chars max)
+
 ## v16.3.0
 
 - Add `@alanszp/nunjucks-utils`: Add `formatTable` for supporting markdown tables

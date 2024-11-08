@@ -54,8 +54,8 @@ export class SlackStream {
               msg: "_slack_serializer.error",
               error,
               record,
-            })
-          )
+            }),
+          ),
         );
       };
   }
@@ -72,8 +72,16 @@ export class SlackStream {
           }
           return acc;
         },
-        {}
+        {},
       );
+
+      const stringifyLog = stringify(serialize(log));
+      const logToMarkdown =
+        "```" +
+        (stringifyLog.length > 1800
+          ? stringifyLog.substring(0, 1800) + "..."
+          : stringifyLog) +
+        "```";
 
       const body = {
         channel: this.channel,
@@ -112,7 +120,7 @@ export class SlackStream {
                 type: "section",
                 text: {
                   type: "mrkdwn",
-                  text: "```" + stringify(serialize(log)) + "```",
+                  text: logToMarkdown,
                 },
               },
             ],
@@ -124,7 +132,7 @@ export class SlackStream {
         this.onError(error, {
           slackResponse: error.response ? error.response.data : null,
           record,
-        })
+        }),
       );
     } catch (err) {
       this.onError(err, record);
