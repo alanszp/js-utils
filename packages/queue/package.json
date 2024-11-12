@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/queue",
-  "version": "16.1.4",
+  "version": "16.3.2",
   "description": "Workers and queues",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -16,9 +16,9 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "devDependencies": {
-    "@alanszp/audit": "^16.0.0",
-    "@alanszp/logger": "^16.0.0",
-    "@alanszp/shared-context": "^16.0.0",
+    "@alanszp/audit": "^16.3.2",
+    "@alanszp/logger": "^16.3.2",
+    "@alanszp/shared-context": "^16.3.2",
     "@types/newrelic": "^9.14.4",
     "@types/node": "^20.11.17",
     "class-validator": "^0.14.1",

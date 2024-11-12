@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/shared-context",
-  "version": "16.0.0",
+  "version": "16.3.2",
   "description": "Alan's shared context util.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -19,8 +19,8 @@
     "@alanszp/errors": ">=12.0.0"
   },
   "dependencies": {
-    "@alanszp/audit": "^16.0.0",
-    "@alanszp/logger": "^16.0.0",
+    "@alanszp/audit": "^16.3.2",
+    "@alanszp/logger": "^16.3.2",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
