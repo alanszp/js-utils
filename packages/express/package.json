@@ -47,7 +47,7 @@
     "@babel/core": "^7.23.9",
     "@paralleldrive/cuid2": "^2.2.2",
     "body-parser": "^1.20.2",
-    "cookie": "^0.6.0",
+    "cookie": "^0.7.0",
     "lodash": "^4.17.21",
     "newrelic": "^11.18.0"
   }
