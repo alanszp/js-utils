@@ -1,6 +1,6 @@
 # Changelog
 
-## v16.3.2
+## v16.3.3
 
 - Bump versions of dependencies to fix vulnerabilities.
 
