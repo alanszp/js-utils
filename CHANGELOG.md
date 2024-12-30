@@ -4,9 +4,13 @@
 
 - Bump versions of dependencies to fix vulnerabilities.
 
-## v16.3.1
+## v16.3.2
 
 - Fix `@alanszp/logger`: Fix message limit in slack stream (2001 chars max)
+
+## v16.3.1 
+
+Skiped
 
 ## v16.3.0
 
