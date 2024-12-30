@@ -46,6 +46,7 @@
     "@alanszp/shared-context": "^16.3.2",
     "@babel/core": "^7.23.9",
     "@paralleldrive/cuid2": "^2.2.2",
+    "@types/cookies": "^0.7.0",
     "body-parser": "^1.20.2",
     "cookie": "^0.7.0",
     "lodash": "^4.17.21",
