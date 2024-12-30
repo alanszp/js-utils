@@ -1,5 +1,9 @@
 # Changelog
 
+## v16.3.2
+
+- Bump versions of dependencies to fix vulnerabilities.
+
 ## v16.3.1
 
 - Fix `@alanszp/logger`: Fix message limit in slack stream (2001 chars max)
