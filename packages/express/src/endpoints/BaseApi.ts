@@ -25,11 +25,12 @@ type DefaultViewFnReturn<CommandReturnType> =
     : CommandReturnType;
 
 type InferReturnType<
+  Input extends BaseModel,
   ViewFunction extends
-    | ((crt: CommandReturnType, input: unknown) => unknown)
+    | ((crt: CommandReturnType, input: Input) => unknown)
     | undefined,
   CommandReturnType
-> = ViewFunction extends (crt: CommandReturnType, input: unknown) => unknown
+> = ViewFunction extends (crt: CommandReturnType, input: Input) => unknown
   ? ReturnType<ViewFunction>
   : DefaultViewFnReturn<CommandReturnType>;
 
@@ -55,7 +56,11 @@ export class BaseApi extends Controller {
     ViewFunction extends
       | ((crt: CommandReturnType, input: Input) => unknown)
       | undefined,
-    EndpointReturnType extends InferReturnType<ViewFunction, CommandReturnType>
+    EndpointReturnType extends InferReturnType<
+      Input,
+      ViewFunction,
+      CommandReturnType
+    >
   >({
     request,
     inputConstructor,
