@@ -1,5 +1,10 @@
 # Changelog
 
+## v16.3.5
+
+- Upgrade `lerna` to fix vulnerabilities and fix `yarn.lock`
+- `@alanszp/eventbridge-client`: Stop using `aws-sdk` in favour new v3 API `@aws-sdk/client-eventbridge`.
+
 ## v16.3.4
 
 - Fix `@alanszp/express`: Fix incorrect ViewFunction return type when passing second param to the function
