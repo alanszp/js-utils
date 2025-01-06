@@ -1,5 +1,5 @@
 import { LaraEvent } from "../basicEventbridgeClient";
-import { PutEventsRequestEntry } from "aws-sdk/clients/eventbridge";
+import { PutEventsRequestEntry } from "@aws-sdk/client-eventbridge";
 import type { ILogger } from "@alanszp/logger";
 import type { SharedContext } from "@alanszp/shared-context";
 import { compact } from "lodash";

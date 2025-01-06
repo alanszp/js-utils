@@ -7,6 +7,7 @@ import {
   PutEventEntryResponse,
 } from "./aws";
 import { mapLaraEventToAWSEvent } from "./helpers/mapLaraEventToAWSEvent";
+import { EventBridge } from "@aws-sdk/client-eventbridge";
 
 /**
  * Represents an event that is sent in the Lara ecosystem.
@@ -43,7 +44,7 @@ export class BasicEventbridgeClient {
   private appName: string;
   private env: string;
   private bus: string;
-  private client;
+  private client: EventBridge;
 
   protected getLogger: () => ILogger;
   protected context: SharedContext;
@@ -95,7 +96,6 @@ export class BasicEventbridgeClient {
       eventsToSend.map((singleEventArray) =>
         this.client
           .putEvents(singleEventArray)
-          .promise()
           .then(({ Entries, FailedEntryCount }) => ({
             FailedEntryCount,
             Entries: [
