@@ -1,5 +1,9 @@
 # Changelog
 
+## v16.3.6
+
+- Fix BaseEntity id type: added type "bigint"
+
 ## v16.3.5
 
 - Upgrade `lerna` to fix vulnerabilities and fix `yarn.lock`
