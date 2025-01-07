@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/typeorm",
-  "version": "16.3.2",
+  "version": "16.3.6",
   "description": "Alan's typeorm utils.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
