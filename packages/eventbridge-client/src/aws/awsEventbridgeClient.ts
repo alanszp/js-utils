@@ -1,4 +1,8 @@
-import AWS from "aws-sdk";
+import { EventBridge } from "@aws-sdk/client-eventbridge";
 
-export const getEventbridgeClient = (endpoint?: string, region?: string) =>
-  new AWS.EventBridge(endpoint ? { endpoint, region } : {});
+export function getEventbridgeClient(
+  endpoint?: string,
+  region?: string
+): EventBridge {
+  return new EventBridge(endpoint ? { endpoint, region } : {});
+}
