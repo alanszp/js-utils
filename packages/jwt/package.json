@@ -32,6 +32,7 @@
     "@alanszp/core": "^16.0.0",
     "@alanszp/errors": "^16.0.0",
     "@alanszp/logger": "^16.3.2",
-    "jose": "^5.2.2"
+    "jose": "^5.2.2",
+    "uuid": "^11.0.5"
   }
 }

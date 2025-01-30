@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { createPublicKey, createPrivateKey, KeyObject } from "crypto";
 import { SignJWT, jwtVerify } from "jose";
 import type { JWTPayload, SignOptions, VerifyOptions } from "./types";
@@ -56,6 +57,7 @@ export async function generateJWT(
     .setIssuer(opts.issuer)
     .setAudience(opts.audience)
     .setExpirationTime(opts.expiration)
+    .setJti(uuidv4())
     .sign(key);
 }
 

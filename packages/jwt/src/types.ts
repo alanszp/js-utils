@@ -17,6 +17,7 @@ export interface JWTPayload extends LibPayload {
 }
 
 export interface IJWTUser {
+  jwtId: string | null;
   id: string;
   employeeReference: string | null;
   organizationReference: string;
