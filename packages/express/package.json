@@ -17,12 +17,14 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "peerDependencies": {
-    "@alanszp/errors": ">=12.0.0",
+    "@alanszp/errors": ">=16.0.0",
+    "@alanszp/jwt": ">=16.0.0",
     "express": "^4.21.2",
     "tsoa": "^6.2.0",
     "typeorm": "^0.2.41"
   },
   "devDependencies": {
+    "@alanszp/jwt": ">=16.0.0",
     "@types/body-parser": "^1.19.1",
     "@types/cookie": "^0.6.0",
     "@types/express": "^4.17.12",
@@ -41,7 +43,6 @@
   },
   "dependencies": {
     "@alanszp/audit": "^16.3.2",
-    "@alanszp/jwt": "^16.3.2",
     "@alanszp/logger": "^16.3.2",
     "@alanszp/shared-context": "^16.3.2",
     "@babel/core": "^7.23.9",

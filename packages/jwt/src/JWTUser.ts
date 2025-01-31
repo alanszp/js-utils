@@ -6,6 +6,8 @@ import { IJWTUser, JWTPayload, Permission } from "./types";
 import { NoPermissionError } from "./errors/NoPermissionError";
 
 export class JWTUser implements IJWTUser {
+  jwtId: string | null;
+
   id: string;
 
   employeeReference: string | null;
@@ -77,6 +79,7 @@ export class JWTUser implements IJWTUser {
   }
 
   constructor({
+    jwtId,
     id,
     employeeReference,
     organizationReference,
@@ -89,6 +92,7 @@ export class JWTUser implements IJWTUser {
     originalEmployeeReference,
     expirationTime,
   }: IJWTUser) {
+    this.jwtId = jwtId ?? null;
     this.id = id;
     this.employeeReference = employeeReference;
     this.organizationReference = organizationReference;
@@ -123,6 +127,7 @@ export class JWTUser implements IJWTUser {
 
   static fromPayload(payload: JWTPayload): JWTUser {
     return new JWTUser({
+      jwtId: payload.jti ?? null,
       id: payload.sub,
       employeeReference: payload.ref,
       organizationReference: payload.org,
