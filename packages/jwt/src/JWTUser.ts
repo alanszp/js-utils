@@ -92,7 +92,7 @@ export class JWTUser implements IJWTUser {
     originalEmployeeReference,
     expirationTime,
   }: IJWTUser) {
-    this.jwtId = jwtId;
+    this.jwtId = jwtId ?? null;
     this.id = id;
     this.employeeReference = employeeReference;
     this.organizationReference = organizationReference;
