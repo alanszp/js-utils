@@ -2,7 +2,7 @@
 
 ## v16.4.0
 
-- Fix `@alanszp/jwt`: Add jit (JWT ID) to every JWT token
+- Add `@alanszp/jwt`: Add jit (JWT ID) to every JWT token
 
 ## v16.3.6
 
