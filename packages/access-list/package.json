@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/access-list",
-  "version": "16.3.2",
+  "version": "16.4.0",
   "description": "Alan's validation utils.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@alanszp/core": "^16.0.0",
-    "@alanszp/jwt": "^16.3.2",
+    "@alanszp/jwt": "^16.4.0",
     "@alanszp/validations": "^16.0.0"
   }
 }
