@@ -1,6 +1,6 @@
 {
   "name": "@alanszp/nunjucks-utils",
-  "version": "16.3.0",
+  "version": "16.4.1",
   "description": "Nunjucks filters and helpers.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
