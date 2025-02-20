@@ -9,7 +9,7 @@ export function formatNumber(
   zeroOrNonNumber: string = "",
   placeholder = "%"
 ): string {
-  if (!isNumber(text) && isNumberString(text)) return zeroOrNonNumber;
+  if (!isNumber(text) && !isNumberString(text)) return zeroOrNonNumber;
   const number = Number(text);
   if (number === 0) return zeroOrNonNumber;
   return text === 1
