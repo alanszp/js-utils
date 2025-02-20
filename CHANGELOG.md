@@ -1,5 +1,9 @@
 # Changelog
 
+## v16.4.1
+
+- Fix `@alanszp/nunjucks-utils`: Fix safePercentage rounding numbers below 0 and formatNumber not rendering string numerics
+
 ## v16.4.0
 
 - Add `@alanszp/jwt`: Add jit (JWT ID) to every JWT token
