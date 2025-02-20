@@ -20,6 +20,7 @@ describe("formatObject", () => {
       toExpect: "(hola como va) - hola como va y hola como va",
     },
     { text: "hola", template: "(-)", placeholder: "-", toExpect: "(hola)" },
+    { text: "hola", template: "(%-)", placeholder: "-", toExpect: "(%hola)" },
     { text: "ho$la", template: "($)", placeholder: "$", toExpect: "(ho$la)" },
     {
       text: "hola como va",

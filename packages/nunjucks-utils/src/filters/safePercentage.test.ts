@@ -32,6 +32,31 @@ describe("safePercentage", () => {
       fractionDigits: 2,
       toExpected: ["16,67%", "33,33%", "50%"],
     },
+    {
+      numberArray: [1, 1, 1, 0],
+      locale: "en",
+      fractionDigits: 1,
+      toExpected: ["33.3%", "33.3%", "33.4%", "0%"],
+    },
+    {
+      numberArray: [11, 20, 8, 1, 0],
+      locale: "en",
+      fractionDigits: 0,
+      toExpected: ["28%", "50%", "20%", "2%", "0%"],
+    },
+    {
+      numberArray: [11, 20, 8, 0, 1],
+      locale: "en",
+      fractionDigits: 0,
+      toExpected: ["28%", "50%", "20%", "0%", "2%"],
+    },
+
+    {
+      numberArray: [50, 50, 0, 1],
+      locale: "en",
+      fractionDigits: 0,
+      toExpected: ["50%", "49%", "0%", "1%"],
+    },
   ])(
     "when given $numberArray with locale $locale, fractionDigits $fractionDigits and suffix $suffix should returns: $toExpected",
     ({ numberArray, locale, fractionDigits, suffix, toExpected }) => {
