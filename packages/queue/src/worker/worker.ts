@@ -118,25 +118,15 @@ abstract class Worker<Data = JobData, ReturnValue = unknown> {
     if (this.handleJobFailed) {
       await this.handleJobFailed(job, error, this.isLastAttempt(job));
     } else {
-      if (isLastAttempt) {
-        this.getLogger().error(
-          `worker.job.failed.${snakeCase(this.queueFullName)}`,
-          {
-            queue: this.queueFullName,
-            job,
-            error,
-          }
-        );
-      } else {
-        this.getLogger().warn(
-          `worker.job.failed.${snakeCase(this.queueFullName)}`,
-          {
-            queue: this.queueFullName,
-            job,
-            error,
-          }
-        );
-      }
+      const logLevel = isLastAttempt ? ("error" as const) : ("warn" as const);
+      this.getLogger()[logLevel](
+        `worker.job.failed.${snakeCase(this.queueFullName)}`,
+        {
+          queue: this.queueFullName,
+          job,
+          error,
+        }
+      );
     }
   }
 
@@ -172,29 +162,21 @@ abstract class Worker<Data = JobData, ReturnValue = unknown> {
   }
 
   async run(): Promise<void> {
+    const logger = this.getLogger();
     try {
-      this.getLogger().info(
-        `worker.run.starting.${snakeCase(this.queueFullName)}`,
-        {
-          queue: this.queueFullName,
-        }
-      );
+      logger.info(`worker.run.starting.${snakeCase(this.queueFullName)}`, {
+        queue: this.queueFullName,
+      });
 
       await this.worker.run();
-      this.getLogger().info(
-        `worker.run.started.${snakeCase(this.queueFullName)}`,
-        {
-          queue: this.queueFullName,
-        }
-      );
+      logger.info(`worker.run.started.${snakeCase(this.queueFullName)}`, {
+        queue: this.queueFullName,
+      });
     } catch (error: unknown) {
-      this.getLogger().error(
-        `worker.run.error.${snakeCase(this.queueFullName)}`,
-        {
-          queue: this.queueFullName,
-          error,
-        }
-      );
+      logger.error(`worker.run.error.${snakeCase(this.queueFullName)}`, {
+        queue: this.queueFullName,
+        error,
+      });
       throw error;
     }
   }
