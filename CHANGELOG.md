@@ -1,5 +1,11 @@
 # Changelog
 
+## v16.4.2
+
+- Fix `@alanszp/queue`: Worker: Change log names. We are adding queue name to log so we can easily differentiate and take accurate metrics.
+- Fix `@alanszp/queue`: Worker: handleJobError and handleJobFailed will not log error if defined.
+- Fix `@alanszp/queue`: Worker: If handleJobError and handleJobFailed are not defined, we will log as error just the last attempt of that worker, else we will log it as warn.
+
 ## v16.4.1
 
 - Fix `@alanszp/nunjucks-utils`: Fix safePercentage rounding numbers below 0 and formatNumber not rendering string numerics
