@@ -105,25 +105,38 @@ abstract class Worker<Data = JobData, ReturnValue = unknown> {
   }
 
   private isLastAttempt(job: Job<Data, ReturnValue>): boolean {
-    if (job.opts.attempts) return true;
-    return job.attemptsMade === job.opts.attempts;
+    const maxAttempts = job.opts.attempts;
+    if (!maxAttempts) return true;
+    return job.attemptsMade >= maxAttempts;
   }
 
   async processFailed(
     job: Job<Data, ReturnValue>,
     error: Error
   ): Promise<void> {
+    const isLastAttempt = this.isLastAttempt(job);
     if (this.handleJobFailed) {
       await this.handleJobFailed(job, error, this.isLastAttempt(job));
     } else {
-      this.getLogger().error(
-        `worker.job.failed.${snakeCase(this.queueFullName)}`,
-        {
-          queue: this.queueFullName,
-          job,
-          error,
-        }
-      );
+      if (isLastAttempt) {
+        this.getLogger().error(
+          `worker.job.failed.${snakeCase(this.queueFullName)}`,
+          {
+            queue: this.queueFullName,
+            job,
+            error,
+          }
+        );
+      } else {
+        this.getLogger().warn(
+          `worker.job.failed.${snakeCase(this.queueFullName)}`,
+          {
+            queue: this.queueFullName,
+            job,
+            error,
+          }
+        );
+      }
     }
   }
 
