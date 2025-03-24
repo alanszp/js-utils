@@ -1,3 +1,4 @@
+import { snakeCase } from "lodash";
 import { ILogger } from "@alanszp/logger";
 import { ConnectionManager } from "../connectionManager";
 import {
@@ -32,7 +33,8 @@ export interface WorkerContext {
 interface Worker<Data = JobData, ReturnValue = JobReturnValue> {
   handleJobFailed?(
     job: Job<Data, ReturnValue>,
-    error: Error
+    error: Error,
+    isLastAttempt: boolean
   ): Promise<void> | void;
   handleJobCompleted?(job: Job<Data, ReturnValue>): Promise<void> | void;
   handleJobError?(error: Error): Promise<void> | void;
@@ -63,7 +65,9 @@ abstract class Worker<Data = JobData, ReturnValue = unknown> {
       prefix: `{${prefix}}:${BULL_PREFIX}`,
       ...workerOptions,
     });
-    this.getLogger().info("worker.ready", { queue: this.queueFullName });
+    this.getLogger().info(`worker.ready.${snakeCase(this.queueFullName)}`, {
+      queue: this.queueFullName,
+    });
 
     this.registerHooks();
   }
@@ -89,25 +93,37 @@ abstract class Worker<Data = JobData, ReturnValue = unknown> {
 
   private processJob(): (job: Job<Data, ReturnValue>) => Promise<ReturnValue> {
     return withContext(this.queueFullName, this.getContext(), async (job) => {
-      this.getLogger().info(`worker.process.job_received`, {
-        queue: this.queueFullName,
-        job,
-      });
+      this.getLogger().info(
+        `worker.process.job_received.${snakeCase(this.queueFullName)}`,
+        {
+          queue: this.queueFullName,
+          job,
+        }
+      );
       return this.process(job);
     });
+  }
+
+  private isLastAttempt(job: Job<Data, ReturnValue>): boolean {
+    if (job.opts.attempts) return true;
+    return job.attemptsMade === job.opts.attempts;
   }
 
   async processFailed(
     job: Job<Data, ReturnValue>,
     error: Error
   ): Promise<void> {
-    this.getLogger().error("worker.job.failed", {
-      queue: this.queueFullName,
-      job,
-      error,
-    });
     if (this.handleJobFailed) {
-      await this.handleJobFailed(job, error);
+      await this.handleJobFailed(job, error, this.isLastAttempt(job));
+    } else {
+      this.getLogger().error(
+        `worker.job.failed.${snakeCase(this.queueFullName)}`,
+        {
+          queue: this.queueFullName,
+          job,
+          error,
+        }
+      );
     }
   }
 
@@ -115,41 +131,57 @@ abstract class Worker<Data = JobData, ReturnValue = unknown> {
     job: Job<Data, ReturnValue>,
     returnValue: ReturnValue
   ): Promise<void> {
-    this.getLogger().info("worker.job.completed", {
-      queue: this.queueFullName,
-      job,
-      returnValue,
-    });
+    this.getLogger().info(
+      `worker.job.completed.${snakeCase(this.queueFullName)}`,
+      {
+        queue: this.queueFullName,
+        job,
+        returnValue,
+      }
+    );
     if (this.handleJobCompleted) {
       await this.handleJobCompleted(job);
     }
   }
 
   async processError(error: Error): Promise<void> {
-    this.getLogger().error("worker.job.unhandled_exception", {
-      queue: this.queueFullName,
-      error,
-    });
     if (this.handleJobError) {
       await this.handleJobError(error);
+    } else {
+      this.getLogger().error(
+        `worker.job.unhandled_exception.${snakeCase(this.queueFullName)}`,
+        {
+          queue: this.queueFullName,
+          error,
+        }
+      );
     }
   }
 
   async run(): Promise<void> {
     try {
-      this.getLogger().info("worker.run.starting", {
-        queue: this.queueFullName,
-      });
+      this.getLogger().info(
+        `worker.run.starting.${snakeCase(this.queueFullName)}`,
+        {
+          queue: this.queueFullName,
+        }
+      );
 
       await this.worker.run();
-      this.getLogger().info("worker.run.started", {
-        queue: this.queueFullName,
-      });
+      this.getLogger().info(
+        `worker.run.started.${snakeCase(this.queueFullName)}`,
+        {
+          queue: this.queueFullName,
+        }
+      );
     } catch (error: unknown) {
-      this.getLogger().error("worker.run.error", {
-        queue: this.queueFullName,
-        error,
-      });
+      this.getLogger().error(
+        `worker.run.error.${snakeCase(this.queueFullName)}`,
+        {
+          queue: this.queueFullName,
+          error,
+        }
+      );
       throw error;
     }
   }
