@@ -16,7 +16,7 @@
     "yalc-publish": "yarn run yalc publish"
   },
   "dependencies": {
-    "axios": "^0.28.0",
+    "axios": "^1.8.2",
     "bunyan": "^1.8.15",
     "json5": "^2.2.3",
     "lodash": "^4.17.15"

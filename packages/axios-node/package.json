@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@alanszp/shared-context": "^16.3.2",
-    "axios": "^0.28.0"
+    "axios": "^1.8.2"
   },
   "devDependencies": {
     "@types/node": "^20.11.17"
